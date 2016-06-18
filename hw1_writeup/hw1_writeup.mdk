@@ -56,3 +56,26 @@ At this point, there were 1,917 observations of 14 variables. Following are summ
 
 
 
+
+
+**Summary Statistics**
+
+At this point, there were 1,917 observations of 14 variables. Following are summary statistics for the cleaned dataset:
+
+|Variable Name    | Median | Mean |
+|:----------------|-------:|-----:|
+|TARGET_WINS      |81.00   |80.59 |
+|TEAM_BATTING_1B  |1040    |1051  |
+|TEAM_BATTING_2B  |241     | 244  |
+|TEAM_BATTING_3B  |44.00   |50.86 |
+|TEAM_BATTING_HR  |114.0   |110.5 |
+|TEAM_BATTING_BB  |523.0   |527.1 |
+|TEAM_BATTING_SO  |791.0   |767.5 |
+|TEAM_BASERUN_SB  |95.0    |113.8 |
+|TEAM_PITCHING_H  |      1498  |1524      |
+|TEAM_PITCHING_HR |        115.0|113.4      |
+|TEAM_PITCHING_BB |        541.0|549.9      |
+|TEAM_PITCHING_SO |        811.0|795.1      |
+|TEAM_FIELDING_E  |        148.0|186.1      |
+|TEAM_FIELDING_DP |        151.0|150.3      |
+
