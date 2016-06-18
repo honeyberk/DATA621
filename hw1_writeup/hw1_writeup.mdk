@@ -8,6 +8,8 @@ Logo          : False
 
 The Training dataset contains 2276 observations of 17 variables, one of which is an index. The other 16 variables are integer types.
 
+**Original Data**
+
 |Variable Name | Definition                         | Theoretical Effect |
 |:-------------|:-----------------------------------|:-------------------|
 |INDEX         |Identification Variable (do not use)|None                |
@@ -28,7 +30,7 @@ The Training dataset contains 2276 observations of 17 variables, one of which is
 |TEAM_PITCHING_HR|Homeruns allowed|Negative Impact on Wins|
 |TEAM_PITCHING_SO|Strikeouts by pitchers|Positive Impact on Wins|
 
-
+Viewing a summary of Training data revealed issues with a number of variables. Based upon an examination of individual variables min and max values and number of NAs, steps were taken to clean the data. This cleaning process included either removing a variable from the dataset, or imputing missing data where the variable was deemed critical to the analysis. 
 
 # Data Cleaning
 1. Deleted index variable, as it was an identification variable that was unused.
