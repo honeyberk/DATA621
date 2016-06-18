@@ -1,0 +1,54 @@
+---
+title: "Data621_HW1"
+author: "sanjivek"
+date: "June 16, 2016"
+output: html_document
+---
+```{r}
+
+library(pander)
+library(knitr)
+library(stringr)
+library(miscTools)
+library(MASS)
+library(corrplot)
+
+# Clean the data for Mean and Median calculation, by replacing all NA value with 0
+
+trainingdata = data.frame(read.csv("https://raw.githubusercontent.com/ksanju0/DATA-621/master/moneyball-training-data.csv"))
+trainingdata=trainingdata[,-1]
+summary(trainingdata)
+
+# Fixing NA values to calculate Mean and Median for each categories 
+trainingdata[is.na(trainingdata)] <- 0
+
+X=as.data.frame(sort(round(colMeans(trainingdata))))
+names(X)[0]= "var"
+names(X)[1]="mean"
+Y=as.data.frame(sort(round(colMedians(trainingdata))))
+names(Y)[0]= "var"
+names(Y)[1]="Median"
+kable(X)
+kable(Y)
+
+# TEAM_BATTING_HBP median came as 0, and analyzing the actual dataset we found that the team 
+#Correlation
+M <- cor(trainingdata)
+corrplot(M,method="number")
+#pairs(trainingdata[,2:17])
+
+modelfit<-lm(trainingdata$TARGET_WINS ~ ., data=trainingdata)
+summary(modelfit)
+par(mfrow=c(2,2))
+plot(modelfit)
+new_modelfit<-update(modelfit,~.-TEAM_BATTING_2B-TEAM_BATTING_BB-TEAM_BASERUN_SB-TEAM_BASERUN_CS-TEAM_PITCHING_HR-TEAM_PITCHING_BB)
+summary(new_modelfit)
+par(mfrow=c(2,2))
+plot(new_modelfit)
+coef(new_modelfit)
+#predict(new_modelfit)
+```
+
+###The regression model will be:
+
+$$TARGET_WINS=33.6224565986 +0.0417*TEAM_BATTING_H+0.0732803374*TEAM_BATTING_3B+0.0713490142*TEAM_BATTING_HR-0.0110975058*TEAM_BATTING_SO-0.0584386730*TEAM_BATTING_HBP-0.0006997704*TEAM_PITCHING_H+0.0023361190*TEAM_PITCHING_SO-0.0313000409*TEAM_FIELDING_E - 0.0756024984*TEAM_FIELDING_DP$$
