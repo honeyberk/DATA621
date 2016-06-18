@@ -44,14 +44,13 @@ Viewing a summary of Training data revealed issues with a number of variables. B
 
 4. Deleted caught_stealing variable, as it contained 772 NA values, and a negative theoretical impact on wins. With a positive impact and only 131 NA values, stolen_baseswas determined to be a more significant related value (which was retained).
 
-5. Generate boxplots to check for outliers. Examine variables with outliers (singles, hits_allowed), converts outliers to NA values.
+5. Generated boxplots to check for outliers. Examine variables with outliers (singles, hits_allowed), converts outliers to NA values.
 
-6. Remove p_strikeouts (Strikeouts by pitchers) variable, as plot indicates that it is collinear with b_strikeouts (p_strikeouts has more outliers, b_strikeouts data look more reliable). Also remove walks_allowed data for collinearity with walks (walks_allowed has more outliers).
-
+6. Removed p_strikeouts (Strikeouts by pitchers) variable, as plot indicates that it is collinear with b_strikeouts (p_strikeouts has more outliers, b_strikeouts data look more reliable). Also remove walks_allowed data for collinearity with walks (walks_allowed has more outliers).
 
 **Additional Variables**
 
-1. TEAM_BATTING_1B (Singles hit by batters) variable was added, as the difference between the Base hits column and the sum of the Doubles, Triples and Homeruns columns.
+1. Singles (Singles hit by batters) variable was added, as the difference between the Base hits column and the sum of the Doubles, Triples and Homeruns columns.
 
 **Summary Statistics**
 
