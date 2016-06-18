@@ -72,10 +72,10 @@ At this point, there were 1,917 observations of 14 variables. Following are summ
 |TEAM_BATTING_BB  |523.0   |527.1 |
 |TEAM_BATTING_SO  |791.0   |767.5 |
 |TEAM_BASERUN_SB  |95.0    |113.8 |
-|TEAM_PITCHING_H  |      1498  |1524      |
-|TEAM_PITCHING_HR |        115.0|113.4      |
-|TEAM_PITCHING_BB |        541.0|549.9      |
-|TEAM_PITCHING_SO |        811.0|795.1      |
-|TEAM_FIELDING_E  |        148.0|186.1      |
-|TEAM_FIELDING_DP |        151.0|150.3      |
+|TEAM_PITCHING_H  |1498    |1524  |
+|TEAM_PITCHING_HR |115.0   |113.4 |
+|TEAM_PITCHING_BB |541.0   |549.9 |
+|TEAM_PITCHING_SO |811.0   |795.1 |
+|TEAM_FIELDING_E  |148.0   |186.1 |
+|TEAM_FIELDING_DP |151.0   |150.3 |
 
