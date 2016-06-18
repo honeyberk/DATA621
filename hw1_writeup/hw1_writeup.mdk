@@ -42,7 +42,7 @@ Viewing a summary of Training data revealed issues with a number of variables. B
 
 3. Deleted hit_by_pitch variable, as it contained 2,085 NA values; variable seems to have little influence and too many NAs to fill.
 
-4. Deleted caught_stealing variable, as it contained 772 NA values, and a negative theoretical impact on wins. With a positive impact and only 131 NA values, stolen_bases was determined to be a more significant related value (which was retained).
+4. Examine caught_stealing and stolen_bases for collinearity. Deleted caught_stealing variable, as it contained 772 NA values, and there seemed to be significant collinearity. With a positive impact and only 131 NA values, stolen_bases was determined to be a more significant related value (which was retained).
 
 5. Generate boxplots to check for outliers. Examined variables with outliers (singles, hits_allowed), converted outliers to NA values.
 
@@ -50,7 +50,7 @@ Viewing a summary of Training data revealed issues with a number of variables. B
 
 **Additional Variables**
 
-1. Singles (Singles hit by batters) variable was added, as the difference between the Base hits column and the sum of the Doubles, Triples and Homeruns columns.
+1. Singles (singles hit by batters) variable was added, as the difference between the basehits column and the sum of the doubles, triples and omeruns columns.
 
 **Summary Statistics**
 
