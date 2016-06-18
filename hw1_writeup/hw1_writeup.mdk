@@ -72,19 +72,19 @@ At this point, there were 2,276 observations of 14 variables. Following are summ
 |Variable Name    | Median | Mean |
 |:----------------|-------:|-----:|
 |wins     |82.00   |80.79 |
-|singles  |1090.00    |1131.00  |
+|singles  |1115.00    |1177.00  |
 |doubles  |238.00    | 241.20  |
 |triples  |47.00   |55.25 |
 |homeruns  |102.00   |99.61 |
-|walks  |523.0   |501.60 |
-|b_strikeouts  |750.00   |735.60 |
-|stolen_bases  |97.00    |109.40 |
-|hits_allowed  |1499.00    |1532.00  |
+|walks  |512.0   |501.60 |
+|b_strikeouts  |732.00   |720.90 |
+|stolen_bases  |103.00    |118.00 |
+|hits_allowed  |1518.00    |1575.00  |
 |homeruns_allowed |107.00   |105.70 |
 |walks_allowed |536.50   |553.00 |
-|p_strikeouts |811.00   |792.50 |
-|errors  |147.00   |171.10 |
-|double_plays |149.00   |146.40 |
+|p_strikeouts |799.00   |779.30 |
+|errors  |158.00   |191.70 |
+|double_plays |145.00   |141.90 |
 
 
 
