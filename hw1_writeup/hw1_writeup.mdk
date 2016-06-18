@@ -36,13 +36,15 @@ Viewing a summary of Training data revealed issues with a number of variables. B
 
 **Data Cleaning**
 
-1. Deleted index variable, as it was an identification variable that was unused.
+1.  Deleted index variable, as it was an identification variable that was unused.
 
 2. Added singles hit by batters (singles) variable (see Additional Variables section, below). Deleted base_hits variable to prevent multicollinearity, as it is an aggregate of singles, doubles, triples and homeruns. Individual hit data should provide more granularity for modeling.
 
-3. Deleted hit_by_pitch variable, as it contained 2,085 NA values (out of 2,276 total records); variable seems to have little influence and too many NAs to fill.
+3. Deleted hit_by_pitch variable, as it contained 2,085 NA values; variable seems to have little influence and too many NAs to fill.
 
-4. Deleted caught_stealing variable, as it contained 772 NA values, and a negative theoretical impact on wins. With a positive impact and only 131 NA values, TEAM_BASERUN_SB (Stolen bases) was determined to be a more significant related value (which was retained).
+4. Deleted caught_stealing variable, as it contained 772 NA values, and a negative theoretical impact on wins. With a positive impact and only 131 NA values, stolen_baseswas determined to be a more significant related value (which was retained).
+
+5. Generate boxplots to check for outliers. Examine variables with outliers (singles, hits_allowed), converts outliers to NA values.
 
 5. The max. value for TEAM_PITCHING_SO seemed much higher in comparison to other data. A standard plot showed definite outliers, as did a histogram; and the skewness and kurtosis were out of bounds and generated an NA value in R. Viewing the sorted data revealed five values above 3,000; after deleting those records, the skewness was 0.376 and the kurtosis was 5.611. Deleting values above 2,000 yielded skewness of -0.015 and kurtosis of 3.473; this was deemed acceptable. 2,165 records remained in the data set at this point.
 
