@@ -6,7 +6,7 @@ Logo          : False
    
 # Data Exploration
 
-The Training dataset contains 2276 observations of 17 variables, one of which is an index. The other 16 variables are integer types.
+The Training dataset contains 2,276 observations of 17 variables, one of which is an index. The other 16 variables are integer types.
 
 **Original Data**
 
@@ -30,9 +30,17 @@ The Training dataset contains 2276 observations of 17 variables, one of which is
 |TEAM_PITCHING_HR|Homeruns allowed|Negative Impact on Wins|
 |TEAM_PITCHING_SO|Strikeouts by pitchers|Positive Impact on Wins|
 
-Viewing a summary of Training data revealed issues with a number of variables. Based upon an examination of individual variables min and max values and number of NAs, steps were taken to clean the data. This cleaning process included either removing a variable from the dataset, or imputing missing data where the variable was deemed critical to the analysis. 
+Viewing a summary of Training data revealed issues with a number of variables. Based upon an examination of individual variables min and max values and number of NAs, steps were taken to clean the data. This cleaning process included either removing a variable from the dataset, or imputing missing data where the variable was deemed critical to the analysis. (See Data Cleaning section, below, for details.)
 
-# Data Cleaning
+# Data Preparation
+
+**Data Cleaning**
+
 1. Deleted index variable, as it was an identification variable that was unused.
-2. Deleted TEAM_BATTING_HBP (Batters hit by pitch) variable, as it contained 2087 NA values (out of 2276 total records); variable seems to have little influence and too many NAs to fill.
-3. Deleted TEAM_BASERUN_CS (Caught stealing) variable, as it contained 772 NA values, and a negative theoretical impact on wins. With a positive impact and only 131 NA values, TEAM_BASERUN_SB (Stolen bases) was determined to be a more significant related value (which was retained). 
+2. Deleted TEAM_BATTING_HBP (Batters hit by pitch) variable, as it contained 2,087 NA values (out of 2,276 total records); variable seems to have little influence and too many NAs to fill.
+3. Deleted TEAM_BASERUN_CS (Caught stealing) variable, as it contained 772 NA values, and a negative theoretical impact on wins. With a positive impact and only 131 NA values, TEAM_BASERUN_SB (Stolen bases) was determined to be a more significant related value (which was retained).
+4. The max. value for TEAM_PITCHING_SO seemed much higher in comparison to other data. A standard plot showed definite outliers, as did a histogram; and the skewness and kurtosis were out of bounds and generated an NA value in R. Viewing the sorted data revealed five values above 3,000; after deleting those records, the skewness was 0.376 and the kurtosis was 5.611.
+
+**Additional Variables**
+
+1. TEAM_BATTING_1B (Singles hit by batters) variable was added, as the difference between the Base hits column and the sum of the Doubles, Triples and Homeruns columns.
