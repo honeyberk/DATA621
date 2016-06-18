@@ -44,30 +44,31 @@ Viewing a summary of Training data revealed issues with a number of variables. B
 
 4. Examine caught_stealing and stolen_bases for collinearity. Deleted caught_stealing variable, as it contained 772 NA values, and there seemed to be significant collinearity. With a positive impact and only 131 NA values, stolen_bases was determined to be a more significant related value (which was retained).
 
-5. Generate boxplots to check for outliers. Examined variables with outliers (singles, hits_allowed, errors, stolen_bases, p_strikeouts), converted outliers to NA values.
+5. Generate boxplots to check for outliers. Examined variables with outliers (singles, hits_allowed, errors, stolen_bases, p_strikeouts, walks_allowed, base_hits), converted outliers to NA values.
 
 **Summary Statistics**
 
-At this point, there were 2,276 observations of 14 variables. Following are summary statistics for the cleaned dataset (before imputing):
+At this point, there were 2,276 observations of 15 variables. Following are summary statistics for the cleaned dataset (before imputing):
 
-|Variable Name    | Median | Mean |
-|:----------------|-------:|-----:|
-|wins     |82.00   |80.79 |
-|singles  |1090.00    |1131.00  |
-|doubles  |238.00    | 241.20  |
-|triples  |47.00   |55.25 |
-|homeruns  |102.00   |99.61 |
-|walks  |512.00   |501.60 |
-|b_strikeouts  |750.00   |735.60 |
-|stolen_bases  |97.00    |109.40 |
-|hits_allowed  |1499.00    |1532.00  |
-|homeruns_allowed |107.00   |105.70 |
-|walks_allowed |536.50   |553.00 |
-|p_strikeouts |811.00   |792.50 |
-|errors  |147.00   |171.10 |
-|double_plays |149.00   |146.40 |
+|Variable Name    | Median | Mean   |
+|:----------------|-------:|-------:|
+|wins             |82.00   |80.79   |
+|base hits        |1450.00 |1457.00 |
+|singles          |1046.00 |1058.00 |
+|doubles          |238.00  | 241.20 |
+|triples          |47.00   |55.25   |
+|homeruns         |102.00  |99.61   |
+|walks            |512.00  |501.60  |
+|b_strikeouts     |750.00  |735.60  |
+|stolen_bases     |97.00   |109.40  |
+|hits_allowed     |1499.00 |1532.00 |
+|homeruns_allowed |107.00  |105.70  |
+|walks_allowed    |535.50  |542.60  |
+|p_strikeouts     |814.00  |799.90  |
+|errors           |147.00  |171.10  |
+|double_plays     |149.00  |146.40  |
 
-6. There are now NA values in seven variables: singles, b_strikeouts, stolen_bases, hits_allowed, p_strikeouts, errors and double_plays. Used mice package to impute missing values for these seven variables. Following are summary statistics after imputing:
+6. There are now NA values in nine variables: base_hits, singles, b_strikeouts, stolen_bases, hits_allowed, walks_allowed, p_strikeouts, errors and double_plays. Used mice package to impute missing values for these nine variables. Following are summary statistics after imputing:
 
 |Variable Name    | Median | Mean |
 |:----------------|-------:|-----:|
@@ -84,7 +85,7 @@ At this point, there were 2,276 observations of 14 variables. Following are summ
 |walks_allowed |536.00   |542.90 |
 |p_strikeouts |797.00   |779.60 |
 |errors  |158.00   |189.60 |
-|double_plays |146.00   |140 |
+|double_plays |146.00   |142.30 |
 
 
 
