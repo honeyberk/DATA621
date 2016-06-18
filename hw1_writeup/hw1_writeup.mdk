@@ -46,7 +46,7 @@ Viewing a summary of Training data revealed issues with a number of variables. B
 
 5. Generate boxplots to check for outliers. Examine variables with outliers (singles, hits_allowed), converts outliers to NA values.
 
-6. Remove p_strikeouts (Strikeouts by pitchers) variable, as plot indicates that it is collinear with b_strikeouts (p_strikeouts has more outliers, b_strikeouts data look more reliable).
+6. Remove p_strikeouts (Strikeouts by pitchers) variable, as plot indicates that it is collinear with b_strikeouts (p_strikeouts has more outliers, b_strikeouts data look more reliable). Also remove walks_allowed data for collinearity with walks (and more outliers)
 
 5. The max. value for TEAM_PITCHING_SO seemed much higher in comparison to other data. A standard plot showed definite outliers, as did a histogram; and the skewness and kurtosis were out of bounds and generated an NA value in R. Viewing the sorted data revealed five values above 3,000; after deleting those records, the skewness was 0.376 and the kurtosis was 5.611. Deleting values above 2,000 yielded skewness of -0.015 and kurtosis of 3.473; this was deemed acceptable. 2,165 records remained in the data set at this point.
 
