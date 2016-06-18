@@ -37,14 +37,14 @@ Viewing a summary of Training data revealed issues with a number of variables. B
 **Data Cleaning**
 
 1. Deleted index variable, as it was an identification variable that was unused.
-2. Deleted TEAM_BATTING_HBP (Batters hit by pitch) variable, as it contained 2,087 NA values (out of 2,276 total records); variable seems to have little influence and too many NAs to fill.
-3. Deleted TEAM_BASERUN_CS (Caught stealing) variable, as it contained 772 NA values, and a negative theoretical impact on wins. With a positive impact and only 131 NA values, TEAM_BASERUN_SB (Stolen bases) was determined to be a more significant related value (which was retained).
-4. The max. value for TEAM_PITCHING_SO seemed much higher in comparison to other data. A standard plot showed definite outliers, as did a histogram; and the skewness and kurtosis were out of bounds and generated an NA value in R. Viewing the sorted data revealed five values above 3,000; after deleting those records, the skewness was 0.376 and the kurtosis was 5.611. Deleting values above 2,000 yielded skewness of -0.015 and kurtosis of 3.473; this was deemed acceptable. 2,165 records remained in the data set at this point.
-5. The max. value for TEAM_PITCHING_H also seemed much higher in comparison to other data. A standard plot showed definite outliers, as did a histogram; the skewness was 10.947 and the kurtosis was 167.216. Viewing the sorted data revealed a number of outlier values. Deleting values above 2,000 yielded skewness of 0.015 and kurtosis of 3.211; this was deemed acceptable. 1,917 records remained in the data set at this point.
-6. Added TEAM_BATTING_1B (Singles hit by batters) variable (see Additional Variables section, below).
-7. Deleted TEAM_BATTING_H (Base hits by batters) column, as it is an aggregate of 1B, 2B, 3B and HR batting data, and will likely cause multicollinearity.
-6. Added TEAM_BATTING_1B (Singles hit by batters) variable (see Additional Variables section, below).
-7. Deleted TEAM_BATTING_H (Base hits by batters) column, as it is an aggregate of 1B, 2B, 3B and HR batting data, and will likely cause multicollinearity.
+
+2. Added TEAM_BATTING_1B (Singles hit by batters) variable (see Additional Variables section, below).
+
+3. Deleted TEAM_BATTING_HBP (Batters hit by pitch) variable, as it contained 2,087 NA values (out of 2,276 total records); variable seems to have little influence and too many NAs to fill.
+4. Deleted TEAM_BASERUN_CS (Caught stealing) variable, as it contained 772 NA values, and a negative theoretical impact on wins. With a positive impact and only 131 NA values, TEAM_BASERUN_SB (Stolen bases) was determined to be a more significant related value (which was retained).
+5. The max. value for TEAM_PITCHING_SO seemed much higher in comparison to other data. A standard plot showed definite outliers, as did a histogram; and the skewness and kurtosis were out of bounds and generated an NA value in R. Viewing the sorted data revealed five values above 3,000; after deleting those records, the skewness was 0.376 and the kurtosis was 6. Deleting values above 2,000 yielded skewness of -0.015 and kurtosis of 3.473; this was deemed acceptable. 2,165 records remained in the data set at this point.
+7. The max. value for TEAM_PITCHING_H also seemed much higher in comparison to other data. A standard plot showed definite outliers, as did a histogram; the skewness was 10.947 and the kurtosis was 167.216. Viewing the sorted data revealed a number of outlier values. Deleting values above 2,000 yielded skewness of 0.015 and kurtosis of 3.211; this was deemed acceptable. 1,917 records remained in the data set at this point.
+8. Deleted TEAM_BATTING_H (Base hits by batters) column, as it is an aggregate of 1B, 2B, 3B and HR batting data, and will likely cause multicollinearity.
 
 **Additional Variables**
 
