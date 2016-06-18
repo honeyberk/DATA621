@@ -12,7 +12,8 @@ The Training dataset contains 2276 observations of 17 variables, one of which is
 |:-------------|:-----------------------------------|:-------------------|
 |INDEX         |Identification Variable (do not use)|None                |
 |TARGET_WINS   | Number of wins                     |                    |
-|TEAM_BATTING_H| Base hits by batters (1B, 2B, 3B, HR)|Positive Impact on Wins|          |TEAM_BATTING_2B|Doubles by batters (2B)|Positive Impact on Wins|                         
+|TEAM_BATTING_H| Base hits by batters (1B, 2B, 3B, HR)|Positive Impact on Wins|          
+|TEAM_BATTING_2B|Doubles by batters (2B)|Positive Impact on Wins|                         
 |TEAM_BATTING_3B|Triples by batters (3B)|Positive Impact on Wins|
 |TEAM_BATTING_HR|Homeruns by batters (4B)|Positive Impact on Wins|
 |TEAM_BATTING_BB|Walks by batters|Positive Impact on Wins|
@@ -30,3 +31,6 @@ The Training dataset contains 2276 observations of 17 variables, one of which is
 
 
 # Data Cleaning
+1. Deleted index variable, as it was an identification variable that was unused.
+2. Deleted TEAM_BATTING_HBP (Batters hit by pitch), as it contained 2087 NA values (out of 2276 total records); variable seems to have little influence and too many NAs to fill.
+ 
