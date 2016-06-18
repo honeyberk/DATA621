@@ -71,4 +71,4 @@ At this point, there were 1,917 observations of 14 variables. Following are summ
 |TEAM_FIELDING_E  |148.0   |186.1 |
 |TEAM_FIELDING_DP |151.0   |150.3 |
 
-There are NA values left in two variables: TEAM_BASERUN_SB (8) and TEAM_FIELDING_DP (130)
+There are NA values left in two variables: TEAM_BASERUN_SB (8) and TEAM_FIELDING_DP (130). Used mice package to impute missing values for these two variables.
