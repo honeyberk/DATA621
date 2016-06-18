@@ -32,5 +32,5 @@ The Training dataset contains 2276 observations of 17 variables, one of which is
 
 # Data Cleaning
 1. Deleted index variable, as it was an identification variable that was unused.
-2. Deleted TEAM_BATTING_HBP (Batters hit by pitch), as it contained 2087 NA values (out of 2276 total records); variable seems to have little influence and too many NAs to fill.
- 
+2. Deleted TEAM_BATTING_HBP (Batters hit by pitch) variable, as it contained 2087 NA values (out of 2276 total records); variable seems to have little influence and too many NAs to fill.
+3. Deleted TEAM_BASERUN_CS (Caught stealing) variable, as it contained 772 NA values, and a negative theoretical impact on wins. With a positive impact and only 131 NA values, TEAM_BASERUN_SB (Stolen bases) was determined to be a more significant related value (which was retained). 
