@@ -39,7 +39,7 @@ Viewing a summary of Training data revealed issues with a number of variables. B
 1. Deleted index variable, as it was an identification variable that was unused.
 2. Deleted TEAM_BATTING_HBP (Batters hit by pitch) variable, as it contained 2,087 NA values (out of 2,276 total records); variable seems to have little influence and too many NAs to fill.
 3. Deleted TEAM_BASERUN_CS (Caught stealing) variable, as it contained 772 NA values, and a negative theoretical impact on wins. With a positive impact and only 131 NA values, TEAM_BASERUN_SB (Stolen bases) was determined to be a more significant related value (which was retained).
-4. The max. value for TEAM_PITCHING_SO seemed much higher in comparison to other data. A standard plot showed definite outliers, as did a histogram; and the skewness and kurtosis were out of bounds and generated an NA value in R. Viewing the sorted data revealed five values above 3,000; after deleting those records, the skewness was 0.376 and the kurtosis was 5.611.
+4. The max. value for TEAM_PITCHING_SO seemed much higher in comparison to other data. A standard plot showed definite outliers, as did a histogram; and the skewness and kurtosis were out of bounds and generated an NA value in R. Viewing the sorted data revealed five values above 3,000; after deleting those records, the skewness was 0.376 and the kurtosis was 5.611. Deleting values above 2,000 yielded skewness of -0.015 and kurtosis of 3.473; this was deemed acceptable. 2,165 records remained in the data set at this point.
 
 **Additional Variables**
 
