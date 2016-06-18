@@ -44,13 +44,7 @@ Viewing a summary of Training data revealed issues with a number of variables. B
 
 4. Examine caught_stealing and stolen_bases for collinearity. Deleted caught_stealing variable, as it contained 772 NA values, and there seemed to be significant collinearity. With a positive impact and only 131 NA values, stolen_bases was determined to be a more significant related value (which was retained).
 
-5. Generate boxplots to check for outliers. Examined variables with outliers (singles, hits_allowed), converted outliers to NA values.
-
-6. Removed p_strikeouts (Strikeouts by pitchers) variable, as plot indicates that it is collinear with b_strikeouts (p_strikeouts has more outliers, b_strikeouts data look more reliable). Also removed walks_allowed data for collinearity with walks (walks_allowed has more outliers).
-
-**Additional Variables**
-
-1. Singles (singles hit by batters) variable was added, as the difference between the basehits column and the sum of the doubles, triples and homeruns columns.
+5. Generate boxplots to check for outliers. Examined variables with outliers (singles, hits_allowed, errors, stolen_bases, p_strikeouts), converted outliers to NA values.
 
 **Summary Statistics**
 
@@ -73,4 +67,10 @@ At this point, there were 2,276 observations of 14 variables. Following are summ
 |errors  |147.00   |171.10 |
 |double_plays |149.00   |146.40 |
 
-There are NA values left in two variables: TEAM_BASERUN_SB (8) and TEAM_FIELDING_DP (130). Used mice package to impute missing values for these two variables.
+6. There are now NA values in seven variables: singles, b_strikeouts, stolen_bases, hits_allowed, p_strikeouts, errors and double_plays. Used mice package to impute missing values for these seven variables.
+
+
+
+
+
+
