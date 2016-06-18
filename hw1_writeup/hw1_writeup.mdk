@@ -67,7 +67,8 @@ At this point, there were 2,276 observations of 14 variables. Following are summ
 |errors  |147.00   |171.10 |
 |double_plays |149.00   |146.40 |
 
-6. There are now NA values in seven variables: singles, b_strikeouts, stolen_bases, hits_allowed, p_strikeouts, errors and double_plays. Used mice package to impute missing values for these seven variables.
+6. There are now NA values in seven variables: singles, b_strikeouts, stolen_bases, hits_allowed, p_strikeouts, errors and double_plays. 
+Used mice package to impute missing values for these seven variables.
 
 
 
