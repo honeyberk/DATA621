@@ -1,0 +1,119 @@
+---
+title: "Data 621 - Assignment 1"
+date: "June 19, 2016"
+output: html_document
+---
+
+#install.packages("devtools")
+#devtools::install_github("hadley/tidyr")
+```{r ECHO=FALSE}
+library(dplyr)
+library(tidyr)
+require(dplyr)
+library(ggplot2)
+require(ggplot2)
+library(ggthemes)
+require(ggthemes)
+require(lubridate)
+require(stringr)
+library(reshape2)
+
+# To clear a Global Environemnt
+rm(list =ls())
+```
+
+#Load the data
+Our first step is to load all the required data, this includes the cleaned-up data.
+
+```{r}
+# Read in the data files 
+file_name <- "~/Downloads/moneyball-evaluation-data.csv"
+eval_data <- read.csv(file_name, header=TRUE, stringsAsFactors=FALSE, fileEncoding="latin1")
+
+file_name <- "~/Downloads/moneyball-training-data.csv"
+training_data <- read.csv(file_name, header=TRUE, stringsAsFactors=FALSE, fileEncoding="latin1")
+
+file_name <- "~/Downloads/Data/final_train.csv"
+
+tdc <- read.csv(file_name, header=TRUE, stringsAsFactors=FALSE, fileEncoding="latin1")
+```
+
+Now that we have all the data, we should examine it.
+
+```{r}
+summary(tdc)
+```
+
+The data is quite clean relative to the initial file. We no longer have NAs, and the variable names clearly define the meaning of each vector.
+
+#Backwards regression modeling
+We are now ready to create a model. For this model we have opted a simple backwards regression approach wherein we will first include all variables and work backwards from there.
+
+We start, however, by excluding one variable, `base_hits` because it is a composite of all the other hits variables. We will compare our final model with one that only includes `base_hits` at the end.
+
+```{r}
+attach(tdc)
+m1 <- lm(wins~singles+doubles+triples+homeruns+walks+b_strikeouts+stolen_bases+
+           hits_allowed+homeruns_allowed+walks_allowed+p_strikeouts+errors+
+           double_plays)
+summary(m1)
+```
+
+Upon review of the initial run we see that we yielded an Adjusted R-squared for 0.3979. Compared to the results from the 'dirty' dataset these results are quite strong. Now let's see what happens when we start removing variables. We choose those variables that have the highest p-values, thus likely do not contribute to the accuracy of the model.
+
+```{r}
+#remove homeruns_allowed
+m2 <- lm(wins~singles+doubles+triples+homeruns+walks+b_strikeouts+stolen_bases+
+           hits_allowed+walks_allowed+p_strikeouts+errors+
+           double_plays)
+summary(m2)
+```
+
+Removing `homeruns_allowed` yields an obvious improvement! We increased our adjusted R-squared to 0.3982. Let us proceed and remove `doubles`.
+
+```{r}
+m3 <- lm(wins~singles+triples+homeruns+walks+b_strikeouts+stolen_bases+
+           hits_allowed+walks_allowed+p_strikeouts+errors+
+           double_plays)
+summary(m3)
+```
+
+At this point perhaps we should stop. Our p-value and adjusted R-squared shows now differennce. We will validate by removing one more variable, and we will expect our results to be work in terms of minimizing least squares. So, we will remove `walks_allowed` next.
+
+```{r}
+m4 <- lm(wins~singles+triples+homeruns+walks+b_strikeouts+stolen_bases+
+           hits_allowed+p_strikeouts+errors+
+           double_plays)
+summary(m4)
+```
+
+While the p-value remains the same, the adjusted R-squared is worse, so we will stick with the third model. Now we will compare this model to the simpler case of the the hits composite.
+
+```{r}
+m5 <- lm(wins~base_hits+walks+b_strikeouts+stolen_bases+
+           hits_allowed+homeruns_allowed+walks_allowed+p_strikeouts+errors+
+           double_plays)
+summary(m5)
+```
+
+This results yields the same p-value, but a lower adjusted R-squared. So we will opt to stick with our thrid model rather than this one. 
+
+#Review of the model
+
+Finally we should review a few charts to see if the results make sense.
+
+```{r ECHO=FALSE}
+hist(m3$residuals)
+plot(m3$residuals~tdc$wins)
+abline(h=0,lty=3)
+```
+
+The histogram of residuals clearly follows a normal distribution and the residuals do not follow any pattern, they are effectively random.
+
+```{r ECHO=FALSE}
+qqnorm(m3$residuals)
+qqline(m3$residuals)
+```
+
+We should be somewhat concerned about the outliers, in spite of the data clean-up. However on the whole this model befits the criteria for validity.
+
