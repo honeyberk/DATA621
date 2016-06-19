@@ -74,6 +74,20 @@ summary(fit2)
 par(mfrow=c(2,2))
 par(mfrow=c(2,2))
 plot(fit2)
+
+# mean squared error
+mse <- mean(residuals(fit2)^2)
+
+# root mean square error
+rmse <- sqrt(mse)
+
+# residual sum of squares
+rss <- sum(residuals(fit2)^2)
+
+# residual standard error
+rse <- sqrt(rss / fit2$df.residual) 
+
+cat("MSE =", mse, "\nRMSE =", rmse, "\nRSS =", rss, "\nRSE =", rse)
 ```
 
 
@@ -94,8 +108,12 @@ $\hat { \quad y } =\quad 65.613027925\quad +\quad 0.0251*singles\quad +\quad 0.1
 
 
 ##Conclusion:
-###The best fit regression model is based on Forward and Backward selection with Rsquare: 0.4012 and Adjusted RSquare: 0.3982
+###The best fit regression model is based on Forward and Backward selection with MSE, RMSE, RSS and RSE as:
 
+```{r}
+cat("MSE =", mse, "\nRMSE =", rmse, "\nRSS =", rss, "\nRSE =", rse)
+
+```
 
 
 
