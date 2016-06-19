@@ -78,7 +78,7 @@ m3 <- lm(wins~singles+triples+homeruns+walks+b_strikeouts+stolen_bases+
 summary(m3)
 ```
 
-At this point perhaps we should stop. Our p-value and adjusted R-squared shows now differennce. We will validate by removing one more variable, and we will expect our results to be work in terms of minimizing least squares. So, we will remove `walks_allowed` next.
+At this point perhaps we should stop. Our p-value and adjusted R-squared shows no differennce. We will validate by removing one more variable, and we will expect our results to be worse in terms of minimizing least squares. So, we will remove `walks_allowed` next.
 
 ```{r}
 m4 <- lm(wins~singles+triples+homeruns+walks+b_strikeouts+stolen_bases+
@@ -135,3 +135,15 @@ cat("MSE =", mse, "\nRMSE =", rmse, "\nRSS =", rss, "\nRSE =", rse)
 
 ```
 
+#Predicting the results
+```{r}
+#Clean a bit of the data
+eval_data$TEAM_BATTING_H <- eval_data$TEAM_BATTING_H - eval_data$TEAM_BATTING_2B - eval_data$TEAM_BATTING_3B - eval_data$TEAM_BATTING_3B
+
+#Rename the columns to be the same
+ed <- rename(eval_data, singles=TEAM_BATTING_H, triples=TEAM_BATTING_3B, homeruns=TEAM_BATTING_HR, walks=TEAM_BATTING_BB, b_strikeouts=TEAM_BATTING_SO, stolen_bases=TEAM_BASERUN_SB, hits_allowed=TEAM_PITCHING_H, walks_allowed=TEAM_PITCHING_BB, p_strikeouts=TEAM_PITCHING_SO, errors=TEAM_FIELDING_E, double_plays=TEAM_FIELDING_DP)
+
+#Prediction model
+pm <- predict(m3,ed)
+summary(pm)
+```
