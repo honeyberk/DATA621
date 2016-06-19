@@ -52,7 +52,7 @@ Following is a summary of steps that were undertaken to clean the training datas
 
 3. Deleted hit_by_pitch (2,085 NAs) and caught_stealing (772 NAs) variables, as they contained too many NAs to fill without significant effect.
 
-4. Used mice and VIM packages to analyze missing data, found a total of 621 NAs over 4 different variables (4.5%-12.5% of data); assumption that the missing data was random (MCAR). Used mice package to impute missing data.
+4. Used mice and VIM packages to analyze missing data, found a total of 621 NAs over 4 different variables (4.5%-12.5% of data); assumption that the missing data was random (MCAR). Used mice package to impute missing data, using predictive mean matching (PMM) method based on work based on Rubin (1987, p. 168, formulas a and b). Compared with imputation methods based on the normal distribution, PMM produces imputed values that are much more like real values. That means that if the original variable is skewed, the imputed values will also be skewed; if the original values are discrete, the imputed values will also be discrete; etc. That’s because the imputed values are, in essence, real values that are “borrowed” from the real data.
 
 5. Generate boxplots to check for outliers. Examined variables with outliers (singles, hits_allowed, errors, stolen_bases, p_strikeouts, walks_allowed, base_hits), converted outliers to NA values.
 
