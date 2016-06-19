@@ -95,7 +95,7 @@ Before the first model was generated, a correlation matrix was generated with th
 
 **Model 2**
 
-For the second model, the cleaned data file was loaded and a backwards regression approach was then used to find the optimal model. All of the variables in the dataset were used with the exception of base_hits, as it was a composite of the individual hits variables (see explanation in Model 1 section). The first attempt, model 2a, yielded an Adjusted R^2^ of 0.3979, with six variables registering as not significant.
+For the second model, the cleaned data file was loaded and a backwards regression approach was then used to find the optimal model. All of the variables in the dataset were used with the exception of base_hits, as it was a composite of the individual hits variables (see explanation in Model 1 section). The first attempt, model 2a, yielded an Adjusted R^2^ of 0.3979 with six variables with high p-values, so not significant. For model 2b, homeruns_allowed was removed, yielding an improved R^2^ of 0.3982 and four variables with high p-values. 
 
 
 
