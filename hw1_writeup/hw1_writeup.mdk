@@ -104,6 +104,14 @@ For the second model, the cleaned data file was loaded and a backwards regressio
 |0.3982   |137.9|11, 2264|<2.2e-16|148.5268|12.1872|338046.9|12.2194|
 ~
 
+~ Math
+Equation: wins = 67.316797 + 0.025656*singles + 0.191212*triples %continue on next line
+ + 0.098316*homeruns + 0.035400*walks - 0.010937*b_strikeouts +  %continue on next line
+ 03077319*stolen_bases + 0.007471*hits_allowed - 0.014035*walks_allowed %continue on next line
+  - 0.011133*p_strikeouts - 0.139416*errors - 0.156985*double_plays$$
+~
+
+
 A quick check revealed high VIF values for eight of the 11 variables, so this model will likely be rejected.
 
 
