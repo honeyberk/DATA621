@@ -9,6 +9,7 @@ Logo          : False
 The Training dataset contains 2,276 observations of 17 variables, one of which is an index. The other 16 variables are integer types.
 
 **Original Data**
+{font-size: 100%}
 
 |Variable Name | Definition                         | Theoretical Effect |New Variable Name|
 |:-------------|:-----------------------------------|:-------------------|:-------|
@@ -29,23 +30,28 @@ The Training dataset contains 2,276 observations of 17 variables, one of which i
 |TEAM_PITCHING_H|Hits allowed|Negative|hits_allowed|
 |TEAM_PITCHING_HR|Homeruns allowed|Negative|homeruns_allowed|
 |TEAM_PITCHING_SO|Strikeouts by pitchers|Positive|p_strikeouts|
+{font-size: 90%; text-align: center;} 
 
 Summary statistics for the training data revealed issues with a number of variables, based upon an initial examination of min., max., median, mean and the number of missing values (NAs). A cleaning procedure was undertaken to address these issues, during which the data was also checked for collinearity and for outlier data. Ulitmately, the cleaning process included either removing a variable from the dataset or imputing missing data where the variable was deemed critical to the analysis; and then another procedure for handling outliers. (See Data Cleaning section, below, for details.)
 
 **Summary Statistics - Original Data**
+
+![describe_train-1]
+
+[describe_train-1]: images/describe_train-1.PNG "describe_train-1" { width:auto; max-width:100%; text-align:center; }
 
 
 # Data Preparation
 
 **Data Cleaning**
 
-1.  Deleted index variable, as it was an used only as an identification variable
+1.  Deleted index variable, as it was an used only as an identification variable that was unused.
 
-2. Added singles hit by batters (singles) variable (see Additional Variables section, below). Deleted base_hits variable to prevent multicollinearity, as it is an aggregate of singles, doubles, triples and homeruns. Individual hit data should provide more granularity for modeling.
+2. Added singles hit by batters (singles) variable (see Additional Variables section, below). 
 
-3. Deleted hit_by_pitch variable, as it contained 2,085 NA values; variable seems to have little influence and too many NAs to fill.
+3. Deleted hit_by_pitch variable, as it contained 2,085 NA values; variable seems to have little influence and too many NAs to fill without significant effect.
 
-4. Examine caught_stealing and stolen_bases for collinearity. Deleted caught_stealing variable, as it contained 772 NA values, and there seemed to be significant collinearity. With a positive impact and only 131 NA values, stolen_bases was determined to be a more significant related value (which was retained).
+4. Examined caught_stealing and stolen_bases for collinearity. Deleted caught_stealing variable, as it contained 772 NA values, and there seemed to be significant collinearity. With a positive impact and only 131 NA values, stolen_bases was determined to be a more significant related value (which was retained).
 
 5. Generate boxplots to check for outliers. Examined variables with outliers (singles, hits_allowed, errors, stolen_bases, p_strikeouts, walks_allowed, base_hits), converted outliers to NA values.
 
