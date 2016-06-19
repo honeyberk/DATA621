@@ -53,10 +53,18 @@ Following is a summary of steps that were undertaken to clean the training datas
 1. Used mice and VIM packages to analyze missing data, found a total of 621 NAs over 4 different variables (4.5%-12.5% of data); assumption that the missing data was random (MCAR). Used mice package to impute missing data, using predictive mean matching (PMM) method; then brought imputed data into dataset. 
 **Note: **PMM is described in the mice pacakge documentation as being based on work by Donald B. Rubin, Harvard Univeristy (Rubin 1987, p. 168, formulas a and b).[^fn]. Compared with imputation methods based on the normal distribution, PMM is said to produces imputed values that are much more like real values. That means that if the original variable is skewed, the imputed values will also be skewed; if the original values are discrete, the imputed values will also be discrete; etc. That’s because the imputed values are, in essence, real values that are “borrowed” from the real data.
 [^fn]: Rubin, D.B. (1987). Multiple imputation for nonresponse in surveys. New York: Wiley.
-1. Boxplots were then generated with the imputed data set to check for outliers. 
+1. Boxplots were then generated with the imputed data set to check for outliers.
+ 
 ![boxplot_ctrain_outlier_ck-4]
 [boxplot_ctrain_outlier_ck-4]: images/boxplot_ctrain_outlier_ck-4.PNG "boxplot_ctrain_outlier_ck-4" { width:auto; max-width: 100% }
-Examined variables with outliers (singles, hits_allowed, errors, stolen_bases, p_strikeouts, walks_allowed, base_hits), converted outliers to NA values.
+Examined variables with outliers: singles, hits_allowed, errors, stolen_bases, p_strikeouts, walks_allowed, base_hits), converted outliers to NA values. This procedure included:
+  * Generating a qqnorm plot, histogram and scatterplot for each variable
+  * Using boxplot.stats function to identify outlier values
+  * Recoding outlier values as NA
+  * Rechecking qqnorm and histogram plots to check for normal distribution
+  * Checking skewness and kurtosis to check for significant improvement
+
+
 
 
 **Summary Statistics**
