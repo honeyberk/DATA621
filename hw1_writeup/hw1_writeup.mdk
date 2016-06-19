@@ -38,6 +38,7 @@ The Training dataset contains 2,276 observations of 17 variables, one of which i
 Summary statistics for the training data revealed issues with a number of variables, based upon an initial examination of min., max., median, mean, the number of missing values (NAs) and a few other factors. A cleaning procedure was undertaken to address these issues, during which the data was also checked for collinearity and for outlier data. Ulitmately, the cleaning process included either removing a variable from the dataset or imputing missing data where the variable was deemed critical to the analysis; and then another procedure for handling outliers. (See Data Cleaning section, below, for details.)
 
 **Summary Statistics - Original Data**
+
 ~ Center
 
 ![describe_train-1]
@@ -85,6 +86,20 @@ As evidenced by the tables, skewness, kurtosis and standard error were significa
 At the completion of the cleaning process, a new csv file was generated for the team to begin the modeling phase.
  
 # Models
+
+**Model 1**
+
+Before the first model was generated, a correlation matrix was generated with the cleaned dataset, and some quick regression analyses were generated between certain suspect variables to confirm potential collinearity. Out of the four sets examined, two scenarios were deemed to have high potential for collinearity: base_hits was regressed against singles, doubles, triples and homeruns, with a resulting Adjusted R^2^ of 0.9943, was expected because base_hits is an aggregate variable; and homeruns was regressed against homeruns_allowed, resulting in an R^2^ of 0.9397.
+
+
+
+
+
+
+
+
+
+
 A simple approach to identify collinearity among explanatory variables is the use of variance inflation factors (VIF). VIF calculations are straightforward and easily comprehensible; the higher the value, the higher the collinearity. 
 
 (https://beckmw.wordpress.com/2013/02/05/collinearity-and-stepwise-vif-selection/)
