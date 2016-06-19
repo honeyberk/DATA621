@@ -1,0 +1,189 @@
+---
+title: 'DATA 621: WEEK 1 ASSIGNMENT'
+author: "MUSA T. GANIYU"
+date: "June 8, 2016"
+output:
+  html_document:
+    highlight: pygments
+    theme: cerulean
+  pdf_document: default
+  tidy: yes
+code_folding: hide
+---
+
+```{r setup}
+
+options(warn = -1)
+
+suppressMessages(require(plotly))
+library(knitr)
+suppressMessages(library(RCurl))
+suppressMessages(library(plyr))
+suppressMessages(library(ggplot2))
+suppressMessages(library(plotly))
+suppressMessages(require(scatterplot3d));
+
+
+
+training <- read.csv("https://raw.githubusercontent.com/honeyberk/data621/master/final_train.csv", header = TRUE, sep = ",")
+
+evaluation <- read.csv("https://raw.githubusercontent.com/mascotinme/MSDA-IS621/master/moneyball-training-data.csv", header = TRUE, sep = ",")
+
+str(training)
+dim(training)
+
+
+kable(summary(training))
+```
+
+> The Multiple Linear Regression Equation for the data analysis is:
+
+${ Y }\quad =\quad { B }_{ 0 }\quad +\quad { B }_{ 1 }{ x }_{ 1 }\quad +\quad { B }_{ 2 }{ x }_{ 2 }\quad +\quad$ .........+$\quad { B }_{ n }{ x }_{ n }\quad$ +$\quad { e}\\$
+
+Where,
+
+ $\quad { Y }\quad$ = Reponse or Dependent Variable, 
+
+ $\quad{ x }_{ 1 }$ .....${ x }_{ n }\quad$ = Explantory or Independent Variables 
+
+ $\quad { B }_{ 0 }\quad$ = Intercept,
+
+ $\quad { B }_{ 1 }\quad , ...., \quad { B }_{ n }\quad$ = Slope of Independent variables  or Model Parameter.
+ 
+ $\quad { e}\\$ = Residual or Error term ( the  difference between an actual and a predicted value of y)
+ 
+ 
+
+**Could be re-written in terms of the training dataset as:**
+
+${ Y }\quad =\quad { B }_{ 0 }\quad +\quad { B }_{ wins }{ X }_{wins}\quad +\quad { B }_{ homeruns}{ X }_{ base_hits }\quad +\quad$ .........+$\quad { B }_{ double_plays }{ X }_{ double_plays }\quad$ +$\quad { e}\\$
+
+
+
+> A glimpse at the multiple linear regression Analysis:
+
+```{r cars}
+fit1 <- lm(wins ~. , data = training) # The Variable index is intentional omitted as it has nothing to do with the analysis
+
+summary(fit1)
+par(mfrow=c(2,2))
+plot(fit1)
+```
+
+
+* A  scatter Plot and Correlation co-efficient between wins and doubles
+
+```{R}
+
+plot_ly(data = training, x = doubles , y = wins, mode = "markers",
+        color = "blue", line = list(shape = "linear"))
+
+
+
+plot(wins~doubles, training)
+
+fitline <- lm(training$wins~training$doubles)
+abline(fitline)
+
+
+cor(training$wins, training$doubles)
+
+```
+
+
+> A 3D Scatterplot display for wins, doubles and walks
+
+```{R}
+
+attach(training);
+
+#Run the this query to display it in 3D
+
+scatterplot3d(wins, doubles, walks_allowed ,pch = 20, highlight.3d = TRUE, type = "h", main = "3D ScatterPlots"); 
+
+
+```
+
+
+* A check for Normality.
+
+```{R}
+hist(training$wins, col="green")
+hist(training$double_plays, col="blue")
+
+```
+
+* We can deduce from the above model that some of the variables are not comtributing meaningfully to the analysis, we therefore proceeded by using a statistical tool for selecting the best model for the analysis. 
+
+* We shall select the best model by using both forward and backward selection process
+
+```{R}
+stepwise <- step(fit1, direction = "both") # Model Selection using both FORWARD AND BACKWARD selection.
+```
+
+
+* The table below depicts the summary of the selected model:
+
+```{R}
+
+summary(stepwise)
+
+```
+
+> The above selection process depicts the best model for the analysis.
+
+
+* A look at the plots.
+
+```{R}
+
+
+fit2 <- training[, c("base_hits","homeruns_allowed","walks_allowed","b_strikeouts","errors", "double_plays", "wins")]
+
+par(mfrow=c(2,2))
+plot(fit2)
+```
+
+
+* **NOTE:** One of the variable (**base_hits**) is not contributing significantly to the analysis, we therefore remove the variable and see the effect on the other variables.
+
+```{R}
+
+fit3 <- lm(wins ~. -base_hits, data = fit2)
+
+
+summary(fit3)
+par(mfrow=c(2,2))
+plot(fit3)
+
+```
+
+$\hat { \quad y } =\quad \hat { { \beta  }_{ 0 } } \quad +\quad \hat { { \beta  }_{ 1 }{ x }_{ 1 } } \quad +\quad \hat { { \beta  }_{ 2 }{ x }_{ 2 } } +....+\quad \hat { { \beta  }_{ n }{ x }_{ n } } + \quad \hat {\quad e}$
+
+
+where $\hat { \quad y }$ is the predicted value of y, and ${ \beta  }_{ 0 },\quad { \beta  }_{ 1 },\quad { \beta  }_{ 2 }$
+
+are the estimated co-effients.
+
+> **INTERPRETATIONS**
+
+**The least square prediction is:**
+
+**$\hat { \quad y } =\quad 63.4669\quad +\quad 0.0258base_{h}itsR\quad +\quad 0.0917hits_{a}llowedR\quad +\quad 0.0561walks_{a}llowed\quad -\quad 0.0289b_{s}trikeouts\quad -\quad 0.1739errors\quad -\quad 0.1217Tdouble_{p}lays$**
+
+
+**The Co-efficient interpretations: First-Order Quantative Variables**
+
+If we increase the base_hits by one unit, keeping the other variables constant, the mean value of Y increases by 0.0258. Same is applicable for other variables.
+
+
+
+> Analysis of Variance (ANOVA) is adopted here to show the effect and interaction between the variables. 
+  
+  * We shall also obtain there respective confident intervals.
+
+
+```{R}
+anova(fit3, test= "F")
+
+confint(fit3)
