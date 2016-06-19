@@ -1,0 +1,102 @@
+---
+title: 'DATA 621: WEEK 1 ASSIGNMENT'
+author: "MUSA T. GANIYU"
+date: "June 8, 2016"
+output:
+  html_document:
+    highlight: pygments
+    theme: cerulean
+  pdf_document: default
+  tidy: yes
+code_folding: hide
+---
+
+```{r setup}
+
+options(warn = -1)
+
+suppressMessages(require(plotly))
+library(knitr)
+suppressMessages(library(RCurl))
+suppressMessages(library(plyr))
+suppressMessages(library(ggplot2))
+suppressMessages(library(plotly))
+suppressMessages(require(scatterplot3d));
+
+
+
+training <- read.csv("https://raw.githubusercontent.com/honeyberk/data621/master/final_train.csv", header = TRUE, sep = ",")
+
+#evaluation <- read.csv("https://raw.githubusercontent.com/mascotinme/MSDA-IS621/master/moneyball-training-data.csv", header = TRUE, sep = ",")
+
+str(training)
+dim(training)
+
+
+kable(summary(training))
+```
+
+
+```{r cars}
+fit1 <- lm(wins ~. , data = training) # The Variable index is intentional omitted as it has nothing to do with the analysis
+
+summary(fit1)
+par(mfrow=c(2,2))
+plot(fit1)
+```
+
+### Running a regression analysis on clean dataset as Fit1 shows that only triples, walks, stolen_bases, errors and double_play contributes to the wins which doesn't seems to be the inline with other positive impacting factors considered, so we considered model using the Forward and forward selection.
+
+
+```{R}
+stepwise <- step(fit1, direction = "both") # Model Selection using both FORWARD AND BACKWARD selection.
+```
+
+
+### The table below depicts the summary of the selected model:
+
+```{R}
+
+summary(stepwise)
+
+```
+
+### The above selection process depicts the best model for the analysis and we observed that it does considered other categories such as singles, triples, homeruns, walks, stolen_bases, hits_allowed, p_strikeouts, errors and double_plays which regression model hasn't to build the best possible model 
+
+
+
+```{R}
+
+fit2 <-lm(wins~. -base_hits -doubles -b_strikeouts  -homeruns_allowed -walks_allowed, data=training )
+coef(fit2)
+
+summary(fit2)
+par(mfrow=c(2,2))
+par(mfrow=c(2,2))
+plot(fit2)
+```
+
+
+
+###Analysis of Variance (ANOVA) is adopted here to show the effect and interaction between the variables. 
+### We shall also obtain there respective confident intervals.
+
+
+```{R}
+fit2Anova=anova(fit2, test= "F")
+summary(fit2Anova)
+confint(fit2)
+```
+
+### Based on our best fit regerssion model, least square prediction equation for winning team will be:
+
+$\hat { \quad y } =\quad 65.613027925\quad +\quad 0.0251*singles\quad +\quad 0.1904*triples\quad +\quad 0.0930*homeruns\quad +\quad 0.0204*walks\quad +\quad 0.07605*stolen\_bases\quad +\quad 0.0087*hits\_allowed\quad-\quad0.0202*p\_strikeouts-\quad0.1403*errors\quad-\quad0.1554*double\_plays\quad$
+
+
+##Conclusion:
+###The best fit regression model is based on Forward and Backward selection with Rsquare: 0.4012 and Adjusted RSquare: 0.3982
+
+
+
+
+
