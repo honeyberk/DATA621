@@ -90,3 +90,5 @@ At this point, there were 2,276 observations of 15 variables. Following are summ
 
 
 
+# Models
+A simple approach to identify collinearity among explanatory variables is the use of variance inflation factors (VIF). VIF calculations are straightforward and easily comprehensible; the higher the value, the higher the collinearity. (https://beckmw.wordpress.com/2013/02/05/collinearity-and-stepwise-vif-selection/)
