@@ -4,8 +4,8 @@ date: "June 19, 2016"
 output: html_document
 ---
 
-#install.packages("devtools")
-#devtools::install_github("hadley/tidyr")
+install.packages("devtools")
+devtools::install_github("hadley/tidyr")
 ```{r ECHO=FALSE}
 library(dplyr)
 library(tidyr)
@@ -116,4 +116,22 @@ qqline(m3$residuals)
 ```
 
 We should be somewhat concerned about the outliers, in spite of the data clean-up. However on the whole this model befits the criteria for validity.
+
+#Additional metrics
+```{r ECHO=FALSE}
+# mean squared error
+mse <- mean(residuals(m3)^2)
+
+# root mean square error
+rmse <- sqrt(mse)
+
+# residual sum of squares
+rss <- sum(residuals(m3)^2)
+
+# residual standard error
+rse <- sqrt(rss / m3$df.residual) 
+
+cat("MSE =", mse, "\nRMSE =", rmse, "\nRSS =", rss, "\nRSE =", rse)
+
+```
 
