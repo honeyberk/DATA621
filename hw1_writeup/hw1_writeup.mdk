@@ -14,7 +14,7 @@ The Training dataset contains 2,276 observations of 17 variables, one of which i
 |Variable Name | Definition                         | Theoretical Effect |New Variable Name|
 |:-------------|:-----------------------------------|:-------------------|:-------|
 |INDEX         |Identification Variable)|None                |index|
-|TARGET_WINS   | Number of wins                     |                    |wins|
+|TARGET_WINS   | Number of wins                     |N/A                    |wins|
 |TEAM_BATTING_H| Base hits by batters|Positive|base_hits|          
 |TEAM_BATTING_2B|Doubles by batters|Positive|doubles|                         
 |TEAM_BATTING_3B|Triples by batters|Positive|triples|
@@ -30,9 +30,9 @@ The Training dataset contains 2,276 observations of 17 variables, one of which i
 |TEAM_PITCHING_H|Hits allowed|Negative|hits_allowed|
 |TEAM_PITCHING_HR|Homeruns allowed|Negative|homeruns_allowed|
 |TEAM_PITCHING_SO|Strikeouts by pitchers|Positive|p_strikeouts|
-{font-size: 90%; text-align: center;} 
+{font-size: 95%; text-align: center;} 
 
-Summary statistics for the training data revealed issues with a number of variables, based upon an initial examination of min., max., median, mean and the number of missing values (NAs). A cleaning procedure was undertaken to address these issues, during which the data was also checked for collinearity and for outlier data. Ulitmately, the cleaning process included either removing a variable from the dataset or imputing missing data where the variable was deemed critical to the analysis; and then another procedure for handling outliers. (See Data Cleaning section, below, for details.)
+Summary statistics for the training data revealed issues with a number of variables, based upon an initial examination of min., max., median, mean, the number of missing values (NAs) and a few other factors. A cleaning procedure was undertaken to address these issues, during which the data was also checked for collinearity and for outlier data. Ulitmately, the cleaning process included either removing a variable from the dataset or imputing missing data where the variable was deemed critical to the analysis; and then another procedure for handling outliers. (See Data Cleaning section, below, for details.)
 
 **Summary Statistics - Original Data**
 
@@ -40,10 +40,11 @@ Summary statistics for the training data revealed issues with a number of variab
 
 [describe_train-1]: images/describe_train-1.PNG "describe_train-1" { width:auto; max-width:100%; text-align:center; }
 
-
 # Data Preparation
 
 **Data Cleaning**
+
+Following is a summary of steps that were undertaken to clean the training dataset:
 
 1.  Deleted index variable, as it was an used only as an identification variable that was unused.
 
