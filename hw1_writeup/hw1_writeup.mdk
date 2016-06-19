@@ -10,33 +10,36 @@ The Training dataset contains 2,276 observations of 17 variables, one of which i
 
 **Original Data**
 
-|Variable Name | Definition                         | Theoretical Effect |
-|:-------------|:-----------------------------------|:-------------------|
-|INDEX         |Identification Variable (do not use)|None                |
-|TARGET_WINS   | Number of wins                     |                    |
-|TEAM_BATTING_H| Base hits by batters (1B, 2B, 3B, HR)|Positive Impact on Wins|          
-|TEAM_BATTING_2B|Doubles by batters (2B)|Positive Impact on Wins|                         
-|TEAM_BATTING_3B|Triples by batters (3B)|Positive Impact on Wins|
-|TEAM_BATTING_HR|Homeruns by batters (4B)|Positive Impact on Wins|
-|TEAM_BATTING_BB|Walks by batters|Positive Impact on Wins|
-|TEAM_BATTING_HBP|Batters hit by pitch (get a free base)|Positive Impact on Wins|
-|TEAM_BATTING_SO|Strikeouts by batters|Negative Impact on Wins|
-|TEAM_BASERUN_SB|Stolen bases|Positive Impact on Wins|
-|TEAM_BASERUN_CS|Caught stealing|Negative Impact on Wins|
-|TEAM_FIELDING_E|Errors|Negative Impact on Wins|
-|TEAM_FIELDING_DP|Double Plays|Positive Impact on Wins|
-|TEAM_PITCHING_BB|Walks allowed|Negative Impact on Wins|
-|TEAM_PITCHING_H|Hits allowed|Negative Impact on Wins|
-|TEAM_PITCHING_HR|Homeruns allowed|Negative Impact on Wins|
-|TEAM_PITCHING_SO|Strikeouts by pitchers|Positive Impact on Wins|
+|Variable Name | Definition                         | Theoretical Effect |New Variable Name|
+|:-------------|:-----------------------------------|:-------------------|:-------|
+|INDEX         |Identification Variable)|None                |index|
+|TARGET_WINS   | Number of wins                     |                    |wins|
+|TEAM_BATTING_H| Base hits by batters|Positive|base_hits|          
+|TEAM_BATTING_2B|Doubles by batters|Positive|doubles|                         
+|TEAM_BATTING_3B|Triples by batters|Positive|triples|
+|TEAM_BATTING_HR|Homeruns by batters (4B)|Positive|homeruns|
+|TEAM_BATTING_BB|Walks by batters|Positive|walks|
+|TEAM_BATTING_HBP|Batters hit by pitch|Positive|N/A|
+|TEAM_BATTING_SO|Strikeouts by batters|Negative|b_strikeouts|
+|TEAM_BASERUN_SB|Stolen bases|Positive|stolen_bases|
+|TEAM_BASERUN_CS|Caught stealing|Negative|N/A|
+|TEAM_FIELDING_E|Errors|Negative|errors|
+|TEAM_FIELDING_DP|Double Plays|Positive|double_plays|
+|TEAM_PITCHING_BB|Walks allowed|Negative|walks_allowed|
+|TEAM_PITCHING_H|Hits allowed|Negative|hits_allowed|
+|TEAM_PITCHING_HR|Homeruns allowed|Negative|homeruns_allowed|
+|TEAM_PITCHING_SO|Strikeouts by pitchers|Positive|p_strikeouts|
 
-Viewing a summary of Training data revealed issues with a number of variables. Based upon an examination of individual variables min and max values and number of NAs, steps were taken to clean the data. This cleaning process included either removing a variable from the dataset, or imputing missing data where the variable was deemed critical to the analysis. (See Data Cleaning section, below, for details.)
+Summary statistics for the training data revealed issues with a number of variables, based upon an initial examination of min., max., median, mean and the number of missing values (NAs). A cleaning procedure was undertaken to address these issues, during which the data was also checked for collinearity and for outlier data. Ulitmately, the cleaning process included either removing a variable from the dataset or imputing missing data where the variable was deemed critical to the analysis; and then another procedure for handling outliers. (See Data Cleaning section, below, for details.)
+
+**Summary Statistics - Original Data**
+
 
 # Data Preparation
 
 **Data Cleaning**
 
-1.  Deleted index variable, as it was an identification variable that was unused.
+1.  Deleted index variable, as it was an used only as an identification variable
 
 2. Added singles hit by batters (singles) variable (see Additional Variables section, below). Deleted base_hits variable to prevent multicollinearity, as it is an aggregate of singles, doubles, triples and homeruns. Individual hit data should provide more granularity for modeling.
 
