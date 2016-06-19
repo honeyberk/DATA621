@@ -46,13 +46,13 @@ Summary statistics for the training data revealed issues with a number of variab
 
 Following is a summary of steps that were undertaken to clean the training dataset:
 
-1.  Deleted index variable, as it was an used only as an identification variable that was unused.
+1. Deleted index variable, as it was used only as an identification variable.
 
 2. Added singles hit by batters (singles) variable (see Additional Variables section, below). 
 
-3. Deleted hit_by_pitch variable, as it contained 2,085 NA values; variable seems to have little influence and too many NAs to fill without significant effect.
+3. Deleted hit_by_pitch (2,085 NAs) and caught_stealing (772 NAs) variables, as they contained too many NAs to fill without significant effect.
 
-4. Examined caught_stealing and stolen_bases for collinearity. Deleted caught_stealing variable, as it contained 772 NA values, and there seemed to be significant collinearity. With a positive impact and only 131 NA values, stolen_bases was determined to be a more significant related value (which was retained).
+4. Used mice and VIM packages to analyze missing data, found a total of 621 NAs over 4 different variables (4.5%-12.5% of data); assumption that the missing data was random (MCAR). Used mice package to impute missing data.
 
 5. Generate boxplots to check for outliers. Examined variables with outliers (singles, hits_allowed, errors, stolen_bases, p_strikeouts, walks_allowed, base_hits), converted outliers to NA values.
 
