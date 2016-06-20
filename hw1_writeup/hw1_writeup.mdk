@@ -92,6 +92,22 @@ At the completion of the cleaning process, a new csv file was generated for the 
 
 Before the first model was generated, a correlation matrix was generated with the cleaned dataset, and some quick regression analyses were generated between certain suspect variables to confirm potential collinearity. Out of the four sets examined, two scenarios were deemed to have high potential for collinearity: base_hits was regressed against singles, doubles, triples and homeruns, with a resulting Adjusted R^2^ of 0.9943, was expected because base_hits is an aggregate variable; and homeruns was regressed against homeruns_allowed, resulting in an R^2^ of 0.9397.
 
+It should be noted here that this model was derived separately by two team members, each of whom used a different process. The first was a completely manual backward stepwise process, starting with all of the variables except those two mentioned above, then stepping backward to remove non-significant variables and variables that were identified as collinear by the use of variance inflation factors (VIF). VIF is a simple approach to identify collinearity among explanatory variables; VIF calculations are straightforward and easily comprehensible -- the higher the value, the higher the collinearity. 
+
+This model was also derived via an automated stepwise procedure in R, with selection from both directions (forward and backward). All variables were included in the initial model for setup purposes, and a model was automatically selected after three steps. The step function (from the R stats package) adds and drops variables in steps and compares the models fitted in each step by the AIC (Akaike's 'An Information Criterion') and Mallows' C~p~, a test used to assess the fit of an OLS regression model (one of the issues it addresses is overfitting).
+
+The model selected by the automated stepwise procedure had an Adjusted R^2^ of 0.3982, an F-statistic of 137.9 pm 11 amd 2264 DF, but left one variable that was not significant (walks_allowed). The model was manually adjusted after this, and the final result is our best model:
+
+~ Center
+|Adj. R^2^|F-Statistic|DF    |p-value|MSE|RMSE|RSS|RSE|
++--------:+----------:+-----:+------:+--:+---:+--:+--:+
+|0.3978   |168|9, 2266|<2.2e-16|148.7727|12.19724|338606.7|12.22413|
+~
+
+**Equation:** _wins_ = 65.613028 + 0.004897*singles + 0.190433*triples + 0.093077*homeruns + 0.020435*walks - 0.020231*p_strikeouts
+ + 0.076054*stolen_bases + 0.008788*hits_allowed - 0.140377*errors - 0.155477*double_plays
+
+
 A simple approach to identify collinearity among explanatory variables is the use of variance inflation factors (VIF). VIF calculations are straightforward and easily comprehensible; the higher the value, the higher the collinearity. 
 
 (https://beckmw.wordpress.com/2013/02/05/collinearity-and-stepwise-vif-selection/)
@@ -118,16 +134,4 @@ A quick check revealed high VIF values for eight of the 11 variables, so this mo
 **Model 3**
 { font-size:120% }
 
-For the third model, an automated stepwise procedure was used, with selection from both directions (forward and backward). All variables were included in the initial model for setup purposes, and a model was automatically selected after three steps. The step function (from the R stats package) adds and drops variables in steps and compares the models fitted in each step by the AIC (Akaike's 'An Information Criterion') and Mallows' C~p~, a test used to assess the fit of an OLS regression model; one of the issues it addresses is overfitting.
-
-The model selected by the automated stepwise procedure had an Adjusted R^2^ of 0.3982, an F-statistic of 137.9 pm 11 amd 2264 DF, but left one variable that was not significant (walks_allowed). The model was manually adjusted after this, and the final result is our best model:
-
-~ Center
-|Adj. R^2^|F-Statistic|DF    |p-value|MSE|RMSE|RSS|RSE|
-+--------:+----------:+-----:+------:+--:+---:+--:+--:+
-|0.3978   |168|9, 2266|<2.2e-16|148.7727|12.19724|338606.7|12.22413|
-~
-
-**Equation:** _wins_ = 65.613028 + 0.025104*singles + 0.190433*triples + 0.093077*homeruns + 0.020435*walks - 0.020231*p_strikeouts
- + 0.076054*stolen_bases + 0.008788*hits_allowed - 0.140377*errors - 0.155477*double_plays
 
