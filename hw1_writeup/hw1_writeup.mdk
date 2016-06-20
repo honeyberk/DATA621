@@ -208,3 +208,13 @@ Following are summary statistics for the complete evaluation dataset, included p
 
 [predicted-1-11]: images/predicted-1-11.PNG "predicted-1-11" { width:auto; max-width:100% }
 ~
+
+Following is a preview of the complete evaluation dataset, included predicted wins:
+~ Center
+![predicted-1-12]
+
+[predicted-1-12]: images/predicted-1-11.PNG "predicted-1-11" { width:auto; max-width:100% }
+~
+
+**Discussion**
+
