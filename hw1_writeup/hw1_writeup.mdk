@@ -169,3 +169,5 @@ These three records were then removed from the dataset, and a new model was gene
 
 **Equation:** _wins_ = 61.259318 + 0.029953*singles + 0.213368*triples + 0.098129*homeruns + 0.020026*walks - 0.018399*p_strikeouts
  + 0.072712*stolen_bases + 0.006974*hits_allowed - 0.139822*errors - 0.160044*double_plays
+ 
+**VIF values** for this model were all acceptable (< 4.0).
