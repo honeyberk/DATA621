@@ -164,8 +164,8 @@ These three records were then removed from the dataset, and a new model was gene
 
 |Adj. R^2^|F-Statistic|DF    |p-value|MSE|RMSE|RSS|RSE|
 +--------:+----------:+-----:+------:+--:+---:+--:+--:+
-|0.3978   |168|9, 2266|<2.2e-16|148.7727|12.19724|338606.7|12.22413|
+|0.4096|176.1|9, 2263|<2.2e-16|144.9192|12.03824|329401.3|12.06481|
 ~
 
-**Equation:** _wins_ = 65.613028 + 0.004897*singles + 0.190433*triples + 0.093077*homeruns + 0.020435*walks - 0.020231*p_strikeouts
- + 0.076054*stolen_bases + 0.008788*hits_allowed - 0.140377*errors - 0.155477*double_plays
+**Equation:** _wins_ = 61.259318 + 0.029953*singles + 0.213368*triples + 0.098129*homeruns + 0.020026*walks - 0.018399*p_strikeouts
+ + 0.072712*stolen_bases + 0.006974*hits_allowed - 0.139822*errors - 0.160044*double_plays
