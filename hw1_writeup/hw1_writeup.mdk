@@ -114,7 +114,7 @@ This model was also derived via an automated stepwise procedure in R, with selec
 **Equation:** _wins_ = 65.613028 + 0.004897*singles + 0.190433*triples + 0.093077*homeruns + 0.020435*walks - 0.020231*p_strikeouts
  + 0.076054*stolen_bases + 0.008788*hits_allowed - 0.140377*errors - 0.155477*double_plays
 
-**VIF values** for this model were all acceptable (< 4.0).
+VIF values for this model were all acceptable (< 4.0).
 
 **Model 2**
 { font-size:120%; } 
@@ -133,7 +133,7 @@ For the second model, the cleaned data file was loaded and a backwards regressio
  + 0.077319*stolen_bases + 0.007471*hits_allowed - 0.014035*walks_allowed
  - 0.011133*p_strikeouts - 0.139416*errors - 0.156985*double_plays
 
-A quick check revealed high **VIF values** for eight of the 11 variables, so this model was rejected.
+A quick check revealed high VIF values for eight of the 11 variables, so this model was rejected.
 
 **Model 3**
 { font-size:120% }
@@ -158,7 +158,7 @@ Using this method, the optimal model had an Adjusted R^2^ of 0.3944, F-statistic
  + 0.105446*homeruns - 0.020049*p_strikeouts
  + 0.077883*stolen_bases + 0.019327*walks_allowed - 0.139635*errors - 0.151477*double_plays
 
-**VIF values** for this model were all acceptable (< 4.0).
+VIF values for this model were all acceptable (< 4.0).
 
 **Final Model** 
 { font-size:120%; }
@@ -181,6 +181,18 @@ These three records were examined, and seemed to contain some more extreme value
  + 0.072712*stolen_bases + 0.006974*hits_allowed - 0.139822*errors - 0.160044*double_plays
  
 **VIF values** for this model were all acceptable (< 4.0).
+
+Plots of residuals show a fairly normal distribution, without too many outliers. There is no real pattern, although the residuals are somewhat clustered.
+
+![residuals-14]
+
+[residuals-14]: images/residuals-14.PNG "residuals-14" { width:auto; max-width:100% }
+
+A histogram of the residuals shows a fairly normal distribution.
+
+![residuals-15]
+
+[residuals-15]: images/residuals-15.PNG "residuals-15" { width:auto; max-width:100% }
 
 **Evaluation Data Predictions**
 { font-size:120% }
@@ -226,6 +238,8 @@ Following is a preview of the complete evaluation dataset, included predicted wi
 ~
 
 **Discussion**
+{ font-size:120% }
+
 For the most part, the model follows logically, given what we know about the game of Baseball, especially on the batting side. We would expect triples and home runs to be a stronger factor in predicting wins than singles and walks. It is interesting to note the similarity in influence of walks and singles. However, the fact that doubles turned out to be non-essential is a surprising component.
 
 On the pitching/defense side there are quite a few aspects that are surprising when reviewing the model. For one, we would not expect strikeouts to be negatively correlated with wins, nor for that matter double plays. In fact, the influence of double plays is quite high in the reverse. One conjecture as to why this is the case is that a double play requires at least one person already on base, and thus double plays are only possible when the hitting team has already shown a degree of success in getting on base. As a follow-up, the relationship between hits allowed and double plays in particular may be interesting and how it corresponds to wins.
