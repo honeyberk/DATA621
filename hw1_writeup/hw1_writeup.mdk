@@ -135,7 +135,7 @@ The third model was derived using an automated all-subsets regression using the 
 
 [leaps-7]: images/leaps-7.PNG "leaps-7" { width:auto; max-width:100% }
 
-Interpreting the plot if fairly simple: The block lines correspond to the variables that should be included in the optimal model, while the white spaces are variable to ignore. The vertical axis represents projected R^2^ value for each of the potential models.
+Interpreting the plot is fairly simple: The block lines correspond to the variables that should be included in the optimal model, while the white spaces are variable to ignore. The vertical axis represents projected R^2^ value for each of the potential models.
 
 Using this method, the optimal model had an Adjusted R^2^ of 0.3944, F-statistic of 186.2 on 8 and 2267 DF, p-value < 2.2e-16, and left no non-significant variables.
 
@@ -160,12 +160,13 @@ Based upon the varied statistical metrics examined, Model 1 was chosen as the be
 
 [cooks-8]: images/cooks-8.PNG "cooks-8" { width:auto; max-width:100% }
 ~
-These three records were then removed from the dataset, and a new model was generated using the model 1 variables. As a result of this process, the model's statistical metrics all improved. Following are the final statistical metrics and equation:
+These three records were examined, and seemed to contain some more extreme values; they were then removed from the dataset, and a new model was generated using the model 1 variables. As a result of this process, the model's statistical metrics all improved. Following are the final statistical metrics and equation:
 
+~ Center
 |Adj. R^2^|F-Statistic|DF    |p-value|MSE|RMSE|RSS|RSE|
 +--------:+----------:+-----:+------:+--:+---:+--:+--:+
 |0.4096|176.1|9, 2263|<2.2e-16|144.9192|12.03824|329401.3|12.06481|
-~
+
 
 **Equation:** _wins_ = 61.259318 + 0.029953*singles + 0.213368*triples + 0.098129*homeruns + 0.020026*walks - 0.018399*p_strikeouts
  + 0.072712*stolen_bases + 0.006974*hits_allowed - 0.139822*errors - 0.160044*double_plays
