@@ -172,3 +172,18 @@ These three records were examined, and seemed to contain some more extreme value
  + 0.072712*stolen_bases + 0.006974*hits_allowed - 0.139822*errors - 0.160044*double_plays
  
 **VIF values** for this model were all acceptable (< 4.0).
+
+**Evaluation Data Predictions**
+{ font-size:120% }
+
+The evaluation data was cleaned in a similar process to the training data:
+
+  * Variables were renamed and index variable was deleted
+  * Singles variable was created
+  * The variables hit_by_pitch and caught_stealing were deleted, as they had too many missing values
+  * Missing values were imputed using the same technique as with the training data (PMM), for double_plays, b_strikeouts, p_strikeouts and stolen_bases
+  
+  
+  
+  
+The prediction function was then run using the final model and the cleaned evaluation dataset.
