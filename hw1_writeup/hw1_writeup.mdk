@@ -94,7 +94,7 @@ Before the first model was generated, a correlation matrix was generated with th
 
 It should be noted here that this model was derived separately by two team members, each of whom used a different process. The first was a completely manual backward stepwise process, starting with all of the variables except those two mentioned above, then stepping backward to remove non-significant variables and variables that were identified as collinear by the use of variance inflation factors (VIF). VIF is a simple approach to identify collinearity among explanatory variables; VIF calculations are straightforward and easily comprehensible -- the higher the value, the higher the collinearity.
 
-This model was also derived via an automated stepwise procedure in R, with selection from both directions (forward and backward). All variables were included in the initial model for setup purposes, and a model was automatically selected after three steps. The step function (from the R stats package) adds and drops variables in steps and compares the models fitted in each step by the AIC (Akaike's 'An Information Criterion') and Mallows' C~p~, a test used to assess the fit of an OLS regression model (one of the issues it addresses is overfitting. The model selected by the automated stepwise procedure had an Adjusted R^2^ of 0.3982, an F-statistic of 137.9 pm 11 amd 2264 DF, but left one variable that was not significant (walks_allowed). A manual adjusted to the original automated model then duplicated the results of the full manual process, yielding our best model: Adjusted R^2^ or 0.3978, F-statistic of 168 on 9 and 2266 DF, p-value < 2.2e-16 and no non-significant variables.
+This model was also derived via an automated stepwise procedure in R, with selection from both directions (forward and backward). All variables were included in the initial model for setup purposes, and a model was automatically selected after three steps. The step function (from the R stats package) adds and drops variables in steps and compares the models fitted in each step by the AIC (Akaike's 'An Information Criterion') and Mallows' C~p~, a test used to assess the fit of an OLS regression model (one of the issues it addresses is overfitting. The model selected by the automated stepwise procedure had an Adjusted R^2^ of 0.3982, an F-statistic of 137.9 pm 11 amd 2264 DF, but left one variable that was not significant (walks_allowed). A manual adjusted to the original automated model then duplicated the results of the full manual process, yielding our best model: Adjusted R^2^ of 0.3978, F-statistic of 168 on 9 and 2266 DF, p-value < 2.2e-16 and no non-significant variables.
 
 ~ Center
 |Adj. R^2^|F-Statistic|DF    |p-value|MSE|RMSE|RSS|RSE|
@@ -124,7 +124,7 @@ For the second model, the cleaned data file was loaded and a backwards regressio
  + 0.077319*stolen_bases + 0.007471*hits_allowed - 0.014035*walks_allowed
  - 0.011133*p_strikeouts - 0.139416*errors - 0.156985*double_plays
 
-A quick check revealed high VIF values for eight of the 11 variables, so this model was rejected.
+A quick check revealed high **VIF values** for eight of the 11 variables, so this model was rejected.
 
 **Model 3**
 { font-size:120% }
@@ -139,4 +139,40 @@ Interpreting the plot if fairly simple: The block lines correspond to the variab
 
 Using this method, the optimal model had an Adjusted R^2^ of 0.3944, F-statistic of 186.2 on 8 and 2267 DF, p-value < 2.2e-16, and left no non-significant variables.
 
+~ Center
+|Adj. R^2^|F-Statistic|DF    |p-value|MSE|RMSE|RSS|RSE|
++--------:+----------:+-----:+------:+--:+---:+--:+--:+
+|0.3998   |168|9, 2266|<2.2e-16|149.6613|12.23362|340629.2|12.25788|
+~
+
+**Equation:** _wins_ = 67.115154 + 0.033632*singles + 0.203135*triples
+ + 0.105446*homeruns - 0.020049*p_strikeouts
+ + 0.077883*stolen_bases + 0.019327*walks_allowed - 0.139635*errors - 0.151477*double_plays
+
+**VIF values** for this model were all acceptable (< 4.0).
  
+**Final Model**
+{ font-size:120%; } 
+
+Based upon the varied statistical metrics examined, Model 1 was chosen as the best model. However, before running predictions with this model, a Cook's distance plot was generated to check for influential observations, and three records of interest were discovered.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+|Adj. R^2^|F-Statistic|DF    |p-value|MSE|RMSE|RSS|RSE|
++--------:+----------:+-----:+------:+--:+---:+--:+--:+
+|0.3978   |168|9, 2266|<2.2e-16|148.7727|12.19724|338606.7|12.22413|
+~
+
+**Equation:** _wins_ = 65.613028 + 0.004897*singles + 0.190433*triples + 0.093077*homeruns + 0.020435*walks - 0.020231*p_strikeouts
+ + 0.076054*stolen_bases + 0.008788*hits_allowed - 0.140377*errors - 0.155477*double_plays
