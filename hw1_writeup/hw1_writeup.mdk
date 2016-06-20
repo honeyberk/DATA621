@@ -93,7 +93,7 @@ The correlation between homeruns and homeruns_allowed may be due to the followin
 
 [^fn]: https://en.wikipedia.org/wiki/Doping_in_baseball
 
-* Coaching strategy. A team with a strong offense, hitting a lot of home runs, may sacrifice its pitching and also allow for more home runs. We could test this hypothesis by seeing a correlation of home runs within a game for home and away teams. Within a game, a coach may opt to rest its stronger pitchers if they have already achieved a high number  runs.
+* Coaching strategy. A team with a strong offense, hitting a lot of home runs, may sacrifice its pitching and also allow for more home runs. We could test this hypothesis by seeing a correlation of home runs within a game for home and away teams. Within a game, a coach may opt to rest its stronger pitchers if they have already achieved a high number of runs.
 
 # Models
 
