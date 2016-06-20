@@ -48,6 +48,7 @@ Summary statistics for the training data revealed issues with a number of variab
 # Data Preparation
 
 **Data Cleaning**
+{ font-size:120% }
 
 Following is a summary of steps that were undertaken to clean the training dataset:
 
@@ -130,10 +131,9 @@ For the second model, the cleaned data file was loaded and a backwards regressio
 **Equation:** _wins_ = 67.316797 + 0.025656*singles + 0.191212*triples
  + 0.098316*homeruns + 0.035400*walks - 0.010937*b_strikeouts
  + 0.077319*stolen_bases + 0.007471*hits_allowed - 0.014035*walks_allowed
- - 0.011133*p_strikeouts - 0.139416*errors - 0.156985*double_plays
+ - 0.011133*p_strikeouts - 0.139416*errors - 0.156985*double_plays$$
 
 A quick check revealed high **VIF values** for eight of the 11 variables, so this model was rejected.
-
 **Model 3**
 { font-size:120% }
 
