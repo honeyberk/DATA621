@@ -154,20 +154,13 @@ Using this method, the optimal model had an Adjusted R^2^ of 0.3944, F-statistic
 **Final Model**
 { font-size:120%; } 
 
-Based upon the varied statistical metrics examined, Model 1 was chosen as the best model. However, before running predictions with this model, a Cook's distance plot was generated to check for influential observations, and three records of interest were discovered.
+Based upon the varied statistical metrics examined, Model 1 was chosen as the best model. However, before running predictions with this model, a Cook's distance plot was generated to check for influential observations, and three data records of interest were discovered: 416, 1342 and 1828.
+~ Center
+![cooks-8]
 
-
-
-
-
-
-
-
-
-
-
-
-
+[cooks-8]: images/cooks-8.PNG "cooks-8" { width:auto; max-width:100% }
+~
+These three records were then removed from the dataset, and a new model was generated using the model 1 variables. As a result of this process, the model's statistical metrics all improved. Following are the final statistical metrics and equation:
 
 |Adj. R^2^|F-Statistic|DF    |p-value|MSE|RMSE|RSS|RSE|
 +--------:+----------:+-----:+------:+--:+---:+--:+--:+
