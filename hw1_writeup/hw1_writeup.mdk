@@ -120,3 +120,14 @@ A quick check revealed high VIF values for eight of the 11 variables, so this mo
 
 For the third model, an automated stepwise procedure was used, with selection from both directions (forward and backward). All variables were included in the initial model for setup purposes, and a model was automatically selected after three steps. The step function (from the R stats package) adds and drops variables in steps and compares the models fitted in each step by the AIC (Akaike's 'An Information Criterion') and Mallows' C~p~, a test used to assess the fit of an OLS regression model; one of the issues it addresses is overfitting.
 
+The model selected by the automated stepwise procedure had an Adjusted R^2^ of 0.3982, an F-statistic of 137.9 pm 11 amd 2264 DF, but left one variable that was not significant (walks_allowed). The model was manually adjusted after this, and the final result is our best model:
+
+~ Center
+|Adj. R^2^|F-Statistic|DF    |p-value|MSE|RMSE|RSS|RSE|
++--------:+----------:+-----:+------:+--:+---:+--:+--:+
+|0.3978   |168|9, 2266|<2.2e-16|148.7727|12.19724|338606.7|12.22413|
+~
+
+**Equation:** _wins_ = 65.613028 + 0.025104*singles + 0.190433*triples + 0.093077*homeruns + 0.020435*walks - 0.020231*p_strikeouts
+ + 0.076054*stolen_bases + 0.008788*hits_allowed - 0.140377*errors - 0.155477*double_plays
+
