@@ -178,12 +178,18 @@ These three records were examined, and seemed to contain some more extreme value
 
 The evaluation data was cleaned in a similar process to the training data:
 
-  * Variables were renamed and index variable was deleted
-  * Singles variable was created
-  * The variables hit_by_pitch and caught_stealing were deleted, as they had too many missing values
-  * Missing values were imputed using the same technique as with the training data (PMM), for double_plays, b_strikeouts, p_strikeouts and stolen_bases
-  
-  
-  
-  
+* Variables were renamed and index variable was deleted
+* Singles variable was created
+* The variables hit_by_pitch and caught_stealing were deleted, as they had too many missing values
+* Missing values were imputed using the same technique as with the training data (PMM), for double_plays, b_strikeouts, p_strikeouts and stolen_bases
+* A boxplot identified variables with outliers (singles, hits_allowed, walks_allowed, p_strikeouts, errors), and the outliers were adjusted using the same method as with the training data
+
+**Summary Statistics - Cleaned Evaluation Data**
+
+Following are summary statistics for the cleaned evaluation data:
+
+![describe_feval-9]
+
+[describe_feval-9]: images/describe_feval-9.PNG "describe_feval-9" { width:auto; max-width:100% }
+
 The prediction function was then run using the final model and the cleaned evaluation dataset.
