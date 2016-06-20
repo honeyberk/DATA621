@@ -84,15 +84,23 @@ As evidenced by the tables, skewness, kurtosis and standard error were significa
 [qqnorm_cleaned-6]: images/qqnorm_cleaned-6.PNG "qqnorm_cleaned-6" { width:auto; max-width:90% }
 ~
 At the completion of the cleaning process, a new csv file was generated for the team to begin the modeling phase.
- 
+
+Before the first model was generated, a correlation matrix was generated with the cleaned dataset, and some quick regression analyses were generated between certain suspect variables to confirm potential collinearity. Out of the four sets examined, two scenarios were deemed to have high potential for collinearity: base_hits was regressed against singles, doubles, triples and homeruns, with a resulting Adjusted R^2^ of 0.9943, was expected because base_hits is an aggregate variable; and homeruns was regressed against homeruns_allowed, resulting in an R^2^ of 0.9397.
+
+The correlation between homeruns and homeruns_allowed may be due to the following:
+
+* 'Era' in which the team(s) had the particular record. For example, during the 90s and early aughts a significant percentage of players were taking performance enhancing drugs, in particular steroids to increase the power of their hits. This would lead to more home runs, and also more home runs allowed against the pitching.[^fn]
+
+[^fn]: https://en.wikipedia.org/wiki/Doping_in_baseball
+
+* Coaching strategy. A team with a strong offense, hitting a lot of home runs, may sacrifice its pitching and allow for more home runs as well. We could test this hypothesis by seeing a correlation of home runs within a game for home and away teams. Within a game, a coach may opt to rest its stronger pitchers if they have already achieved a high number for runs.
+
 # Models
 
 **Model 1**
 { font-size:120%; } 
 
-Before the first model was generated, a correlation matrix was generated with the cleaned dataset, and some quick regression analyses were generated between certain suspect variables to confirm potential collinearity. Out of the four sets examined, two scenarios were deemed to have high potential for collinearity: base_hits was regressed against singles, doubles, triples and homeruns, with a resulting Adjusted R^2^ of 0.9943, was expected because base_hits is an aggregate variable; and homeruns was regressed against homeruns_allowed, resulting in an R^2^ of 0.9397.
-
-It should be noted here that this model was derived separately by two team members, each of whom used a different process. The first was a completely manual backward stepwise process, starting with all of the variables except those two mentioned above, then stepping backward to remove non-significant variables and variables that were identified as collinear by the use of variance inflation factors (VIF). VIF is a simple approach to identify collinearity among explanatory variables; VIF calculations are straightforward and easily comprehensible -- the higher the value, the higher the collinearity.
+The first model was derived separately by two team members, each of whom used a different process. The first was a completely manual backward stepwise process, starting with all of the variables except those two mentioned above, then stepping backward to remove non-significant variables and variables that were identified as collinear by the use of variance inflation factors (VIF). VIF is a simple approach to identify collinearity among explanatory variables; VIF calculations are straightforward and easily comprehensible -- the higher the value, the higher the collinearity.
 
 This model was also derived via an automated stepwise procedure in R, with selection from both directions (forward and backward). All variables were included in the initial model for setup purposes, and a model was automatically selected after three steps. The step function (from the R stats package) adds and drops variables in steps and compares the models fitted in each step by the AIC (Akaike's 'An Information Criterion') and Mallows' C~p~, a test used to assess the fit of an OLS regression model (one of the issues it addresses is overfitting. The model selected by the automated stepwise procedure had an Adjusted R^2^ of 0.3982, an F-statistic of 137.9 pm 11 amd 2264 DF, but left one variable that was not significant (walks_allowed). A manual adjusted to the original automated model then duplicated the results of the full manual process, yielding our best model: Adjusted R^2^ of 0.3978, F-statistic of 168 on 9 and 2266 DF, p-value < 2.2e-16 and no non-significant variables.
 
@@ -217,4 +225,6 @@ Following is a preview of the complete evaluation dataset, included predicted wi
 ~
 
 **Discussion**
+For the most part, the model follows logically, given what we know about the game of Baseball, especially on the batting side. We would expect triples and home runs to be a stronger factor in predicting wins than singles and walks. It is interesting to note the similarity in influence of walks and singles. However, the fact that doubles turned out to be non-essential is a surprising component.
 
+On the pitching/defense side there are quite a few aspects that are surprising when reviewing the model. For one, we would not expect strikeouts to be negatively correlated with wins, nor for that matter double plays. In fact, the influence of double plays is quite high in the reverse. One conjecture as to why this is the case is that a double play requires at least one person already on base, and thus double plays are only possible when the hitting team has already shown a degree of success in getting on base. As a follow-up, the relationship between hits allowed and double plays in particular may be interesting and how it corresponds to wins.
