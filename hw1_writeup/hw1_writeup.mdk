@@ -166,7 +166,7 @@ These three records were examined, and seemed to contain some more extreme value
 |Adj. R^2^|F-Statistic|DF    |p-value|MSE|RMSE|RSS|RSE|
 +--------:+----------:+-----:+------:+--:+---:+--:+--:+
 |0.4096|176.1|9, 2263|<2.2e-16|144.9192|12.03824|329401.3|12.06481|
-
+~
 
 **Equation:** _wins_ = 61.259318 + 0.029953*singles + 0.213368*triples + 0.098129*homeruns + 0.020026*walks - 0.018399*p_strikeouts
  + 0.072712*stolen_bases + 0.006974*hits_allowed - 0.139822*errors - 0.160044*double_plays
@@ -193,3 +193,18 @@ Following are summary statistics for the cleaned evaluation data:
 [describe_feval-9]: images/describe_feval-9.PNG "describe_feval-9" { width:auto; max-width:100% }
 
 The prediction function was then run using the final model and the cleaned evaluation dataset.
+
+**Predicted Data**
+Following are summary statistics for the predicted wins:
+
+~ Center
+![predicted-1-10]
+
+[predicted-1-10]: images/predicted-1-10.PNG "predicted-1-10" { width:auto; max-width:100% }
+~
+Following are summary statistics for the complete evaluation dataset, included predicted wins:
+~ Center
+![predicted-1-11]
+
+[predicted-1-11]: images/predicted-1-11.PNG "predicted-1-11" { width:auto; max-width:100% }
+~
