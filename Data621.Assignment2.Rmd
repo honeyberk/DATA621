@@ -65,4 +65,60 @@ getCER <- function(df) {
   cer <- (fp + fn) / (tn+fp+fn+tp)
   return(cer)
 }
+
+getPrecision <- function(df) {
+  cm <- getConfusionMatrix(df)
+  
+  tn <- cm["Model Negative", "Real Negative"]
+  fp <- cm["Model Positive", "Real Negative"]
+  fn <- cm["Model Negative", "Real Positive"]
+  tp <- cm["Model Positive", "Real Positive"]
+  
+  precision <- tp / (fp+tp)
+  return(precision)
+  
+}
+
+getSensitivity <- function(df){
+  cm <- getConfusionMatrix(df)
+  
+  tn <- cm["Model Negative", "Real Negative"]
+  fp <- cm["Model Positive", "Real Negative"]
+  fn <- cm["Model Negative", "Real Positive"]
+  tp <- cm["Model Positive", "Real Positive"]
+  
+  sensitivity <- tp/(tp+fn)
+  
+  return(sensitivity)
+}
+
+getSpecificity <- function(df){
+  cm <- getConfusionMatrix(df)
+  
+  tn <- cm["Model Negative", "Real Negative"]
+  fp <- cm["Model Positive", "Real Negative"]
+  fn <- cm["Model Negative", "Real Positive"]
+  tp <- cm["Model Positive", "Real Positive"]
+  
+  specificity <- tn / (tn+fp) 
+  return(specificity)
+}
+
+getF1Score <- function(df) {
+  
+  cm <- getConfusionMatrix(df)
+  
+  tn <- cm["Model Negative", "Real Negative"]
+  fp <- cm["Model Positive", "Real Negative"]
+  fn <- cm["Model Negative", "Real Positive"]
+  tp <- cm["Model Positive", "Real Positive"]
+  
+  precision <- getPrecision(df)
+  sensitivity <- getSensitivity(df)
+  f1score <- 2* (precision * sensitivity) / (precision+sensitivity)
+  
+  return(f1score)
+  
+}
+
 ```
