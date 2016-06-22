@@ -1,0 +1,68 @@
+---
+title: "Data 621 Assignment 2"
+date: "June 21, 2016"
+output: html_document
+---
+# Load the necessary packages
+install.packages("devtools")
+devtools::install_github("hadley/tidyr")
+
+library(dplyr)
+library(ggplot2)
+library(ggthemes)
+
+#Question 1
+```{r}
+# Read in the data file
+raw <- read.csv("~/Downloads/classification-output-data.csv", header=TRUE, stringsAsFactors=FALSE, fileEncoding="latin1")
+```
+
+#Question 2
+Use the table() function to get the raw confusion matrix for this scored dataset. Make sure you understand the output. In particular, do the rows represent the actual or predicted class? The columns?
+
+```{r}
+t <- table(raw$class,raw$scored.class)
+colnames(t) <- c('Real Positive', 'Real Negative')
+rownames(t) <- c('Model Positive', 'Model Negative')
+t
+```
+
+The rows represent the actual and the columns represent the predicted class.
+
+#3 - 8
+Write a function that takes the data set as a dataframe, with actual and predicted classifications identified,
+and returns the accuracy of the predictions.
+
+```{r}
+getConfusionMatrix <- function(df) {
+  t <- table(df$class,df$scored.class)
+  colnames(t) <- c('Real Positive', 'Real Negative')
+  rownames(t) <- c('Model Positive', 'Model Negative')
+  
+  return(t)
+}
+
+getAccuracy <- function(df) {
+  cm <- getConfusionMatrix(df)
+  
+  tn <- cm["Model Negative", "Real Negative"]
+  fp <- cm["Model Positive", "Real Negative"]
+  fn <- cm["Model Negative", "Real Positive"]
+  tp <- cm["Model Positive", "Real Positive"]
+  
+  accuracy <- (tn+tp) / (tn+fp+fn+tp)
+  return(accuracy)
+}
+
+getCER <- function(df) {
+  cm <- getConfusionMatrix(df)
+  
+  tn <- cm["Model Negative", "Real Negative"]
+  fp <- cm["Model Positive", "Real Negative"]
+  fn <- cm["Model Negative", "Real Positive"]
+  tp <- cm["Model Positive", "Real Positive"]
+  
+  cer <- (fp + fn) / (tn+fp+fn+tp)
+  return(cer)
+}
+```
