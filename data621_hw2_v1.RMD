@@ -1,0 +1,176 @@
+
+# Q2
+```{r, echo = F, warning = F}
+library(dplyr)
+library(readr)
+library(knitr)
+library(caret)
+library(grid)
+library(gridExtra)
+library(pROC)
+library(reshape2)
+
+
+# read classification data
+raw <- read_csv("classification-output-data.csv")
+str(raw)
+head(raw)
+
+raw$class <- as.factor(raw$class)
+raw$scored.class <- as.factor(raw$scored.class)
+
+classification <- raw
+str(classification)
+summary(classification)
+
+# confusion matrix
+confusion <- table(classification$class, classification$scored.class)
+grid.table(confusion)
+
+cat("The predicted class is horizontal; the actual class is vertical.")
+
+cm <- matrix(c("True Negative", "False Positive", "False Negative", "True Positive"), nrow = 2, byrow = T)
+colnames(cm) <- c("Predicted NO", "Predicted YES")
+rownames(cm) <- c("Actual NO", "Actual YES")
+grid.table(cm)
+```
+
+## Q3 Accuracy
+```{r, echo = F, warning = F}
+actual <- classification$class
+predicted <- classification$scored.class
+probability <- classification$scored.probability
+
+
+df_class <- melt(data.frame(actual, predicted))
+colnames(df_class) <- c("actual", "predicted")
+head(df_class)
+
+
+accuracy.fn <- function(classification, actual, predicted) {
+  confusion <- table(df_class$actual, df_class$predicted)
+  accuracy <- (confusion[2,2] + confusion [1,1]) / sum(confusion)
+  return(accuracy)
+}
+
+accuracy.fn(df_class, df_class$actual, df_class$predicted)
+```
+
+
+## Q4 Classification Error Rate
+```{r, echo = F, warning = F}
+error_rate.fn <- function(classification, actual, predicted) {
+  confusion <- table(df_class$actual, df_class$predicted)
+  error_rate <- (confusion[1,2] + confusion [2,1]) / sum(confusion)
+  return(error_rate)
+}
+
+error_rate.fn(df_class, df_class$actual, df_class$predicted)
+```
+
+
+# Q5 Precision
+```{r, echo = F, warning = F}
+
+precision.fn <- function(classification, actual, predicted) {
+  confusion <- table(df_class$actual, df_class$predicted)
+  precision <- confusion[2,2] / (confusion[2,2] + confusion[1,2])
+  return(precision)
+}
+
+precision.fn(df_class, df_class$actual, df_class$predicted)
+```
+
+
+# Q6 Sensitivity
+```{r, echo = F, warning = F}
+
+sensitivity.fn <- function(classification, actual, predicted) {
+  confusion <- table(df_class$actual, df_class$predicted)
+  sensitivity <- confusion[2,2] / (confusion[2,2] + confusion[2,1])
+  return(sensitivity)
+}
+
+sensitivity.fn(df_class, df_class$actual, df_class$predicted)
+```
+
+
+# Q7 Specificity
+```{r, echo = F, warning = F}
+
+specificity.fn <- function(classification, actual, predicted) {
+  confusion <- table(df_class$actual, df_class$predicted)
+  specificity <- confusion[1,1] / (confusion[1,1] + confusion[1,2])
+  return(specificity)
+}
+
+specificity.fn(df_class, df_class$actual, df_class$predicted)
+```
+
+
+# Q8 F1 Score
+```{r, echo = F, warning = F}
+
+f1score.fn <- function(classification, actual, predicted) {
+  precision <- precision.fn(df_class, df_class$actual, df_class$predicted)
+  sensitivity <- sensitivity.fn(df_class, df_class$actual, df_class$predicted)
+  f1score <- (2 * precision * sensitivity) / (precision + sensitivity)
+  return(f1score)
+}
+
+f1score.fn(df_class, df_class$actual, df_class$predicted)
+```
+
+
+# Q9
+```{r, echo = F, warning = F}
+
+
+
+
+```
+
+
+# Q10
+```{r, echo = F, warning = F}
+
+
+
+
+```
+
+
+# Q11 Function values
+```{r, echo = F, warning = F}
+cat("Accuracy =", accuracy.fn(classification, actual, predicted))
+cat("Classification Error Rate =", error_rate.fn(classification, actual, predicted))
+cat("Precision =", precision.fn(classification, actual, predicted))
+cat("Sensitivity =", sensitivity.fn(classification, actual, predicted))
+cat("Specificity =", specificity.fn(classification, actual, predicted))
+cat("F1 Score =", f1score.fn(classification, actual, predicted))
+
+```
+
+
+# Q12 Caret functions
+```{r, echo = F, warning = F}
+library(caret)
+
+cconfusion <- confusionMatrix(actual, predicted)
+caccuracy <- cconfusion$overall[1]
+csensitivity <- cconfusion$byClass[1]
+cspecificity <- cconfusion$byClass[2]
+
+```
+
+
+# Q13
+```{r, echo = F, warning = F}
+library(pROC)
+
+plot(roc(actual,predicted), legacy.axes = TRUE)
+
+
+
+```
+
