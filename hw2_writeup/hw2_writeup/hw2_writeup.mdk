@@ -14,12 +14,12 @@ Using the predicted (scored.class) and actual (class) data from the classificati
 |1|5  |27|
 ~
 In this confusion matrix, the predicted data is in rows, while the actual data is in columns. The following matrix depicts the meaning of this confusion matrix:
-~ Center
+
 | |Actual - Negative|Actual - Positive|
-+-------------------:+---------------:+---------:+
++:-------------------+:---------------+:---------+
 |Predicted - Negative|True Negative (TN)|False Negative (FN)|
 |Predicted - Positive|False Positive (FP)|True Positive (TP)|
-~
+
 
 # R Functions for Calculated Rates { - }
 Write R functions that take the data set as a dataframe, with actual and predicted classifications identified, and return predictive analytics, as follows:
@@ -135,4 +135,9 @@ Show that the F1 score will always be between 0 and 1.
 
 [^fn]: Error rate and F1 score derived from formulas: Error rate: $(1 -Accuracy)$; F1 score: $\frac{2*Precision*Sensitivity}{Precision + Sensitivity}$.
 
-# Caret Package Output 
+# Caret Package Output { - }
+## Confusion Matrix and Statistics { - }
+![caret-1]
+[caret-1]: images/caret-1.PNG "caret-1" { width:auto; max-width:90% }
+
+# ROC Curve - pROC Package { - }
