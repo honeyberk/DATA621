@@ -29,7 +29,7 @@ Overall, how often is the classifier correct?
 ~ Math
 Accuracy = \frac{TP + TN}{TP + FP + TN + FN}
 ~
-**R Code:**
+_R Code:_
 ``` { .pretty }
   # accuracy
   accuracy.fn <- function(df, actual, predicted) {
@@ -43,7 +43,7 @@ Overall, how often is the classifier wrong?
 ~ Math
 Classification Error Rate = \frac{FP + FN}{TP + FP + TN + FN}
 ~
-**R Code:**
+_R Code:_
 ``` { .pretty }
   # classification error rate
   error_rate.fn <- function(df, actual, predicted) {
@@ -63,7 +63,7 @@ When it predicts yes, how often is it correct?
 ~ Math
 Precision = \frac{TP}{TP + FP}
 ~
-**R Code:**
+_R Code:_
 ``` { .pretty }
 precision.fn <- function(df, actual, predicted) {
   confusion <- table(predicted, actual)
@@ -76,7 +76,7 @@ When it's actually yes, how often does the classifier predict yes?
 ~ Math
 Sensitivity = \frac{TP}{TP + FN}
 ~
-**R Code:**
+_R Code:_
 ``` { .pretty }
 sensitivity.fn <- function(df, actual, predicted) {
   confusion <- table(predicted, actual)
@@ -89,7 +89,7 @@ When it's actually no, how often does the classifier predict no?
 ~ Math
 Specificity = \frac{TN}{TN + FP}
 ~
-**R Code:**
+_R Code:_
 ``` { .pretty }
 specificity.fn <- function(df, actual, predicted) {
   cconfusion <- table(predicted, actual)
@@ -102,7 +102,7 @@ A weighted average of the precision and sensitivity.
 ~ Math
 F1 Score = \frac{2*Precision*Sensitivity}{Precision + Sensitivity}
 ~
-**R Code:**
+_R Code:_
 ``` { .pretty }
 f1score.fn <- function(df, actual, predicted) {
   precision <- precision.fn(df_class, actual, predicted)
@@ -120,4 +120,5 @@ Show that the F1 score will always be between 0 and 1.
 
 * Sensitivity is bounded by 0 and 1 because it represents the percentage (ratio) of true positives out of the sum of true positives and false negatives.
 
-* Even if precision and sensitivity are equal to the maximum value of 1, the F1 score will never be greater than one: $\frac{2*1*1}{1+1} = 1$. If precision and sensitivity are both equal to the minimum value of 0, then the F1 score will be equal to 0: $\frac{2*0*0}{0+0} = 0$ (this is true if either of the values is equal to 0). As an example, using some other values of P and S: $\frac{2*0.5*0.5}{0.5+0.5} = 0.5$, $\frac{2*0.75*0}{0.75+0} = 0$, etc. 
+* Even if precision and sensitivity are equal to the maximum value of 1, the F1 score will never be greater than one: $\frac{2*1*1}{1+1} = 1$. If precision and sensitivity are both equal to the minimum value of 0, then the F1 score will be equal to 0: $\frac{2*0*0}{0+0} = 0$ (this is true if either of the values is equal to 0). As an example, using some other values of P and S: $\frac{2*0.5*0.5}{0.5+0.5} = 0.5$, $\frac{2*0.75*0}{0.75+0} = 0$, etc.
+
