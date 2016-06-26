@@ -138,6 +138,14 @@ Show that the F1 score will always be between 0 and 1.
 # Caret Package Output { - }
 ## Confusion Matrix and Statistics { - }
 ![caret-1]
+
 [caret-1]: images/caret-1.PNG "caret-1" { width:auto; max-width:90% }
 
-# ROC Curve - pROC Package { - }
+# pROC Package { - }
+## ROC Curve { - }
+**Area under the curve (AUC):** 0.8503
+
+**Data:** Probability in 124 controls (actual 0) < 57 cases (actual 1)
+![pROC-2]
+
+[pROC-2]: images/pROC-2.PNG "pROC-2" { width:auto; max-width:90% }
