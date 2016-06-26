@@ -5,7 +5,7 @@ Title Note  : &date;
 
 [TITLE]
 
-# Confusion Matrix { - }
+# Confusion Matrix
 Using the predicted (scored.class) and actual (class) data from the classification data, the following confusion matrix was generated:
 ~ Center
 | |0  |1|
@@ -21,8 +21,8 @@ In this confusion matrix, the predicted data is in rows, while the actual data i
 |Predicted - Positive|False Positive (FP)|True Positive (TP)|
 ~
 
-# R Functions for Calculated Rates { - }
-## Accuracy { - }
+# R Functions for Calculated Rates
+## Accuracy
 Overall, how often is the classifier correct?
 ~ Math
 Accuracy = \frac{TP + TN}{TP + FP + TN + FN}
@@ -36,7 +36,7 @@ Accuracy = \frac{TP + TN}{TP + FP + TN + FN}
   return(accuracy)
 }
 ```
-## Classification Error Rate { - }
+## Classification Error Rate
 Overall, how often is the classifier wrong?
 ~ Math
 Classification Error Rate = \frac{FP + FN}{TP + FP + TN + FN}
@@ -50,7 +50,7 @@ Classification Error Rate = \frac{FP + FN}{TP + FP + TN + FN}
   return(error_rate)
 }
 ```
-## Precision { - }
+## Precision
 When it predicts yes, how often is it correct?
 ~ Math
 Precision = \frac{TP}{TP + FP}
@@ -63,7 +63,7 @@ precision.fn <- function(df, actual, predicted) {
   return(precision)
 }
 ```
-## Sensitivity { - }
+## Sensitivity
 When it's actually yes, how often does the classifier predict yes?
 ~ Math
 Sensitivity = \frac{TP}{TP + FN}
@@ -76,7 +76,7 @@ sensitivity.fn <- function(df, actual, predicted) {
   return(sensitivity)
 }
 ```
-## Specificity { - }
+## Specificity
 When it's actually no, how often does the classifier predict no?
 ~ Math
 Specificity = \frac{TN}{TN + FP}
@@ -88,4 +88,19 @@ specificity.fn <- function(df, actual, predicted) {
   specificity <- confusion[1,1] / (confusion[1,1] + confusion[2,1])
   return(specificity)
 }
+```
+## F1 Score
+A weighted average of the true positive rate (sensitivity) and precision.
+~ Math
+F1 Score = \frac{1*Precision*Sensitivity}{Precision + Sensitivity}
+~
+**R Code:**
+``` { .pretty }
+f1score.fn <- function(df, actual, predicted) {
+  precision <- precision.fn(df_class, actual, predicted)
+  sensitivity <- sensitivity.fn(df_class, actual, predicted)
+  f1score <- (2 * precision * sensitivity) / (precision + sensitivity)
+  return(f1score)
+}
+
 ```
