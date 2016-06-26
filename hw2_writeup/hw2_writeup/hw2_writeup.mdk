@@ -108,5 +108,4 @@ f1score.fn <- function(df, actual, predicted) {
   f1score <- (2 * precision * sensitivity) / (precision + sensitivity)
   return(f1score)
 }
-
 ```
