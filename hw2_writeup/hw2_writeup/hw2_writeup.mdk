@@ -22,7 +22,7 @@ In this confusion matrix, the predicted data is in rows, while the actual data i
 ~
 
 # R Functions for Calculated Rates
-Write functions that take the data set as a dataframe, with actual and predicted classifications identified, and returns predictive analytics, as follows:
+Write R functions that take the data set as a dataframe, with actual and predicted classifications identified, and return predictive analytics, as follows:
 
 ## Accuracy
 Overall, how often is the classifier correct?
@@ -98,7 +98,7 @@ specificity.fn <- function(df, actual, predicted) {
 }
 ```
 ## F1 Score
-A weighted average of the true positive rate (sensitivity) and precision.
+A weighted average of the sensitivity and precision.
 ~ Math
 F1 Score = \frac{2*Precision*Sensitivity}{Precision + Sensitivity}
 ~
@@ -111,3 +111,15 @@ f1score.fn <- function(df, actual, predicted) {
   return(f1score)
 }
 ```
+# Bounds on F1 Score
+Show that the F1 score will always be between 0 and 1.
+
+* As stated above, the F1 score is the weighted average of the sensitivity and precision:
+
+~ Math
+F1 Score = \frac{2*Precision*Sensitivity}{Precision + Sensitivity}
+~
+* Precision is bounded by 0 and 1 because it represents the percentage of true positives out of the sum of true positives plus false positives.
+* Sensitivity is bounded by 0 and 1 because it represents the percentage of true positives out of the sum of true positives and false negatives.
+
+Both precision and sensitivity are bounded by 0 and 1 because they represent the percentage of true positives 
