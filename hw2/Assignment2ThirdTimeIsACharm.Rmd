@@ -1,0 +1,273 @@
+---
+title: "Data621_HW2Sanjive"
+author: "sanjivek"
+date: "June 22, 2016"
+output: html_document
+---
+
+
+```{r}
+library(knitr)
+library(dplyr)
+library(tidyr)
+library(pROC)
+library(zoo)
+
+raw=read.csv("https://raw.githubusercontent.com/ksanju0/DATA-621/master/classification-output-data.csv", sep = ",", header= TRUE)
+
+t <- table(raw[ , c(10,9)])
+rownames(t) <- c('Real Positive', 'Real Negative')
+colnames(t) <- c('Model Positive', 'Model Negative')
+
+getConfusionMatrix <- function(df) {
+  t <- table(df$class,df$scored.class)
+  rownames(t) <- c('Real Positive', 'Real Negative')
+  colnames(t) <- c('Model Positive', 'Model Negative')
+
+  return(t)
+}
+
+getAccuracy <- function(df) {
+  cm <- getConfusionMatrix(df)
+
+  tn <- cm["Real Negative", "Model Negative"]
+  fp <- cm["Real Negative", "Model Positive"]
+  fn <- cm["Real Positive", "Model Negative"]
+  tp <- cm["Real Positive", "Model Positive"]
+
+  accuracy <- (tn+tp) / (tn+fp+fn+tp)
+  return(accuracy)
+}
+
+getCER <- function(df) {
+  cm <- getConfusionMatrix(df)
+
+  tn <- cm["Real Negative", "Model Negative"]
+  fp <- cm["Real Negative", "Model Positive"]
+  fn <- cm["Real Positive", "Model Negative"]
+  tp <- cm["Real Positive", "Model Positive"]
+
+  cer <- (fp + fn) / (tn+fp+fn+tp)
+  return(cer)
+}
+
+getPrecision <- function(df) {
+  cm <- getConfusionMatrix(df)
+
+  
+  tn <- cm["Real Negative", "Model Negative"]
+  fp <- cm["Real Negative", "Model Positive"]
+  fn <- cm["Real Positive", "Model Negative"]
+  tp <- cm["Real Positive", "Model Positive"]
+  
+  precision <- tp / (fp+tp)
+  return(precision)
+
+}
+
+getSensitivity <- function(df){
+  cm <- getConfusionMatrix(df)
+
+  
+  tn <- cm["Real Negative", "Model Negative"]
+  fp <- cm["Real Negative", "Model Positive"]
+  fn <- cm["Real Positive", "Model Negative"]
+  tp <- cm["Real Positive", "Model Positive"]
+
+  sensitivity <- tp/(tp+fn)
+
+  return(sensitivity)
+}
+
+getSpecificity <- function(df){
+  cm <- getConfusionMatrix(df)
+
+  
+  tn <- cm["Real Negative", "Model Negative"]
+  fp <- cm["Real Negative", "Model Positive"]
+  fn <- cm["Real Positive", "Model Negative"]
+  tp <- cm["Real Positive", "Model Positive"]
+  
+  specificity <- tn / (tn+fp) 
+  return(specificity)
+}
+
+getF1Score <- function(df) {
+
+  cm <- getConfusionMatrix(df)
+
+  
+  tn <- cm["Real Negative", "Model Negative"]
+  fp <- cm["Real Negative", "Model Positive"]
+  fn <- cm["Real Positive", "Model Negative"]
+  tp <- cm["Real Positive", "Model Positive"]
+  
+  precision <- getPrecision(df)
+  sensitivity <- getSensitivity(df)
+  f1score <- 2* (precision * sensitivity) / (precision+sensitivity)
+
+  return(f1score)
+
+}
+
+
+```
+
+### Question 9:
+####Before we move on, let’s consider a question that was asked: What are the bounds on the F1 score? Show that the F1 score will always be between 0 and 1. (Hint: If 0 < 𝑎 < 1 and 0 < 𝑏 < 1 then 𝑎𝑏 < 𝑎.) 
+
+###Answer:
+####Yes, The F1 score is bound by 0 and 1. Reason is both Precision (P) and the Sensitivity(S) are bound by 0 and 1 because they represents $\frac{a}{a+b}$, where a and b >0 or positive  (and one of them can be 0.)
+
+####Hence F1 score, with Precision and Sensitivity, formula we have:
+
+$$ F1\ Score = \frac{P*S + P*S}{P + S} $$
+
+####Since both P and S are bound by 0 and 1, hence, ps < p and ps < s
+
+####Which means, PS + PS < P + S, i.e. F1 score is bound by 0 and 1.
+
+
+
+### Question 10:
+
+####Write a function that generates an ROC curve from a data set with a true classification column (class in our example) and a probability column (scored.probability in our example). Your function should return a list that includes the plot of the ROC curve and a vector that contains the calculated area under the curve (AUC). Note that I recommend using a sequence of thresholds ranging from 0 to 1 at 0.01 intervals. 
+
+
+####Area calculated is:
+
+```{r}
+library(zoo)
+ROCf <- function(raw) {
+  
+refData <- raw[,c(9,10,11)]
+thresh <- seq(0.01, 1, by = .01)
+Speci <- rep(0.0, 100)
+Sensi <- rep(0.0, 100)
+  
+for(k in 1:100) {
+    thresh.pred <- rep(0, nrow(refData))
+    thresh.pred[refData$scored.probability > thresh[k] ] <- 1
+    Speci[k] <- 1 - calcSpecificity(refData$class, as.matrix(thresh.pred))
+    Sensi[k] <- calcSensitivity(refData$class, as.matrix(thresh.pred))
+
+    if (thresh[k] == 0.5) {
+      SpeciNew <- Speci[k]
+      SensiNew <- Sensi[k]
+    }
+    
+  } 
+  
+  plot(Speci, Sensi, xlab = "1 - Specificity", ylab = "Sensitivity", main = "ROC Chart", col = "blue")
+ 
+  #Area calculated is:
+  AUC <- -1*sum(diff(na.omit(Speci))*rollmean(na.omit(Sensi),2)) 
+  AUC
+  
+}
+ 
+calcSensitivity <- function(actual, predicted) {
+
+        c.mat <- data.frame(table(actual, predicted))
+        TN <- as.numeric(as.character(c.mat[1,3]))
+        FN <- as.numeric(as.character(c.mat[2,3]))
+        FP <- as.numeric(as.character(c.mat[3,3]))
+        TP <- as.numeric(as.character(c.mat[4,3]))
+    
+        return( TP / (TP + FN) )
+    }  
+  
+calcSpecificity <- function(actual, predicted) {
+      c.mat <- data.frame(table(actual, predicted))
+      TN <- as.numeric(as.character(c.mat[1,3]))
+      FN <- as.numeric(as.character(c.mat[2,3]))
+      FP <- as.numeric(as.character(c.mat[3,3]))
+      TP <- as.numeric(as.character(c.mat[4,3]))
+    return( TN / (TN + FP) )
+    }  
+
+
+```
+
+####You can plot the ROC Curev using the below script and passing the dataset: 
+
+```{r}
+
+
+ROCf(raw)
+
+```
+
+###Question 11: 
+
+####Use your created R functions and the provided classification output data set to produce all of the classification metrics discussed above. 
+
+
+####Here is the results of all the functions we have created above:
+```{r}
+getAccuracy(raw)
+getCER(raw)
+getPrecision(raw)
+getSensitivity(raw)
+getSpecificity(raw)
+getF1Score(raw)
+
+```
+
+
+    Metric                  |  Value
+|---------------------------|--------
+| Accuracy                  |0.8066298
+| Classification Error Rate |0.1933702
+| Precision                 |0.9596774
+| Sensitivity               |0.7986577
+| Specificity               |0.84375
+| F1 Score                  |0.8717949
+
+
+
+
+
+###Question 12: 
+####Investigate the caret package. In particular, consider the functions confusionMatrix, sensitivity, and specificity. Apply the functions to the data set. How do the results compare with your own functions? 
+
+```{r}
+library(caret)
+
+confusionMatrix(factor(raw$scored.class),factor(raw$class),positive="1")
+
+sensitivity(factor(raw$scored.class),factor(raw$class),positive="1")
+
+specificity(factor(raw$scored.class),factor(raw$class), positive = "1")
+
+
+```
+Comparing with our function as :
+
+| Approach       |  Sensitivity|  Specificity |  Accuracy  
+|----------------|-------------|--------------|------------
+| Our Functions  |    0.7986   |   0.8437     |   0.8066    
+| caret package  |    0.4737   |   0.9597     |   0.7167   
+
+
+
+###Question 13. 
+####Investigate the pROC package. Use it to generate an ROC curve for the data set. How do the results compare with your own functions? 
+```{r}
+library(pROC)
+
+rocP <- roc(factor(class) ~ scored.probability, data=raw)
+
+plot(rocP)
+
+```
+####Comparing the custom function with the pROC Package as:
+
+  Approach                  |  AUC
+|---------------------------|---------
+| Custom Fuction            |  0.8247
+| pROC Package              |  0.8503 
+
+
+
+
