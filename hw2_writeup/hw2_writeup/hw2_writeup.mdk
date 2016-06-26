@@ -131,8 +131,8 @@ Show that the F1 score will always be between 0 and 1.
 | |Accuracy|Error Rate|Precision|Sensitivity|Specificity|F1 Score|
 +-+-:+-------:+---------:+--------:+----------:+----------:+-------:+
 |**R Functions**|0.8066|0.1934|0.8438|0.4737|0.9597|0.6067|
-|**Caret**|0.8066|0.1934[^fn]|0.8438|0.4737|0.9597|0.6067[^fn]|
+|**Caret**[^fn]|0.8066|0.1934|0.8438|0.4737|0.9597|0.6067|
 
-[^fn]: Derived from $(1 -Accuracy)$
+[^fn]: Error rate and F1 score derived from formulas: Error rate: $(1 -Accuracy)$; F1 score: $\frac{2*Precision*Sensitivity}{Precision + Sensitivity}$.
 
-[^fn]: Derived from $\frac{2*Precision*Sensitivity}{Precision + Sensitivity}$
+# Caret Package Output 
