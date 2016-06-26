@@ -22,6 +22,8 @@ In this confusion matrix, the predicted data is in rows, while the actual data i
 ~
 
 # R Functions for Calculated Rates
+Write functions that take the data set as a dataframe, with actual and predicted classifications identified, and returns predictive analytics, as follows:
+
 ## Accuracy
 Overall, how often is the classifier correct?
 ~ Math
@@ -98,7 +100,7 @@ specificity.fn <- function(df, actual, predicted) {
 ## F1 Score
 A weighted average of the true positive rate (sensitivity) and precision.
 ~ Math
-F1 Score = \frac{1*Precision*Sensitivity}{Precision + Sensitivity}
+F1 Score = \frac{2*Precision*Sensitivity}{Precision + Sensitivity}
 ~
 **R Code:**
 ``` { .pretty }
