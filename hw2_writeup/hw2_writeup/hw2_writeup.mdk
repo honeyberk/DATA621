@@ -124,6 +124,8 @@ Show that the F1 score will always be between 0 and 1.
 * Even if precision and sensitivity are equal to the maximum value of 1, the F1 score will never be greater than one: $\frac{2*1*1}{1+1} = 1$. If precision and sensitivity are both equal to the minimum value of 0, then the F1 score will be equal to 0: $\frac{2*0*0}{0+0} = 0$ (this is true if either of the values is equal to 0). As an example, using some other values of P and S: $\frac{2*0.5*0.5}{0.5+0.5} = 0.5$, $\frac{2*0.75*0}{0.75+0} = 0$, etc.
 
 # ROC Curve Function { - }
+In a ROC (Receiver Operating Characteristic) curve, the true positive rate (Sensitivity) is plotted against the false positive rate (1 - Specificity) for different cut-off points. The ROC curve demonstrates the trade-off between sensitivity and specificity (an increase in sensitivity will be accompanied by a decrease in specificity). The closer the curve follows the left-hand border, and then the top border, of the ROC space, the more accurate the test. Also, the closer the curve comes to the 45-degree diagonal of the ROC space, the less accurate the test.
+
 _R Code:_
 ``` { .pretty }
   ROC_AUC.fn = function(df, probability, actual){
