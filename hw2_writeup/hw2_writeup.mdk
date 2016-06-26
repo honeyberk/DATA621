@@ -21,4 +21,9 @@ In this confusion matrix, the predicted data is in rows, while the actual data i
 |Predicted - Positive|False Positive (FP)         |True Positive (TP)   |
 ~
 
-# Calculated Rates { - }
+# Functions for Calculated Rates { - }
+## Accuracy { - }
+Specifes how often the classifier is correct.
+~ Math
+Accuracy = \frac{TP + TN}{TP + FP + TN + FN}
+~
