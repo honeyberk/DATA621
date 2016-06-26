@@ -5,7 +5,7 @@ Title Note  : &date;
 
 [TITLE]
 
-# Confusion Matrix
+# Confusion Matrix { - }
 Using the predicted (scored.class) and actual (class) data from the classification data, the following confusion matrix was generated:
 ~ Center
 | |0  |1|
@@ -21,10 +21,10 @@ In this confusion matrix, the predicted data is in rows, while the actual data i
 |Predicted - Positive|False Positive (FP)|True Positive (TP)|
 ~
 
-# R Functions for Calculated Rates
+# R Functions for Calculated Rates { - }
 Write R functions that take the data set as a dataframe, with actual and predicted classifications identified, and return predictive analytics, as follows:
 
-## Accuracy
+## Accuracy { - } 
 Overall, how often is the classifier correct?
 ~ Math
 Accuracy = \frac{TP + TN}{TP + FP + TN + FN}
@@ -38,7 +38,7 @@ Accuracy = \frac{TP + TN}{TP + FP + TN + FN}
   return(accuracy)
 }
 ```
-## Classification Error Rate
+## Classification Error Rate { - }
 Overall, how often is the classifier wrong?
 ~ Math
 Classification Error Rate = \frac{FP + FN}{TP + FP + TN + FN}
@@ -52,7 +52,7 @@ Classification Error Rate = \frac{FP + FN}{TP + FP + TN + FN}
   return(error_rate)
 }
 ```
-## Verify Accuracy and Error Rate
+## Verify Accuracy and Error Rate { -}
 Accuracy = 0.8066298, Error Rate = 0.1933702
 ~ Math
 0.8066298 + 0.1933702 = 1
@@ -71,7 +71,7 @@ precision.fn <- function(df, actual, predicted) {
   return(precision)
 }
 ```
-## Sensitivity
+## Sensitivity { - }
 When it's actually yes, how often does the classifier predict yes?
 ~ Math
 Sensitivity = \frac{TP}{TP + FN}
@@ -84,7 +84,7 @@ sensitivity.fn <- function(df, actual, predicted) {
   return(sensitivity)
 }
 ```
-## Specificity
+## Specificity { - }
 When it's actually no, how often does the classifier predict no?
 ~ Math
 Specificity = \frac{TN}{TN + FP}
@@ -97,7 +97,7 @@ specificity.fn <- function(df, actual, predicted) {
   return(specificity)
 }
 ```
-## F1 Score
+## F1 Score { - }
 A weighted average of the precision and sensitivity.
 ~ Math
 F1 Score = \frac{2*Precision*Sensitivity}{Precision + Sensitivity}
@@ -111,7 +111,7 @@ f1score.fn <- function(df, actual, predicted) {
   return(f1score)
 }
 ```
-# Bounds on F1 Score
+## Bounds on F1 Score { - }
 Show that the F1 score will always be between 0 and 1.
 
 * As stated above, the F1 score is the weighted average of the precision (P) and sensitivity (S).
