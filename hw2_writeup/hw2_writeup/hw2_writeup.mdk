@@ -98,7 +98,7 @@ specificity.fn <- function(df, actual, predicted) {
 }
 ```
 ## F1 Score
-A weighted average of the sensitivity and precision.
+A weighted average of the precision and sensitivity.
 ~ Math
 F1 Score = \frac{2*Precision*Sensitivity}{Precision + Sensitivity}
 ~
@@ -114,12 +114,14 @@ f1score.fn <- function(df, actual, predicted) {
 # Bounds on F1 Score
 Show that the F1 score will always be between 0 and 1.
 
-* As stated above, the F1 score is the weighted average of the sensitivity and precision:
+* As stated above, the F1 score is the weighted average of the precision (P) and sensitivity (S).
 
+* The equation for the F1 Score, cited above, can be rewritten as:
 ~ Math
-F1 Score = \frac{2*Precision*Sensitivity}{Precision + Sensitivity}
+\frac{PS + PS}{P + S}
 ~
-* Precision is bounded by 0 and 1 because it represents the percentage of true positives out of the sum of true positives plus false positives.
-* Sensitivity is bounded by 0 and 1 because it represents the percentage of true positives out of the sum of true positives and false negatives.
+* Precision is bounded by 0 and 1 because it represents the percentage (ratio) of true positives out of the sum of true positives plus false positives.
 
-Both precision and sensitivity are bounded by 0 and 1 because they represent the percentage of true positives 
+* Sensitivity is bounded by 0 and 1 because it represents the percentage (ratio) of true positives out of the sum of true positives and false negatives.
+
+* If $0<P<1$ and $0<S<1$, then $PS<P$ and $PS<S$. As such, $PS + PS$ will always be less than $P+S$, which means the equation can never
