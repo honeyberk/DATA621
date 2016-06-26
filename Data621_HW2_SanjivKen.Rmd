@@ -163,30 +163,35 @@ library(zoo)
 ROCf <- function(raw) {
 
 refData <- raw[,c(9,10,11)]
-thresh <- seq(0.01, 1, by = .01)
-Speci <- rep(0.0, 100)
-Sensi <- rep(0.0, 100)
 
-for(k in 1:100) {
-    thresh.pred <- rep(0, nrow(refData))
-    thresh.pred[refData$scored.probability > thresh[k] ] <- 1
-    Speci[k] <- 1 - calcSpecificity(refData$class, as.matrix(thresh.pred))
+thresh <- seq(0.01, 1, by = .01) # this generates the threshold value from 0 to 1 increament of 0.01
+Speci <- rep(0.0, 100) # initialize a vetor for specificity
+Sensi <- rep(0.0, 100) # initialize a vector for sensitivity
+
+for(k in 1:100) {      #  Loop to generate 100 threshold values vector
+    thresh.pred <- rep(0, nrow(refData)) # initialize the threshold vector
+    thresh.pred[refData$scored.probability > thresh[k] ] <- 1 # set thresold predictred to 1 if threshold probablity is > threshold calculated above
+    Speci[k] <- 1 - calcSpecificity(refData$class, as.matrix(thresh.pred)) # build sensitivity and specificity vectors based on threshold calculated 
     Sensi[k] <- calcSensitivity(refData$class, as.matrix(thresh.pred))
 
-    if (thresh[k] == 0.5) {
-      SpeciNew <- Speci[k]
-      SensiNew <- Sensi[k]
-    }
+   # if (thresh[k] == 0.5) {  # filter all the Specificity and sensitivity for threshold equal to 0.5 for plotting
+  #    SpeciNew <- Speci[k]  
+   #   SensiNew <- Sensi[k]
+    #}
 
-  } 
+} 
 
-  plot(Speci, Sensi, xlab = "1 - Specificity", ylab = "Sensitivity", main = "ROC Chart", col = "blue")
+
+
+  plot(Speci , Sensi, xlab = "1 - Specificity", ylab = "Sensitivity", main = "ROC Chart", col = "blue") # plot the graph based on calculated sensitivity and specificity
 
   #Area calculated is:
-  AUC <- -1*sum(diff(na.omit(Speci))*rollmean(na.omit(Sensi),2)) 
-  cat("Area under the curve  =", AUC)
+  AUC <- -1*sum(diff(na.omit(Speci))*rollmean(na.omit(Sensi),2))  # this calculated the area  under the curve 
+  cat("Area under the curve  =", AUC) # prints area under the curve
 
 }
+
+# function to calculate sensitivity with assigned  thresholds
 
 calcSensitivity <- function(actual, predicted) {
 
@@ -198,6 +203,7 @@ calcSensitivity <- function(actual, predicted) {
 
         return( TP / (TP + FN) )
     }  
+# function to calculate specificity with assigned  thresholds
 
 calcSpecificity <- function(actual, predicted) {
       c.mat <- data.frame(table(actual, predicted))
@@ -245,10 +251,6 @@ cat("F1 Score =", f1score.fn(classification, actual, predicted))
 library(caret)
 
 confusionMatrix(factor(classification$scored.class),factor(classification$class),positive="1")
-
-sensitivity(factor(classification$scored.class),factor(classification$class),positive="1")
-
-specificity(factor(classification$scored.class),factor(classification$class), positive = "1")
 
 
 ```
