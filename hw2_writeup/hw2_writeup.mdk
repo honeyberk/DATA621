@@ -23,7 +23,33 @@ In this confusion matrix, the predicted data is in rows, while the actual data i
 
 # Functions for Calculated Rates { - }
 ## Accuracy { - }
-Specifes how often the classifier is correct.
 ~ Math
 Accuracy = \frac{TP + TN}{TP + FP + TN + FN}
 ~
+Specifies how often the classifier is correct.
+
+**R Code:**
+``` { .pretty }
+  # accuracy
+  accuracy.fn <- function(df, actual, predicted) {
+  confusion <- table(predicted, actual)
+  accuracy <- (confusion[2,2] + confusion [1,1]) / sum(confusion)
+  return(accuracy)
+}
+```
+  
+## Classification Error Rate { - }
+~ Math
+Classification Error Rate = \frac{FP + FN}{TP + FP + TN + FN}
+~
+Specifies how often the classifier is wrong.
+
+**R Code:**
+``` { .pretty }
+  # classification error rate
+  error_rate.fn <- function(df, actual, predicted) {
+  confusion <- table(predicted, actual)
+  error_rate <- (confusion[2,1] + confusion [1,2]) / sum(confusion)
+  return(error_rate)
+}
+```
