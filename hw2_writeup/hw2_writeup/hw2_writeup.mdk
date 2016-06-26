@@ -57,8 +57,9 @@ Accuracy = 0.8066298, Error Rate = 0.1933702
 ~ Math
 0.8066298 + 0.1933702 = 1
 ~
-So, accuracy and error rate sum to one. 
-## Precision
+So, accuracy and error rate sum to one.
+
+## Precision { -}
 When it predicts yes, how often is it correct?
 ~ Math
 Precision = \frac{TP}{TP + FP}
@@ -151,3 +152,5 @@ A ROC curve graph summarizes the performance of a classifier over all possible t
 ![pROC-2]
 
 [pROC-2]: images/pROC-2.PNG "pROC-2" { width:auto; max-width:90% }
+
+**INSERT COMPARISON TO ROC FUNCTION**
