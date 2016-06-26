@@ -124,7 +124,34 @@ Show that the F1 score will always be between 0 and 1.
 * Even if precision and sensitivity are equal to the maximum value of 1, the F1 score will never be greater than one: $\frac{2*1*1}{1+1} = 1$. If precision and sensitivity are both equal to the minimum value of 0, then the F1 score will be equal to 0: $\frac{2*0*0}{0+0} = 0$ (this is true if either of the values is equal to 0). As an example, using some other values of P and S: $\frac{2*0.5*0.5}{0.5+0.5} = 0.5$, $\frac{2*0.75*0}{0.75+0} = 0$, etc.
 
 # ROC Curve Function { - }
-**INSERT FUNCTION**
+_R Code:_
+``` { .pretty }
+  ROC_AUC.fn = function(df, probability, actual){
+  probabilitySort = sort(probability, decreasing = T, index.return = T)
+  values = unlist(probabilitySort$x)
+  indx = unlist(probabilitySort$ix)  
+  
+  roc_y = actual[indx];
+  stack_x = cumsum(roc_y == 0)/sum(roc_y == 0)
+  stack_y = cumsum(roc_y == 1)/sum(roc_y == 1)    
+  
+  auc = sum((stack_x[2:length(roc_y)]-stack_x[1:length(roc_y)-1])*stack_y[2:length(roc_y)])
+  return(list(stack_x=stack_x, stack_y=stack_y, auc=auc))
+}
+
+  AUC_list = ROC_AUC.fn(df, probability, actual) 
+
+  stack_x = unlist(AUC_list$stack_x)
+  stack_y = unlist(AUC_list$stack_y)
+  auc = unlist(AUC_list$auc)
+  cat("AUC = ", auc)
+
+  plot(stack_x, stack_y, type = "l", col = "blue", xlab = "False Positives (1 - Specificity)", ylab = "True Positives (Sensitivity)", main = "ROC Curve")
+  axis(1, seq(0.0,1.0,0.1))
+  axis(2, seq(0.0,1.0,0.1))
+  abline(h=seq(0.0,1.0,0.1), v=seq(0.0,1.0,0.1), col="gray", lty=3)
+  legend(0.7, 0.3, sprintf("%3.3f",auc), lty=c(1,1), lwd=c(2.5,2.5),  col="blue", title = "AUC")
+```
 
 # Classification Metrics { - }
 ## R Functions vs. Caret Package { - }
