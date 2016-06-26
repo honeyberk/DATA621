@@ -122,3 +122,14 @@ Show that the F1 score will always be between 0 and 1.
 
 * Even if precision and sensitivity are equal to the maximum value of 1, the F1 score will never be greater than one: $\frac{2*1*1}{1+1} = 1$. If precision and sensitivity are both equal to the minimum value of 0, then the F1 score will be equal to 0: $\frac{2*0*0}{0+0} = 0$ (this is true if either of the values is equal to 0). As an example, using some other values of P and S: $\frac{2*0.5*0.5}{0.5+0.5} = 0.5$, $\frac{2*0.75*0}{0.75+0} = 0$, etc.
 
+# ROC Curve Function 
+
+# Classification Metrics { - }
+## R Functions vs. Caret Package { - }
+
+| | |Accuracy|Error Rate|Precision|Sensitivity|Specificity|F1 Score|
++-+-+-------:+---------:+--------:+----------:+----------:+-------:+
+|**R Functions**|0.8066|0.1934|0.8438|0.4737|0.9597|0.6067|
+|**Caret**|0.8066|          |         |0.4736842|0.9596774|        |
+
+
