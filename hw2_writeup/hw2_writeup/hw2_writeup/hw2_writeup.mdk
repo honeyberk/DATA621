@@ -10,15 +10,15 @@ Using the predicted (scored.class) and actual (class) data from the classificati
 ~ Center
 | |0  |1|
 +-:+---+--:+
-|0|119|30|
-|1|5  |27|
+|**0**|119|30|
+|**1**|5  |27|
 ~
 In this confusion matrix, the predicted data is in rows, while the actual data is in columns. The following matrix depicts the meaning of this confusion matrix:
 
 | |Actual - Negative|Actual - Positive|
 +:-------------------+:---------------+:---------+
-|Predicted - Negative|True Negative (TN)|False Negative (FN)|
-|Predicted - Positive|False Positive (FP)|True Positive (TP)|
+|**Predicted - Negative**|True Negative (TN)|False Negative (FN)|
+|**Predicted - Positive**|False Positive (FP)|True Positive (TP)|
 
 
 # R Functions for Calculated Rates { - }
@@ -60,7 +60,7 @@ Accuracy = 0.8066298, Error Rate = 0.1933702
 So, accuracy and error rate sum to one.
 
 ## Precision { -}
-When it predicts yes, how often is it correct?
+When the classifier predicts yes, how often is it correct?
 ~ Math
 Precision = \frac{TP}{TP + FP}
 ~
