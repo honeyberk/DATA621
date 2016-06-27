@@ -128,7 +128,9 @@ In a ROC (Receiver Operating Characteristic) curve, the true positive rate (sens
 
 Once the ROC curve is generated, the area under the curve (AUC) can be used as a quantitative measure of performance. The model with the largest area under the ROC curve would be the most effective.
 
-Here is the code for a function written to plot the ROC curve and calculate the AUC metric: 
+The ROC_AUC function calculated the AUC as: 0.8503.
+
+Here is the code for a function written to plot the ROC curve and calculate the AUC: 
 
 _R Code:_
 ``` { .pretty }
@@ -159,6 +161,9 @@ _R Code:_
   abline(h=seq(0.0,1.0,0.1), v=seq(0.0,1.0,0.1), col="gray", lty=3)
   legend(0.7, 0.3, sprintf("%4.4f",auc), lty=c(1,1), lwd=c(2.5,2.5),  col="blue", title = "AUC")
 ```
+![ROC_AUC-3]
+
+[ROC_AUC-3]: images/ROC_AUC-3.PNG "ROC_AUC-3" { width:auto; max-width:90% }
 
 # Classification Metrics { - }
 ## R Functions vs. Caret Package { - }
@@ -187,4 +192,9 @@ A ROC curve graph summarizes the performance of a classifier over all possible t
 
 [pROC-2]: images/pROC-2.PNG "pROC-2" { width:auto; max-width:90% }
 
-**INSERT COMPARISON TO ROC FUNCTION**
+The ROC_AUC function calculated the same AUC value as the pROC package:
+
+|ROC_AUC Function|pROC Package|
+|AUC Value|AUC Value|
++---------:+-------:+
+|0.8503|0.8503|
