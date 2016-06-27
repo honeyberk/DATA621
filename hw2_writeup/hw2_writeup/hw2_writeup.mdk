@@ -124,11 +124,15 @@ Show that the F1 score will always be between 0 and 1.
 * Even if precision and sensitivity are equal to the maximum value of 1, the F1 score will never be greater than one: $\frac{2*1*1}{1+1} = 1$. If precision and sensitivity are both equal to the minimum value of 0, then the F1 score will be equal to 0: $\frac{2*0*0}{0+0} = 0$ (this is true if either of the values is equal to 0). As an example, using some other values of P and S: $\frac{2*0.5*0.5}{0.5+0.5} = 0.5$, $\frac{2*0.75*0}{0.75+0} = 0$, etc.
 
 # ROC Curve Function { - }
-In a ROC (Receiver Operating Characteristic) curve, the true positive rate (Sensitivity) is plotted against the false positive rate (1 - Specificity) for different cut-off points. The ROC curve demonstrates the trade-off between sensitivity and specificity (an increase in sensitivity will be accompanied by a decrease in specificity). The closer the curve follows the left-hand border, and then the top border, of the ROC space, the more accurate the test. Also, the closer the curve comes to the 45-degree diagonal of the ROC space, the less accurate the test.
+In a ROC (Receiver Operating Characteristic) curve, the true positive rate (sensitivity) is plotted against the false positive rate (1-specificity) for different cut-off points. The ROC curve demonstrates the trade-off between sensitivity and specificity (an increase in sensitivity will be accompanied by a decrease in specificity). The closer the curve follows the left-hand border, and then the top border, of the ROC space, the more accurate the test. Also, the closer the curve comes to the 45-degree diagonal of the ROC space, the less accurate the test.
+
+Once the ROC curve is generated, the area under the curve (AUC) can be used as a quantitative measure of performance. The model with the largest area under the ROC curve would be the most effective.
+
+Here is the code for a function written to plot the ROC curve and calculate the AUC metric: 
 
 _R Code:_
 ``` { .pretty }
-  ROC_AUC.fn = function(df, probability, actual){
+  ROC_AUC.fn = function(df, probability, actual) {
   probabilitySort = sort(probability, decreasing = T, index.return = T)
   values = unlist(probabilitySort$x)
   indx = unlist(probabilitySort$ix)  
@@ -139,7 +143,7 @@ _R Code:_
   
   auc = sum((stack_x[2:length(roc_y)]-stack_x[1:length(roc_y)-1])*stack_y[2:length(roc_y)])
   return(list(stack_x=stack_x, stack_y=stack_y, auc=auc))
-}
+  }
 
   AUC_list = ROC_AUC.fn(df, probability, actual) 
 
@@ -148,11 +152,12 @@ _R Code:_
   auc = unlist(AUC_list$auc)
   cat("AUC = ", auc)
 
-  plot(stack_x, stack_y, type = "l", col = "blue", xlab = "False Positives (1 - Specificity)", ylab = "True Positives (Sensitivity)", main = "ROC Curve")
+  plot(stack_x, stack_y, type = "l", col = "blue", xlab = "False Positives (1 - Specificity)", 
+  ylab = "True Positives (Sensitivity)", main = "ROC Curve")
   axis(1, seq(0.0,1.0,0.1))
   axis(2, seq(0.0,1.0,0.1))
   abline(h=seq(0.0,1.0,0.1), v=seq(0.0,1.0,0.1), col="gray", lty=3)
-  legend(0.7, 0.3, sprintf("%3.3f",auc), lty=c(1,1), lwd=c(2.5,2.5),  col="blue", title = "AUC")
+  legend(0.7, 0.3, sprintf("%4.4f",auc), lty=c(1,1), lwd=c(2.5,2.5),  col="blue", title = "AUC")
 ```
 
 # Classification Metrics { - }
