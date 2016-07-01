@@ -1,0 +1,377 @@
+---
+title: "Data621_HW2Sanjive"
+author: "sanjivek"
+date: "June 22, 2016"
+output: html_document
+---
+
+# Q2
+```{r, echo = F, warning = F}
+library(ggplot2)
+library(MASS)
+library(knitr)
+library(dplyr)
+library(faraway)
+library(ggthemes)
+library(gridExtra)
+library(leaps)
+library(bestglm)
+library(caret)
+library(pROC)
+library(grid)
+library(reshape2)
+
+
+# read classification data
+raw=read.csv("https://raw.githubusercontent.com/ksanju0/DATA-621/master/crime-training-data.csv", sep = ",", header= TRUE)
+str(raw)
+head(raw)
+
+
+crime <- raw
+str(crime)
+summary(crime)
+
+
+
+```
+
+
+# Build Model
+
+For my first model, I'll use the bestglm function (from the bestglm library) to find the best subset out of all of my variables using the Bayesian Information Criterion. 
+```{r}
+bestSubCrime <- bestglm(crime, IC= "BIC", family = binomial)
+
+summary(bestSubCrime$BestModel)
+
+par(mfrow=c(2,2))
+
+plot(bestSubCrime$BestModel)
+
+par(mfrow=c(1,1))
+```
+
+I end up with three variables, all of which are highly significant according to their p-values. Index of accessibility to radial highways, property tax rate, and nitrogen oxide concentration.
+
+Neighborhoods with large lots were already signaled as potentially problematic and accounted for by converting to a binary variable, but property tax rates and indexof acccessibility also had odd distributions: 
+
+```{r}
+ggplot(crime, aes(x=rad)) + geom_histogram(bins=100) + theme_tufte() + 
+  ggtitle("Index of Accessibility to Radial Highways")
+
+ggplot(crime, aes(x=tax)) + geom_histogram(bins=100) + theme_tufte() + 
+  ggtitle("Full-value Property-tax Rate per $10,000")
+
+```
+
+
+No information is given about the index of accessibility for radial highways. They seem to have a distribution around 1 to 8 in whole numbers, with a plurality of values equal to 24. Tax rates have a similar suspicious spike, which is a bit easier to explain (perhaps there is a regional organization that sets taxes for multiple neighborhoods, or this represents a large number of neighborhoods in the city limits of Boston, verus in the surrounding towns.) If indices of acessibility are calculated in a similar way (based on municipality), then it can also be suspect.
+
+If I knew more about these variables, I would treat them in a similar way to large lot zoning. It might make sense to add a binary variable based on whether or not the neighborhood is located in the City of Boston for example.
+
+There is also higher than normal correlations between these three variables, which may indicate multi-collinearity:
+
+```{r}
+kable(cor(dplyr::select(crime, nox, tax, rad)))
+
+```
+
+The nitrogen oxides concentration variable is the least problematic, and according to the anova table it reduces the deviance the most: 
+
+```{r}
+anova(bestSubCrime$BestModel, test="Chisq")
+```
+
+So, I will recalculate my best subset model with the radial index and tax variables removed. Below is the new summary of this second best fit model:
+
+```{r}
+crime2 <- dplyr::select(crime, -c(tax, rad))
+
+bestSubCrime2 <- bestglm(crime2, IC= "BIC", family = binomial)
+
+summary(bestSubCrime2$BestModel)
+
+par(mfrow=c(2,2))
+
+plot(bestSubCrime2$BestModel)
+
+par(mfrow=c(1,1))
+```
+
+This new model improves our Q-Q plot in the residuals. We have more variables, but according to the below matrix, some of them are still highly correlated: 
+
+```{r}
+kable(cor(dplyr::select(crime2, nox, age, dis, black, medv, zn)))
+
+anova(bestSubCrime2$BestModel, test="Chisq")
+```
+
+The transformed proportion of black residents and median value of owner occupied homes seem to be the least problematic in terms of correlation. According to our anova table, the proportion of Nitrous Oxide is adding the largest amount to the deviance (part of this is due to its placement as first in the anova table, but when placed last it still adds 108, which shows how significant it is.) Age, weighted distance to employment centers, and the binary variable of large lot zoning are highly correlated with eachother. Out of these three, the large lot zoning seems to lead to the most change in deviance. Age is also a problematic variable (it is capped at 100, which implies that value is given to any home with ages greater than 100.)
+
+Because of this, I will recalculate a new best subset, this time removing age distance to employment centers along with property tax rates and index of accessibility to radial highways.
+
+```{r}
+crime3 <- dplyr::select(crime2,-c(age, dis))
+
+bestSubCrime3 <- bestglm(crime3, IC= "BIC", family = binomial)
+
+summary(bestSubCrime3$BestModel)
+
+par(mfrow=c(2,2))
+
+plot(bestSubCrime3$BestModel)
+
+par(mfrow=c(1,1))
+```
+
+This model does lead to a further reduction in the Normal Q-Q plot, and has fewer variables leading to a more parsimonious solution. The correlation matrix also shows variables that are less correlated with eachother than in the previous two models:
+
+
+```{r}
+kable(cor(dplyr::select(crime3,nox,ptratio,black,medv)))
+```
+
+Creating all models from the same crime dataset, just to be sure when I predict.
+
+```{r}
+
+model1 <- glm(target ~ nox + rad + tax, family=binomial, data = crime)
+model2 <- glm(target ~ nox + age + dis + black + medv + zn, family=binomial,
+              data=crime)
+model3 <- glm(target ~ nox + ptratio + black + medv, family=binomial, data = crime)
+
+crime$model1p <- predict(model1,crime,type='response')
+crime$model2p <- predict(model2,crime,type='response')
+crime$model3p <- predict(model3,crime,type='response')
+```
+
+For one last sanity check, lets analyze whether or not the effect of the variables make intuitive sense in each model.
+
+For model 1, NOX seems to have a high positive effect on crime, while the index of accessibility to radial highways has a smaller positive effect, and tax has a negative effect (meaning the higher the property tax rate, the lower the crime.) Nitrous Oxide seems like the most useful variable here (perhaps this chemical could have a similar effect to lead on crime.) One could imagine that access to radial highways would increase access to a neighborhood, therefore making it a target to crimes committed by people from other areas of the city. Tax doesn't really have an intuitive link to crime in my opinion, but out of these three models this one is the weakest due to the problematic variable distributions.
+
+For model 2, nitrous oxide still has a heavy positive effect on crime. The age of buildings, distance from employment centers, and median home values have positive effects on crime, while proportion of black residents and large zoning lots have negative effects on crime.
+
+The most problematic finding here is the difference in effect between median home values and large zoning lots. Intuitively, I would think these two variables would be highly correlated, and that they would have similar effects on crime. Their correlation is only 0.39, meaning they're not correlated, and thus the fact that they have different effects is not problematic. I would single this relationship out for further research however.
+
+For model 3, Nitrous Oxide once again has the largest effect, with small effects caused by the proportion of black residents, pupil teacher ratios, and median home value. The pupil teacher ratio has a positive effect on crime, which means higher crime neighborhoods tend to have more students per classroom. The sign of all of these effects remained the same from model 2.
+
+#Select Model
+
+The main method I'll use to select my models will be the ROC curves. Below you'll see plots of the three curves, along with the areas under the curves, or AUC:
+
+```{r}
+roc.results1 <- roc(factor(target) ~ model1p, data=crime)
+roc.results2 <- roc(factor(target) ~ model2p, data=crime)
+roc.results3 <- roc(factor(target) ~ model3p, data=crime)
+
+par(mfrow=c(2,2))
+
+plot(roc.results1)
+plot(roc.results2)
+plot(roc.results3)
+
+par(mfrow=c(1,1))
+
+paste("Model 1 Area under the curve:",auc(roc.results1),sep=" ")
+paste("Model 2 Area under the curve:",auc(roc.results2),sep=" ")
+paste("Model 3 Area under the curve:",auc(roc.results3),sep=" ")
+```
+
+These are all good measures, around 0.95 for the AUC. Model 1 has the highest AUC, and it was further analysis that led us to analyze further models.
+
+Accuracy, classification error rate, precision, sensitivity, specificity, and f1 score depend on the cutoff number we use. I visualized these measures below for my three models.
+
+```{r}
+accuracy.calc <- function(data, actual, proportion, cutoff){
+  data$predicted <- ifelse(data[,proportion]>cutoff, 1, 0)
+  confusion <- table(dplyr::select(data, get(actual), predicted))
+  if(dim(confusion)[2] == 1){
+    if(colnames(confusion) == 0){
+      accuracy <- confusion[1,1]/sum(confusion)
+    } else{
+      accuracy <- confusion[2,2]/sum(confusion)
+    }
+  } else{
+    accuracy <- (confusion[1,1] + confusion[2,2])/sum(confusion)
+  }
+  return(accuracy)
+}
+
+cer.calc <- function(data, actual, proportion, cutoff){
+  data$predicted <- ifelse(data[,proportion]>cutoff, 1, 0)
+  confusion <- table(dplyr::select(data, get(actual), predicted))
+  if(dim(confusion)[2] == 1){
+    if(colnames(confusion) == 0){
+      cer <- confusion[2,1]/sum(confusion)
+    } else{
+      cer <- confusion[1,1]/sum(confusion)
+    }
+  } else{
+    cer <- (confusion[1,2] + confusion[2,1])/sum(confusion)
+  }
+  return(cer)
+}
+
+precision.calc <- function(data, actual, proportion, cutoff){
+  data$predicted <- ifelse(data[,proportion]>cutoff, 1, 0)
+  confusion <- table(dplyr::select(data, get(actual), predicted))
+  if(dim(confusion)[2] == 1){
+    if(colnames(confusion) == 0){
+      precision <- 1
+    } else{
+      precision <- confusion[2,1]/(confusion[1,1]+confusion[2,1])
+    }
+  } else{
+    precision <- confusion[2,2]/(confusion[1,2] + confusion[2,2])
+  }
+  return(precision)
+}
+
+sensitivity.calc <- function(data, actual, proportion, cutoff){
+  data$predicted <- ifelse(data[,proportion]>cutoff, 1, 0)
+  confusion <- table(dplyr::select(data, get(actual), predicted))
+  if(dim(confusion)[2] == 1){
+    if(colnames(confusion) == 0){
+      sensitivity <- 0
+    } else{
+      sensitivity <- 1
+    }
+  } else{
+      sensitivity <- confusion[2,2]/(confusion[2,1] + confusion[2,2])
+  }
+
+  return(sensitivity)
+}
+
+specificity.calc <- function(data, actual, proportion, cutoff){
+  data$predicted <- ifelse(data[,proportion]>cutoff, 1, 0)
+  confusion <- table(dplyr::select(data, get(actual), predicted))
+  if(dim(confusion)[2] == 1){
+    if(colnames(confusion) == 0){
+      specificity <- 1
+    } else{
+      specificity <- 0
+    }
+  } else{
+    specificity <- confusion[1,1]/(confusion[1,1] + confusion[1,2])
+  }
+  return(specificity)
+}
+
+f1.calc <- function(data, actual, proportion, cutoff){
+  precision <- precision.calc(data, actual, proportion, cutoff)
+  sensitivity <- sensitivity.calc(data, actual, proportion, cutoff)
+  f1 <- (2 * precision * sensitivity)/(precision + sensitivity)
+  return(f1)
+}
+
+cutofflist <- seq(0.05,0.95,by=0.05)
+
+measures1p <- data.frame(cutoff = cutofflist, model = 1,
+                       accuracy = apply(matrix(cutofflist), 1, accuracy.calc, 
+                                        data = crime, actual = "target",
+                                        proportion = "model1p"),
+                       cer = apply(matrix(cutofflist), 1, cer.calc,
+                                   data = crime, actual = "target", 
+                                   proportion = "model1p"),
+                       precision = apply(matrix(cutofflist), 1, precision.calc,
+                                         data = crime, actual = "target", 
+                                         proportion = "model1p"),
+                       sensitivity = apply(matrix(cutofflist), 1, sensitivity.calc,
+                                           data = crime, actual = "target", 
+                                           proportion = "model1p"),
+                       specificity = apply(matrix(cutofflist), 1, specificity.calc,
+                                           data = crime, actual = "target", 
+                                           proportion = "model1p"),
+                       f1 = apply(matrix(cutofflist), 1, f1.calc,
+                                  data = crime, actual = "target", 
+                                  proportion = "model1p"))
+
+measures2p <- data.frame(cutoff = cutofflist, model = 2,
+                       accuracy = apply(matrix(cutofflist), 1, accuracy.calc, 
+                                        data = crime, actual = "target",
+                                        proportion = "model2p"),
+                       cer = apply(matrix(cutofflist), 1, cer.calc,
+                                   data = crime, actual = "target", 
+                                   proportion = "model2p"),
+                       precision = apply(matrix(cutofflist), 1, precision.calc,
+                                         data = crime, actual = "target", 
+                                         proportion = "model2p"),
+                       sensitivity = apply(matrix(cutofflist), 1, sensitivity.calc,
+                                           data = crime, actual = "target", 
+                                           proportion = "model2p"),
+                       specificity = apply(matrix(cutofflist), 1, specificity.calc,
+                                           data = crime, actual = "target", 
+                                           proportion = "model2p"),
+                       f1 = apply(matrix(cutofflist), 1, f1.calc,
+                                  data = crime, actual = "target", 
+                                  proportion = "model2p"))
+
+measures3p <- data.frame(cutoff = cutofflist, model = 3,
+                       accuracy = apply(matrix(cutofflist), 1, accuracy.calc, 
+                                        data = crime, actual = "target",
+                                        proportion = "model3p"),
+                       cer = apply(matrix(cutofflist), 1, cer.calc,
+                                   data = crime, actual = "target", 
+                                   proportion = "model3p"),
+                       precision = apply(matrix(cutofflist), 1, precision.calc,
+                                         data = crime, actual = "target", 
+                                         proportion = "model3p"),
+                       sensitivity = apply(matrix(cutofflist), 1, sensitivity.calc,
+                                           data = crime, actual = "target", 
+                                           proportion = "model3p"),
+                       specificity = apply(matrix(cutofflist), 1, specificity.calc,
+                                           data = crime, actual = "target", 
+                                           proportion = "model3p"),
+                       f1 = apply(matrix(cutofflist), 1, f1.calc,
+                                  data = crime, actual = "target", 
+                                  proportion = "model3p"))
+
+measures <- rbind(measures1p, measures2p, measures3p)
+
+measures <- melt(measures, id.vars = c('cutoff', 'model'), variable.name = 'measure',
+                 value.name = 'value')
+
+ggplot(measures, aes(x=cutoff, y=value,color=factor(model))) +
+  geom_line() + facet_wrap(~ measure) + theme_tufte()
+
+
+```
+
+These graphs show that the models have very similar measures at different cutoff points. Model 1 appears more jagged, which can be expected given the distributions of the underlying data. Without further study of the variables, it would be tough to say which model is best. The measures such as tax and index of accessibility performed well, but if more was known about their derivation other transformations could have been performed (similar to what we did with the large lot zoning variable.)
+
+Lastly, we could use our models to calculate probabilities for our evaluation dataset:
+
+
+
+```{r}
+
+crimeEval <- read.csv("https://raw.githubusercontent.com/ksanju0/DATA-621/master/crime-evaluation-data.csv")
+crimeEval$zn01 <- ifelse(crimeEval$zn==0,0,1)
+crimeEval$model1p <- predict(model1, crimeEval, type='response')
+crimeEval$model2p <- predict(model2, crimeEval, type='response')
+crimeEval$model3p <- predict(model3, crimeEval, type='response')
+
+crimeEval$row.num <- 1:dim(crimeEval)[1]
+
+graphcrim <- dplyr::select(crimeEval, model1p, model2p, model3p) %>%
+  arrange(model2p)
+
+graphcrim$row.num <- 1:dim(graphcrim)[1]
+
+graphcrim <- melt(graphcrim, id.vars='row.num', variable.name = 'Model', 
+                  value.name = 'Prediction')
+
+ggplot(graphcrim, aes(x=row.num, y=Prediction, color=Model)) + geom_line() + 
+  theme_tufte()
+
+```
+
+I decided to visualize this as well. I sorted my probabilities by model 2, and then see the differences between that and what models 1 and 3 predicted. I chose to sort by model 2 because the results of models 2 and 3 were the closest, while 1 was more different from both.
+
+The fact that models 2 and 3 were so similar on the evaluation set lead me to trust their predictive capability over model 1. The parsimony of model 3, along with the fact that it includes the most problematic variables taken away, would lead me to trust it for this data.
+
+Interestingly, Models 1 and 3 tend to depart from model 2 in similar directions. If one looks at the spikes of model 1, one can see less pronounced spikes in model 3. This leads me to believe model 3 captures some of the effects of model 1, without being too influenced by them.
+
+While model 3 would be my final model choice, it's obvious the percentage of Nitrous Oxide is describing the most about crime levels.
