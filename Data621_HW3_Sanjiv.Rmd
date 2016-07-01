@@ -5,7 +5,6 @@ date: "June 22, 2016"
 output: html_document
 ---
 
-# Q2
 ```{r, echo = F, warning = F}
 library(ggplot2)
 library(MASS)
@@ -181,6 +180,9 @@ paste("Model 3 Area under the curve:",auc(roc.results3),sep=" ")
 These are all good measures, around 0.95 for the AUC. Model 1 has the highest AUC, and it was further analysis that led us to analyze further models.
 
 Accuracy, classification error rate, precision, sensitivity, specificity, and f1 score depend on the cutoff number we use. I visualized these measures below for my three models.
+
+(I would be glad if someone can shorten the code by using package)
+
 
 ```{r}
 accuracy.calc <- function(data, actual, proportion, cutoff){
