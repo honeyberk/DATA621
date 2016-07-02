@@ -1,0 +1,117 @@
+---
+title: "Data 621 - Assignment 1"
+date: "June 19, 2016"
+output: html_document
+---
+
+install.packages("devtools")
+devtools::install_github("hadley/tidyr")
+```{r ECHO=FALSE}
+library(leaps)
+library(ISLR)
+
+# To clear a Global Environemnt
+rm(list =ls())
+```
+
+#Load the data
+Our first step is to load all the required data, this includes the cleaned-up data.
+
+```{r}
+# Read in the data files 
+file_name <- "~/Downloads/Data/crime-training-data.csv"
+crime_data <- read.csv(file_name, header=TRUE, stringsAsFactors=FALSE, fileEncoding="latin1")
+
+file_name <- "~/Downloads/Data/crime-evaluation-data.csv"
+crime_eval_data <- read.csv(file_name, header=TRUE, stringsAsFactors=FALSE, fileEncoding="latin1")
+
+summary(crime_data)
+```
+
+Now that we have all the data, we should examine it.
+
+```{r}
+summary(crime_data)
+```
+# Using the glm function
+```{r}
+
+glm.fit <- glm(target~.,data=crime_data,family=binomial(link=logit))
+summary(glm.fit)
+
+glm.probs <-predict(glm.fit,type="response")
+glm.probs[1:5]
+glm.pred <- ifelse(glm.probs>0.5, "Above median crime rate", "Below median crime rate")
+attach(crime_data)
+table(glm.pred,target)
+mean(glm.pred==target)
+
+1-pchisq(186.1,452) #p-value of residuals
+1-pchisq(645.9,465) #p-value of Null
+#Results indicate this is a very strong model...
+```
+
+# Backwards model technique
+```{r}
+glm.fit2 <- update(glm.fit, ~ . - lstat)
+summary(glm.fit2)
+#This model is superior given the lower AIC, we shall continue
+
+glm.fit3 <- update(glm.fit2, ~ . - indus)
+summary(glm.fit3)
+#The AIC is higher here, so we will stop at glm.fit2
+
+confint(glm.fit2)
+```
+
+
+
+#Predicting the results (glm)
+```{r}
+
+#Prediction model
+pm <- predict(glm.fit2,crime_eval_data, type="response")
+summary(pm)
+```
+
+#Trying the glmulti package
+```{r}
+#from https://rstudio-pubs-static.s3.amazonaws.com/2897_9220b21cfc0c43a396ff9abf122bb351.html
+library(glmulti)
+glmulti.logistic.out <-
+    glmulti(target~., data = crime_data,
+            level = 1,               # No interaction considered
+            method = "h",            # Exhaustive approach
+            crit = "aic",            # AIC as criteria
+            confsetsize = 5,         # Keep 5 best models
+            plotty = F, report = F,  # No plot or interim reports
+            fitfunction = "glm",     # glm function
+            family = binomial)       # binomial family for logistic regression
+
+## Show 5 best models (Use @ instead of $ for an S4 object)
+glmulti.logistic.out@formulas
+
+## Show result for the best model
+summary(glmulti.logistic.out@objects[[1]])
+
+```
+#Predicting the results (glmulti)
+```{r}
+
+#Prediction model
+pm <- predict(glmulti.logistic.out@objects[[1]],crime_eval_data, type="response")
+summary(pm)
+```
+
+# Using the leaps package (ignore now, maybe for later)
+```{r}
+
+regfit.full=regsubsets(target~., data=crime_data, nvmax = 13)
+reg.summary = summary(regfit.full)
+names(reg.summary)
+plot(reg.summary$cp, xlab = "Number of Variables", ylab="Cp")
+which.min(reg.summary$cp)
+points(5,reg.summary$cp[5],pch=20,col="red")
+plot(regfit.full,scale="Cp")
+coef(regfit.full,5)
+```
