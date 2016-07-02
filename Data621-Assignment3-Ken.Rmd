@@ -32,6 +32,14 @@ Now that we have all the data, we should examine it.
 
 ```{r}
 summary(crime_data)
+
+#Let's take a look at the box plots for some of the values
+
+boxplot(nox~target, data=crime_data, ylab="nox",xlab="Above median crime rate? (0=No, 1=Yes)")
+boxplot(chas~target, data=crime_data, ylab="chas",xlab="Above median crime rate? (0=No, 1=Yes)")
+boxplot(dis~target, data=crime_data, ylab="dis",xlab="Above median crime rate? (0=No, 1=Yes)")
+boxplot(rad~target, data=crime_data, ylab="rad",xlab="Above median crime rate? (0=No, 1=Yes)")
+boxplot(ptratio~target, data=crime_data, ylab="ptratio",xlab="Above median crime rate? (0=No, 1=Yes)")
 ```
 # Using the glm function
 ```{r}
