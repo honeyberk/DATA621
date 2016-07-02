@@ -95,11 +95,27 @@ glmulti.logistic.out@formulas
 summary(glmulti.logistic.out@objects[[1]])
 
 ```
+
 #Predicting the results (glmulti)
 ```{r}
 
 #Prediction model
 pm <- predict(glmulti.logistic.out@objects[[1]],crime_eval_data, type="response")
+summary(pm)
+```
+
+#Using the bestglm package
+```{r}
+library(bestglm)
+bm <- bestglm(crime_data, family = binomial, IC = "AIC")
+```
+
+
+#Predicting the results (bestglm)
+```{r}
+
+#Prediction model
+pm2 <- predict(bm[[1]],crime_eval_data, type="response")
 summary(pm)
 ```
 
