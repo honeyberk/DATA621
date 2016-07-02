@@ -1,0 +1,130 @@
+---
+title: "Data621_HW2SanjiveNew"
+author: "sanjivek"
+date: "June 22, 2016"
+output: html_document
+---
+
+# Q2
+```{r, echo = F, warning = F}
+library(ggplot2)
+library(MASS)
+library(knitr)
+library(dplyr)
+library(faraway)
+library(ggthemes)
+library(gridExtra)
+library(leaps)
+library(caret)
+library(pROC)
+library(grid)
+library(reshape2)
+
+
+# read crime training data
+raw=read.csv("https://raw.githubusercontent.com/ksanju0/DATA-621/master/crime-training-data.csv", sep = ",", header= TRUE)
+str(raw)
+head(raw)
+
+
+crime <- raw
+str(crime)
+summary(crime)
+
+
+
+```
+
+
+# Build Model
+
+I will be using Leap package to find out the best subset Model as shown below:
+
+```{r}
+
+library(leaps)
+
+crimefit.full <-regsubsets(target~.,data=crime,nvmax=14) # cosidering all 14 variables to find the best fit subsets regression model
+
+summary(crimefit.full)
+crime.summary=summary(crimefit.full)
+
+names(crime.summary)
+plot(crime.summary$cp,xlab="Number of Variables", ylab="Cp")# plot the graph to show the Cp value with respect to 14 variable, Lowest Cp value is considered as number of variables relevant for the best subset regression model
+which.min(crime.summary$cp) # This help to provide the exact number of variables
+points(5,crime.summary$cp[5],pch=20,col="red") # visual highlight to the number of variables needed for the best fit model
+
+plot(crimefit.full,scale="Cp") # this gives a visual display of all the variables to see the data consistency acros all variables and lowest Cp data is at the top and variable less relevant have higher Cp value and they are at the bottom
+
+coef(crimefit.full,5) # this gives the details of intercept and coefcient factors for all relevant 5 variables for the model
+
+bestsubsetModel1 <- glm(target ~ nox + age + rad + ptratio + medv, family=binomial, data = crime) # glm package is used to build the model
+summary(bestsubsetModel1) 
+```
+
+***summary gives all the relevant statistics for the model such as intercept, logits for each variables, significance value to cross check and establish the hypothesis as key predictor of the crime in a particular area. Null deviance is  the indicator to tell how the model fits at intercept w without any explainatory variable and when the explainatory variables (all 5) are added it will become Residual Deviance and deviance should always be as low as possible for a good model. AIC provides us the context as how good is the quality of the model in comparison to other related models. So choosing the best fitting model we should the model with lowest AIC
+
+
+
+Forward Stepwise Selection: Lets try to build the model sing Forward stepwise selection methodolgy
+
+```{r}
+
+crimefit.fwd=regsubsets(target~.,data=crime,nvmax=14,method="forward")
+crimesummaryfwd=summary(crimefit.fwd)
+plot(crimesummaryfwd$cp,xlab="Number of Variables", ylab="Cp")
+which.min(crimesummaryfwd$cp)
+points(6,crimesummaryfwd$cp[6],pch=20,col="red")
+
+plot(crimefit.fwd,scale="Cp")
+coef(crimefit.fwd,6)
+bestsubsetModel2 <- glm(target ~ nox + age + rad + ptratio + black + medv, family=binomial, data = crime)
+summary(bestsubsetModel2)
+
+```
+
+## Creating the Predict model from the 2 best subset models selected above
+```{r}
+bestsubsetPredictModel1=predict(bestsubsetModel1,crime,type="response")
+bestsubsetPredictModel2=predict(bestsubsetModel2,crime,type="response")
+
+```
+
+# Select the best model out of these 2 predictive models, for this we will be using the pROC package and compare their AUC
+
+```{r}
+
+rocBestPredictModel1 <- roc(factor(target) ~ bestsubsetPredictModel1, data=crime)
+rocBestPredictModel2 <- roc(factor(target) ~ bestsubsetPredictModel2, data=crime)
+
+
+par(mfrow=c(2,2))
+
+plot(rocBestPredictModel1)
+plot(rocBestPredictModel2)
+
+par(mfrow=c(1,1))
+
+
+cat("Best Predict Model 1 Area under the curve =", auc(rocBestPredictModel1))
+cat("Best Predict Model 2 Area under the curve =", auc(rocBestPredictModel2))
+
+```
+
+
+Conclusion: Lowest value of AIC would be the model chosen as bets fit model here, considering the above 2 models, Model 1 has AIC value as 0.960 and Model 2 is 0.963 which is quiet near to the Model1, so we will go for further analysis of other factors to compare and select the best fit model.
+
+```{r}
+
+confusionMatrix()
+
+```
+
+
+
+
+
+
+
+
+
