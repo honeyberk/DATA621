@@ -1,0 +1,245 @@
+Title         : DATA 621 - Homework 1
+Author        : Honey Berk, Ken Markus, Sanjiv Kumar, Musa Ganiyu
+Logo          : False
+Title Note  : &date;
+
+[TITLE]
+   
+# Data Exploration
+
+The Training dataset contains 2,276 observations of 17 variables, one of which is an index. The other 16 variables are integer types.
+
+**Original Data**
+{font-size: 100%}
+~ Center
+|Variable Name   | Definition             | Theoretical |Assigned Variable        |
+|                |                        | Effect      |Name                |
++:---------------+:-----------------------+:-------------------+:---------------+
+|INDEX           |Identification Variable)|None                |index           |
+|TARGET_WINS     | Number of wins         |N/A                 |wins            |
+|TEAM_BATTING_H  | Base hits by batters   |Positive            |base_hits       |
+|TEAM_BATTING_2B |Doubles by batters      |Positive            |doubles         |
+|TEAM_BATTING_3B |Triples by batters      |Positive            |triples         |
+|TEAM_BATTING_HR |Homeruns by batters|Positive            |homeruns        |
+|TEAM_BATTING_BB |Walks by batters        |Positive            |walks           |
+|TEAM_BATTING_HBP|Batters hit by pitch    |Positive            |N/A             |
+|TEAM_BATTING_SO |Strikeouts by batters   |Negative            |b_strikeouts    |
+|TEAM_BASERUN_SB |Stolen bases            |Positive            |stolen_bases    |
+|TEAM_BASERUN_CS |Caught stealing         |Negative            |N/A             |
+|TEAM_FIELDING_E |Errors                  |Negative            |errors          |
+|TEAM_FIELDING_DP|Double Plays            |Positive            |double_plays    |
+|TEAM_PITCHING_BB|Walks allowed           |Negative            |walks_allowed   |
+|TEAM_PITCHING_H |Hits allowed            |Negative            |hits_allowed    |
+|TEAM_PITCHING_HR|Homeruns allowed        |Negative            |homeruns_allowed|
+|TEAM_PITCHING_SO|Strikeouts by pitchers  |Positive            |p_strikeouts    |
+{ font-size:90%; max-width:95%;} 
+~
+
+Summary statistics for the training data revealed issues with a number of variables, based upon an initial examination of min., max., median, mean, the number of missing values (NAs) and a few other factors. A cleaning procedure was undertaken to address these issues, during which the data was also checked for collinearity and for outlier data. Ulitmately, the cleaning process included either removing a variable from the dataset or imputing missing data where the variable was deemed critical to the analysis; and then another procedure for handling outliers. (See Data Cleaning section, below, for details.)
+
+**Summary Statistics - Original Data**
+
+~ Center
+
+![describe_train-1]
+
+[describe_train-1]: images/describe_train-1.PNG "describe_train-1" { width:auto; max-width:100%; }
+~
+# Data Preparation
+
+**Data Cleaning**
+{ font-size:120% }
+
+Following is a summary of steps that were undertaken to clean the training dataset:
+
+1. Deleted index variable, as it was used only as an identification variable.
+
+1. Added singles hit by batters (singles) variable (see Additional Variables section, below). 
+1. Deleted hit_by_pitch (2,085 NAs) and caught_stealing (772 NAs) variables, as they contained too many NAs to fill without significant effect.
+1. Used mice and VIM packages to analyze missing data, found a total of 621 NAs over 4 different variables (4.5%-12.5% of data); assumption that the missing data was random (MCAR). Used mice package to impute missing data, using predictive mean matching (PMM) method; then brought imputed data into dataset. 
+**Note: **PMM is described in the mice pacakge documentation as being based on work by Donald B. Rubin, Harvard Univeristy (Rubin 1987, p. 168, formulas a and b).[^fn]. Compared with imputation methods based on the normal distribution, PMM is said to produces imputed values that are much more like real values. That means that if the original variable is skewed, the imputed values will also be skewed; if the original values are discrete, the imputed values will also be discrete; etc. That’s because the imputed values are, in essence, real values that are “borrowed” from the real data.
+[^fn]: Rubin, D.B. (1987). Multiple imputation for nonresponse in surveys. New York: Wiley.
+1. Boxplots were then generated with the imputed data set to check for outliers.
+ 
+![boxplot_ctrain_outlier_ck-4]
+[boxplot_ctrain_outlier_ck-4]: images/boxplot_ctrain_outlier_ck-4.PNG "boxplot_ctrain_outlier_ck-4" { width:auto; max-width:100% }
+Examined variables with outliers: singles, hits_allowed, errors, stolen_bases, p_strikeouts, walks_allowed, base_hits), converted outliers to NA values. This procedure included:
+  * Generating a qqnorm plot, histogram and scatterplot for each variable
+  * Using boxplot.stats function to identify outlier values
+  * Recoding outlier values as NA
+  * Rechecking qqnorm and histogram plots to check for normal distribution
+  * Checking skewness and kurtosis to confirm improvement
+
+**Summary Statistics - Clean Data**
+
+At this point, there were 2,276 observations of 15 variables. Following are summary statistics for the cleaned dataset:
+~ Center
+![describe_ftrain-5]
+
+[describe_ftrain-5]: images/describe_ftrain-5.PNG "describe_ftrain-5" { width:auto; max-width:100% }
+~
+As evidenced by the tables, skewness, kurtosis and standard error were significantly improved for all cleaned variables. As a further review of the cleaned data, qqnorm plots were generated for a few variables to compare original to cleaned data.
+~ Center
+![qqnorm_cleaned-6]
+
+[qqnorm_cleaned-6]: images/qqnorm_cleaned-6.PNG "qqnorm_cleaned-6" { width:auto; max-width:90% }
+~
+At the completion of the cleaning process, a new csv file was generated for the team to begin the modeling phase.
+
+Before the first model was generated, a correlation matrix was generated with the cleaned dataset, and some quick regression analyses were generated between certain suspect variables to confirm potential collinearity. Out of the four sets examined, two scenarios were deemed to have high potential for collinearity: base_hits was regressed against singles, doubles, triples and homeruns, with a resulting Adjusted R^2^ of 0.9943, was expected because base_hits is an aggregate variable; and homeruns was regressed against homeruns_allowed, resulting in an R^2^ of 0.9397.
+
+The correlation between homeruns and homeruns_allowed may be due to the following:
+
+* 'Era' in which the team(s) had the particular record. For example, during the 1090s and early 2000s a significant percentage of players were using performance-enhancing drugs, in particular steroids, to increase the power of their hits. This would lead to more home runs, and also more home runs allowed against the pitching.[^fn]
+
+[^fn]: https://en.wikipedia.org/wiki/Doping_in_baseball
+
+* Coaching strategy. A team with a strong offense, hitting a lot of home runs, may sacrifice its pitching and also allow for more home runs. We could test this hypothesis by seeing a correlation of home runs within a game for home and away teams. Within a game, a coach may opt to rest its stronger pitchers if they have already achieved a high number of runs.
+
+# Models
+
+**Model 1**
+{ font-size:120%; } 
+
+The first model was derived separately by two team members, each of whom used a different process. The first was a completely manual backward stepwise process, starting with all of the variables except those two mentioned above, then stepping backward to remove non-significant variables and variables that were identified as collinear by the use of variance inflation factors (VIF). VIF is a simple approach to identify collinearity among explanatory variables; VIF calculations are straightforward and easily comprehensible -- the higher the value, the higher the collinearity.
+
+This model was also derived via an automated stepwise procedure in R, with selection from both directions (forward and backward). All variables were included in the initial model for setup purposes, and a model was automatically selected after three steps. The step function (from the R stats package) adds and drops variables in steps and compares the models fitted in each step by the AIC (Akaike's 'An Information Criterion') and Mallows' C~p~, a test used to assess the fit of an OLS regression model (one of the issues it addresses is overfitting. The model selected by the automated stepwise procedure had an Adjusted R^2^ of 0.3982, an F-statistic of 137.9 pm 11 amd 2264 DF, but left one variable that was not significant (walks_allowed). A manual adjusted to the original automated model then duplicated the results of the full manual process, yielding our best model: Adjusted R^2^ of 0.3978, F-statistic of 168 on 9 and 2266 DF, p-value < 2.2e-16 and no non-significant variables.
+
+~ Center
+|Adj. R^2^|F-Statistic|DF    |p-value|MSE|RMSE|RSS|RSE|
++--------:+----------:+-----:+------:+--:+---:+--:+--:+
+|0.3978   |168|9, 2266|<2.2e-16|148.7727|12.19724|338606.7|12.22413|
+~
+
+**Equation:** _wins_ = 65.613028 + 0.004897*singles + 0.190433*triples + 0.093077*homeruns + 0.020435*walks - 0.020231*p_strikeouts
+ + 0.076054*stolen_bases + 0.008788*hits_allowed - 0.140377*errors - 0.155477*double_plays
+
+VIF values for this model were all acceptable (< 4.0).
+
+**Model 2**
+{ font-size:120%; } 
+
+For the second model, the cleaned data file was loaded and a backwards regression approach was then used to find the optimal model. All of the variables in the dataset were used with the exception of base_hits, as it was a composite of the individual hits variables (see explanation in Model 1 section). The first attempt, **model 2a**, yielded an Adjusted R^2^ of 0.3979 with six variables with high p-values (so not significant), and an F-statistic of 116.7 on 13 and 2262 DF. For **model 2b**, homeruns_allowed was removed, yielding an improved Adjusted R^2^ and F-statistic, with three variables still not significant. The doubles variable was removed for **model 2c**; the Adjusted R^2^ stayed the same but the F-statistic improved a bit, and there was still one variable that was not significant (walks_allowed). Removing walks_allowed for **model 2d** slightly decreased the Adjusted R^2^ and improved the F-statistic, but then caused one variable to no longer be significant (b_strikeouts).
+
+**Model 2c** seemed like the best model from this group:
+~ Center
+|Adj. R^2^|F-Statistic|DF    |p-value|MSE|RMSE|RSS|RSE|
++--------:+----------:+-----:+------:+--:+---:+--:+--:+
+|0.3982   |137.9|11, 2264|<2.2e-16|148.5268|12.1872|338046.9|12.2194|
+~
+
+**Equation:** _wins_ = 67.316797 + 0.025656*singles + 0.191212*triples
+ + 0.098316*homeruns + 0.035400*walks - 0.010937*b_strikeouts
+ + 0.077319*stolen_bases + 0.007471*hits_allowed - 0.014035*walks_allowed
+ - 0.011133*p_strikeouts - 0.139416*errors - 0.156985*double_plays
+
+A quick check revealed high VIF values for eight of the 11 variables, so this model was rejected.
+
+**Model 3**
+{ font-size:120% }
+
+The third model was derived using an automated all-subsets regression using the leaps R package. The regsubsets function was run with all of the variables except for the two omitted for collinearity issues, and then a plot of the best models was generated.
+
+![leaps-7]
+
+[leaps-7]: images/leaps-7.PNG "leaps-7" { width:auto; max-width:100% }
+
+Interpreting the plot is fairly simple: The block lines correspond to the variables that should be included in the optimal model, while the white spaces are variable to ignore. The vertical axis represents projected R^2^ value for each of the potential models.
+
+Using this method, the optimal model had an Adjusted R^2^ of 0.3944, F-statistic of 186.2 on 8 and 2267 DF, p-value < 2.2e-16, and left no non-significant variables.
+
+~ Center
+|Adj. R^2^|F-Statistic|DF    |p-value|MSE|RMSE|RSS|RSE|
++--------:+----------:+-----:+------:+--:+---:+--:+--:+
+|0.3998   |168|9, 2266|<2.2e-16|149.6613|12.23362|340629.2|12.25788|
+~
+
+**Equation:** _wins_ = 67.115154 + 0.033632*singles + 0.203135*triples
+ + 0.105446*homeruns - 0.020049*p_strikeouts
+ + 0.077883*stolen_bases + 0.019327*walks_allowed - 0.139635*errors - 0.151477*double_plays
+
+VIF values for this model were all acceptable (< 4.0).
+
+**Final Model** 
+{ font-size:120%; }
+
+Based upon the varied statistical metrics examined, Model 1 was chosen as the best model. However, before running predictions with this model, a Cook's distance plot was generated to check for influential observations, and three data records of interest were discovered: 416, 1342 and 1828.
+~ Center
+![cooks-8]
+
+[cooks-8]: images/cooks-8.PNG "cooks-8" { width:auto; max-width:100% }
+~
+These three records were examined, and seemed to contain some more extreme values; they were then removed from the dataset, and a new model was generated using the model 1 variables. As a result of this process, the model's statistical metrics all improved. Following are the final statistical metrics and equation:
+
+~ Center
+|Adj. R^2^|F-Statistic|DF    |p-value|MSE|RMSE|RSS|RSE|
++--------:+----------:+-----:+------:+--:+---:+--:+--:+
+|0.4096|176.1|9, 2263|<2.2e-16|144.9192|12.03824|329401.3|12.06481|
+~
+
+**Equation:** _wins_ = 61.259318 + 0.029953*singles + 0.213368*triples + 0.098129*homeruns + 0.020026*walks - 0.018399*p_strikeouts
+ + 0.072712*stolen_bases + 0.006974*hits_allowed - 0.139822*errors - 0.160044*double_plays
+ 
+**VIF values** for this model were all acceptable (< 4.0).
+
+Plots of residuals show a fairly normal distribution, without too many outliers. There is no real pattern, although the residuals are somewhat clustered.
+
+![residuals-14]
+
+[residuals-14]: images/residuals-14.PNG "residuals-14" { width:auto; max-width:100% }
+
+A histogram of the residuals shows a fairly normal distribution.
+
+![residuals-15]
+
+[residuals-15]: images/residuals-15.PNG "residuals-15" { width:auto; max-width:100% }
+
+**Evaluation Data Predictions**
+{ font-size:120% }
+
+The evaluation data was cleaned in a similar process to the training data:
+
+* Variables were renamed and index variable was deleted
+* Singles variable was created
+* The variables hit_by_pitch and caught_stealing were deleted, as they had too many missing values
+* Missing values were imputed using the same technique as with the training data (PMM), for double_plays, b_strikeouts, p_strikeouts and stolen_bases
+* A boxplot identified variables with outliers (singles, hits_allowed, walks_allowed, p_strikeouts, errors), and the outliers were adjusted using the same method as with the training data
+
+**Summary Statistics - Cleaned Evaluation Data**
+
+Following are summary statistics for the cleaned evaluation data:
+
+![describe_feval-9]
+
+[describe_feval-9]: images/describe_feval-9.PNG "describe_feval-9" { width:auto; max-width:100% }
+
+The prediction function was then run using the final model and the cleaned evaluation dataset.
+
+**Predicted Data**
+Following are summary statistics for the predicted wins:
+
+~ Center
+![predicted-1-10]
+
+[predicted-1-10]: images/predicted-1-10.PNG "predicted-1-10" { width:auto; max-width:100% }
+~
+Following are summary statistics for the complete evaluation dataset, included predicted wins:
+~ Center
+![predicted-1-11]
+
+[predicted-1-11]: images/predicted-1-11.PNG "predicted-1-11" { width:auto; max-width:100% }
+~
+
+Following is a preview of the complete evaluation dataset, included predicted wins:
+~ Center
+![predicted-1-12]
+
+[predicted-1-12]: images/predicted-1-12.PNG "predicted-1-12" { width:auto; max-width:100% }
+~
+
+**Discussion**
+{ font-size:120% }
+
+For the most part, the model follows logically, given what we know about the game of Baseball, especially on the batting side. We would expect triples and home runs to be a stronger factor in predicting wins than singles and walks. It is interesting to note the similarity in influence of walks and singles. However, the fact that doubles turned out to be non-essential is a surprising component.
+
+On the pitching/defense side there are quite a few aspects that are surprising when reviewing the model. For one, we would not expect strikeouts to be negatively correlated with wins, nor for that matter double plays. In fact, the influence of double plays is quite high in the reverse. One conjecture as to why this is the case is that a double play requires at least one person already on base, and thus double plays are only possible when the hitting team has already shown a degree of success in getting on base. As a follow-up, the relationship between hits allowed and double plays in particular may be interesting and how it corresponds to wins.
