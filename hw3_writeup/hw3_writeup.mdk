@@ -77,8 +77,26 @@ There was also a high degree of correlation indicated between some of the predic
 
 
 
-# Data Preparation
+# Models
 
+##All Subsets
+{ font-size: 120%; }
+
+The leaps package was used to generate the first model using the all subsets method. All 13 variables were considered with the _regsubsets_ command. Using Mallow's Cp, the optimal number of variables for the model was determined to be five. The following two plots were generated to illustrate this process.
+
+![4-mallowscp]
+
+[4-mallowscp]: images/4-mallowscp.PNG "4-mallowscp" { width:auto; max-width:100% }
+
+![5-mallowscp2]
+
+[5-mallowscp2]: images/5-mallowscp2.PNG "5-mallowscp2" { width:auto; max-width:90% }
+
+The predictors chosen for this model were: nox, age, rad, ptratio and medv. The _glm_ function was then used to generate this model, and the following equation resulted:
+
+~ Math
+target = -24.936540 + 25.334778*nox + 0.019403*age + 0.512600*rad + 0.274193*ptratio + 0.085445*medv
+~
 
 
 **Discussion**
