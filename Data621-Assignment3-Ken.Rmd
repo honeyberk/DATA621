@@ -4,8 +4,6 @@ date: "June 19, 2016"
 output: html_document
 ---
 
-install.packages("devtools")
-devtools::install_github("hadley/tidyr")
 ```{r ECHO=FALSE}
 library(leaps)
 library(ISLR)
@@ -25,26 +23,36 @@ crime_data <- read.csv(file_name, header=TRUE, stringsAsFactors=FALSE, fileEncod
 file_name <- "~/Downloads/Data/crime-evaluation-data.csv"
 crime_eval_data <- read.csv(file_name, header=TRUE, stringsAsFactors=FALSE, fileEncoding="latin1")
 
-summary(crime_data)
 ```
 
 Now that we have all the data, we should examine it.
 
 ```{r}
 summary(crime_data)
-
 #Let's take a look at the box plots for some of the values
-
-boxplot(nox~target, data=crime_data, ylab="nox",xlab="Above median crime rate? (0=No, 1=Yes)")
+boxplot(zn~target, data=crime_data, ylab="zn",xlab="Above median crime rate? (0=No, 1=Yes)")
+boxplot(indus~target, data=crime_data, ylab="indus",xlab="Above median crime rate? (0=No, 1=Yes)")
 boxplot(chas~target, data=crime_data, ylab="chas",xlab="Above median crime rate? (0=No, 1=Yes)")
+boxplot(nox~target, data=crime_data, ylab="nox",xlab="Above median crime rate? (0=No, 1=Yes)")
+boxplot(rm~target, data=crime_data, ylab="rm",xlab="Above median crime rate? (0=No, 1=Yes)")
+boxplot(dis~target, data=crime_data, ylab="dis",xlab="Above median crime rate? (0=No, 1=Yes)")
+boxplot(age~target, data=crime_data, ylab="age",xlab="Above median crime rate? (0=No, 1=Yes)")
 boxplot(dis~target, data=crime_data, ylab="dis",xlab="Above median crime rate? (0=No, 1=Yes)")
 boxplot(rad~target, data=crime_data, ylab="rad",xlab="Above median crime rate? (0=No, 1=Yes)")
+boxplot(tax~target, data=crime_data, ylab="tax",xlab="Above median crime rate? (0=No, 1=Yes)")
 boxplot(ptratio~target, data=crime_data, ylab="ptratio",xlab="Above median crime rate? (0=No, 1=Yes)")
+boxplot(black~target, data=crime_data, ylab="black",xlab="Above median crime rate? (0=No, 1=Yes)")
+boxplot(lstat~target, data=crime_data, ylab="lstat",xlab="Above median crime rate? (0=No, 1=Yes)")
+boxplot(medv~target, data=crime_data, ylab="medv",xlab="Above median crime rate? (0=No, 1=Yes)")
+
+#convert chas into a fact
+#crime_data$chas <- factor(crime_data$chas)
+
 ```
 # Using the glm function
 ```{r}
 
-glm.fit <- glm(target~.,data=crime_data,family=binomial(link=logit))
+glm.fit <- glm(target~.,data=crime_data,family=binomial(link="logit"))
 summary(glm.fit)
 
 glm.probs <-predict(glm.fit,type="response")
@@ -64,14 +72,62 @@ mean(glm.pred==target)
 glm.fit2 <- update(glm.fit, ~ . - lstat)
 summary(glm.fit2)
 #This model is superior given the lower AIC, we shall continue
+exp(glm.fit2$coefficients) #Odds ratios
+
+#marginal effects
+LogitScalar <- mean(dlogis(predict(glm.fit2, type = "link")))
+LogitScalar * coef(glm.fit2)
+
+#predicted probabilities
+plogit <- predict(glm.fit2, type="response")
+summary(plogit)
 
 glm.fit3 <- update(glm.fit2, ~ . - indus)
 summary(glm.fit3)
-#The AIC is higher here, so we will stop at glm.fit2
+
+#Let's remove all variables that are not significant
+glm.fit4 <- glm(target~nox+age+dis+rad+tax+ptratio+black+medv, family = binomial(link = "logit"))
+summary(glm.fit4)
+
+#We take a look at confusion matrices to help get a sense of which model is best
+table(true = target, pred = round(fitted(glm.fit)))
+table(true = target, pred = round(fitted(glm.fit2)))
+table(true = target, pred = round(fitted(glm.fit3)))
+table(true = target, pred = round(fitted(glm.fit4)))
+
+#McFadden Adjusted R-squared
+logit0 <- update(glm.fit, formula=target~1)
+McFadden <- 1-as.vector(logLik(glm.fit)/logLik(logit0))
+McFadden
+
+logit0 <- update(glm.fit2, formula=target~1)
+McFadden <- 1-as.vector(logLik(glm.fit2)/logLik(logit0))
+McFadden
+
+logit0 <- update(glm.fit3, formula=target~1)
+McFadden <- 1-as.vector(logLik(glm.fit3)/logLik(logit0))
+McFadden
+
+logit0 <- update(glm.fit4, formula=target~1)
+McFadden <- 1-as.vector(logLik(glm.fit4)/logLik(logit0))
+McFadden
 
 confint(glm.fit2)
 ```
 
+#Further analysis of the glm function
+```{r}
+loessfit1 <- loess(target ~ nox,degree=1,span=2/3)
+loessfit2 <- loess(glm.fit2$fitted.values ~ nox,degree=1,span=2/3)
+xx <- seq(.35,.9,0.05)
+summary(glm.fit2)
+par(mfrow=c(1,2))
+plot(nox,target,xlab="Fnox, x1", ylab="Y, Above median? (0=No, 1=Yes)")
+lines(xx,predict(loessfit1,data.frame(nox=xx)))
+
+plot(nox,glm.fit2$fitted.values,ylab=expression(hat(Y)),xlab="nox, x1")
+lines(xx,predict(loessfit2,data.frame(nox=xx)))
+```
 
 
 #Predicting the results (glm)
@@ -102,6 +158,43 @@ glmulti.logistic.out@formulas
 ## Show result for the best model
 summary(glmulti.logistic.out@objects[[1]])
 
+#Analysis of the model
+gmu <- glmulti.logistic.out@objects[[1]]
+table(true = target, pred = round(fitted(gmu)))
+
+McFadden <- 1-as.vector(logLik(gmu)/logLik(logit0))
+McFadden
+
+#Try again with new criteria (bic)
+glmulti.logistic.bic.out <-
+    glmulti(target~., data = crime_data,
+            level = 1,               # No interaction considered
+            method = "h",            # Exhaustive approach
+            crit = "bic",            # BIC as criteria
+            confsetsize = 5,         # Keep 5 best models
+            plotty = F, report = F,  # No plot or interim reports
+            fitfunction = "glm",     # glm function
+            family = binomial)       # binomial family for logistic regression
+
+## Show 5 best models (Use @ instead of $ for an S4 object)
+glmulti.logistic.bic.out@formulas
+
+## Show result for the best model
+summary(glmulti.logistic.bic.out@objects[[1]])
+```
+
+#Further analysis of the glmulti function
+```{r}
+loessfit1 <- loess(target ~ nox,degree=1,span=2/3)
+loessfit2 <- loess(gmu$fitted.values ~ nox,degree=1,span=2/3)
+xx <- seq(.35,.9,0.05)
+summary(gmu)
+par(mfrow=c(1,2))
+plot(nox,target,xlab="Fnox, x1", ylab="Y, Above median? (0=No, 1=Yes)")
+lines(xx,predict(loessfit1,data.frame(nox=xx)))
+
+plot(nox,gmu$fitted.values,ylab=expression(hat(Y)),xlab="nox, x1")
+lines(xx,predict(loessfit2,data.frame(nox=xx)))
 ```
 
 #Predicting the results (glmulti)
