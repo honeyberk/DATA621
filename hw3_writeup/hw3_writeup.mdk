@@ -92,12 +92,18 @@ The leaps package was used to generate the first model using the all subsets met
 
 [5-mallowscp2]: images/5-mallowscp2.PNG "5-mallowscp2" { width:auto; max-width:90% }
 
-The predictors chosen for this model were: nox, age, rad, ptratio and medv. The _glm_ function was then used to generate this model, and the following equation resulted:
-
+The predictors chosen for this model were: nox, age, rad, ptratio and medv. The _glm_ function was then used to generate this model, resulting in the following equation:
+save
 ~ Math
 target = -24.936540 + 25.334778*nox + 0.019403*age + 0.512600*rad + 0.274193*ptratio + 0.085445*medv
 ~
 
+Summary statistics showed all of the predictors to be significant:
+~Center
+![6-fit.1]
+
+[6-fit.1]: images/6-fit.1.PNG "6-fit.1" { width:auto; max-width:100% }
+~
 
 **Discussion**
 { font-size:120% }
