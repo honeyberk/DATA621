@@ -5,8 +5,13 @@ output: html_document
 ---
 
 ```{r ECHO=FALSE}
-library(leaps)
+library(leaps) #not relevant, we need bestglm
+library(bestglm)
 library(ISLR)
+library(dplyr)
+
+
+
 
 # To clear a Global Environemnt
 rm(list =ls())
@@ -46,8 +51,8 @@ boxplot(lstat~target, data=crime_data, ylab="lstat",xlab="Above median crime rat
 boxplot(medv~target, data=crime_data, ylab="medv",xlab="Above median crime rate? (0=No, 1=Yes)")
 
 #convert chas into a fact
-#crime_data$chas <- factor(crime_data$chas)
-
+crime_data$chas <- factor(crime_data$chas)
+crime_eval_data$chas <- factor(crime_eval_data$chas)
 ```
 # Using the glm function
 ```{r}
@@ -112,15 +117,21 @@ logit0 <- update(glm.fit4, formula=target~1)
 McFadden <- 1-as.vector(logLik(glm.fit4)/logLik(logit0))
 McFadden
 
-confint(glm.fit2)
+confint(glm.fit)
+
+#reviewing these, a change in sign indicates a really poor choice of coefficient, so we should remove zn, indus, rm, tax
+#Let's remove all variables that are not significant
+glm.fit5 <- glm(target~nox+age+dis+rad+ptratio+medv, family = binomial(link = "logit"))
+summary(glm.fit5)
+
+#Results, however are worse
 ```
 
 #Further analysis of the glm function
 ```{r}
 loessfit1 <- loess(target ~ nox,degree=1,span=2/3)
-loessfit2 <- loess(glm.fit2$fitted.values ~ nox,degree=1,span=2/3)
+loessfit2 <- loess(glm.fit$fitted.values ~ nox,degree=1,span=2/3)
 xx <- seq(.35,.9,0.05)
-summary(glm.fit2)
 par(mfrow=c(1,2))
 plot(nox,target,xlab="Fnox, x1", ylab="Y, Above median? (0=No, 1=Yes)")
 lines(xx,predict(loessfit1,data.frame(nox=xx)))
@@ -134,7 +145,7 @@ lines(xx,predict(loessfit2,data.frame(nox=xx)))
 ```{r}
 
 #Prediction model
-pm <- predict(glm.fit2,crime_eval_data, type="response")
+pm <- predict(glm.fit,crime_eval_data, type="response")
 summary(pm)
 ```
 
@@ -220,7 +231,7 @@ pm2 <- predict(bm[[1]],crime_eval_data, type="response")
 summary(pm)
 ```
 
-# Using the leaps package (ignore now, maybe for later)
+# Using the leaps/bestglm package (ignore now, maybe for later)
 ```{r}
 
 regfit.full=regsubsets(target~., data=crime_data, nvmax = 13)
@@ -231,4 +242,13 @@ which.min(reg.summary$cp)
 points(5,reg.summary$cp[5],pch=20,col="red")
 plot(regfit.full,scale="Cp")
 coef(regfit.full,5)
+
+crime_data <- rename(crime_data,y=target)
+summary(crime_data)
+bm <- bestglm(crime_data, family = binomial(link = "logit"), IC = "AIC", qLevel = 0.99, TopModels = 5,
+method = "exhaustive", intercept = TRUE, weights = NULL,
+nvmax = "default", RequireFullEnumerationQ = FALSE)
+bm$BestModel
+table(true = target, pred = round(fitted(glm.fit)))
+table(true = target, pred = round(fitted(bm$BestModel)))
 ```
