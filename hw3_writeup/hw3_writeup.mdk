@@ -6,11 +6,10 @@ Title Note  : &date;
 [TITLE]
    
 # Data Exploration
-
-The dataset under analysis this week contains information on crime for various neighborhoods of a major city. The Training dataset contains 466 observations of 14 variables. The response variable, "target", is a categorical variable that denotes whether the crime rate is above the median crime rate (1) or not (0) for that neighborhood. There is one categorical predictor variable, "chas", and 12 continuous predictor variables. 
-
-**Variables**
 {font-size: 100%}
+**Dataset**
+The dataset under analysis this week contains information on crime for various neighborhoods of a major city. The Training dataset contains 466 observations of 14 variables. The response variable, "target", is a categorical variable that denotes whether the crime rate is above the median crime rate (1) or not (0) for that neighborhood. There is one categorical predictor variable, "chas", and 12 continuous predictor variables. Following is a short description of each of the 14 variables.
+
 ~ Center
 |Variable Name   | Definition             | Theoretical |Assigned Variable        |
 |                |                        | Effect      |Name                |
