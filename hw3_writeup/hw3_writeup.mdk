@@ -1,5 +1,5 @@
-Title         : DATA 621 - Homework 1
-Author        : Honey Berk, Ken Markus, Sanjiv Kumar, Musa Ganiyu
+Title         : DATA 621 - Homework 3
+Author        : Honey Berk, Ken Markus
 Logo          : False
 Title Note  : &date;
 
@@ -7,9 +7,9 @@ Title Note  : &date;
    
 # Data Exploration
 
-The Training dataset contains 2,276 observations of 17 variables, one of which is an index. The other 16 variables are integer types.
+The dataset under analysis this week contains information on crime for various neighborhoods of a major city. The Training dataset contains 466 observations of 14 variables. The response variable, "target", is a categorical variable that denotes whether the crime rate is above the median crime rate (1) or not (0) for that neighborhood. There is one categorical predictor variable, "chas", and 12 continuous predictor variables. 
 
-**Original Data**
+**Variables**
 {font-size: 100%}
 ~ Center
 |Variable Name   | Definition             | Theoretical |Assigned Variable        |
