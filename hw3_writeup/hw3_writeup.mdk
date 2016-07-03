@@ -47,7 +47,9 @@ Boxplots of the raw data revealed issues with skewed data in a number of the pre
 
 [boxplots-1]: images/boxplots-1.PNG "boxplots-1" { width:auto; max-width:90% }
 
-A correlation matrix generated for the dataset showed highest correlation between the response variable and a number of the predictor variables: nox (0.857), dis (-0.771), rad (0.738) and age (0.720), tax (0.699), zn (-0.681), indus (-0.666) and black (-0.610). 
+A correlation matrix generated for the dataset showed high correlations between the response variable and a number of the predictor variables: nox (0.857), dis (-0.771), rad (0.738) and age (0.720), tax (0.699), zn (-0.681), indus (-0.666) and black (-0.610). 
+
+There was also a high degree of correlation indicated between some of the predictor variables, such as rad-tax, nox-indus, nox-dis and lstat-medv. This points to the potential for multicollinearity in any models that include these and other highly-correlated predictors. We will see if this is, indeed, the case when the models are generated. 
 
 ![corr-2]
 
