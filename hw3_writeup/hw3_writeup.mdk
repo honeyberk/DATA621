@@ -79,10 +79,15 @@ There was also a high degree of correlation indicated between some of the predic
 
 # Models
 
+
+## Backwards, Using Highly-Correlated Predictors
+
+
+
 ##All Subsets
 { font-size: 120%; }
 
-The leaps package was used to generate the first model using the all subsets method. All 13 variables were considered with the _regsubsets_ command. Using Mallow's Cp, the optimal number of variables for the model was determined to be five. The following two plots were generated to illustrate this process.
+The leaps package was used to generate the second model, using the all subsets method. All 13 variables were considered with the _regsubsets_ command. Using Mallow's Cp, the optimal number of variables for the model was determined to be five. The following two plots were generated to illustrate this process.
 
 ![4-mallowscp]
 
@@ -93,7 +98,7 @@ The leaps package was used to generate the first model using the all subsets met
 [5-mallowscp2]: images/5-mallowscp2.PNG "5-mallowscp2" { width:auto; max-width:90% }
 
 The predictors chosen for this model were: nox, age, rad, ptratio and medv. The _glm_ function was then used to generate this model, resulting in the following equation:
-save
+
 ~ Math
 target = -24.936540 + 25.334778*nox + 0.019403*age + 0.512600*rad + 0.274193*ptratio + 0.085445*medv
 ~
@@ -103,8 +108,14 @@ Summary statistics showed all of the predictors to be significant:
 ![6-fit.1]
 
 [6-fit.1]: images/6-fit.1.PNG "6-fit.1" { width:auto; max-width:100% }
-~
 
-**Discussion**
-{ font-size:120% }
+The following table summarizes selected analytics:
+
+|Deviance|Residual|AIC   |BIC       |AUC|
+|        |Deviance|      |          |   |
++-------:+-------:+-----:+---------:+--:+
+|10.28   | 224.71 |236.71| 261.5751 |   |
+
+
+
 
