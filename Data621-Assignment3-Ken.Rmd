@@ -9,7 +9,7 @@ library(leaps) #not relevant, we need bestglm
 library(bestglm)
 library(ISLR)
 library(dplyr)
-
+library(ggplot2)
 
 
 
@@ -50,6 +50,19 @@ boxplot(black~target, data=crime_data, ylab="black",xlab="Above median crime rat
 boxplot(lstat~target, data=crime_data, ylab="lstat",xlab="Above median crime rate? (0=No, 1=Yes)")
 boxplot(medv~target, data=crime_data, ylab="medv",xlab="Above median crime rate? (0=No, 1=Yes)")
 
+ggplot(crime_data, aes(x = zn)) + geom_density() #right-skewed normal
+ggplot(crime_data, aes(x = indus)) + geom_density() #NOT normal
+ggplot(crime_data, aes(x = nox)) + geom_density() #Poisson
+ggplot(crime_data, aes(x = rm)) + geom_density() #normal
+ggplot(crime_data, aes(x = age)) + geom_density() #some other distribution, seems wrong
+ggplot(crime_data, aes(x = dis)) + geom_density() #Poisson
+ggplot(crime_data, aes(x = rad)) + geom_density() #Nor normal - two humps
+ggplot(crime_data, aes(x = tax)) + geom_density() #Not normal (two humps)
+ggplot(crime_data, aes(x = ptratio)) + geom_density() #severely left skewed
+
+pairs(~zn+indus+nox+rm+age+dis+rad+tax+ptratio,data=crime_data,gap=0.4,cex.labels=1.5)
+
+
 #convert chas into a fact
 crime_data$chas <- factor(crime_data$chas)
 crime_eval_data$chas <- factor(crime_eval_data$chas)
@@ -76,18 +89,19 @@ mean(glm.pred==target)
 ```{r}
 glm.fit2 <- update(glm.fit, ~ . - lstat)
 summary(glm.fit2)
-#This model is superior given the lower AIC, we shall continue
-exp(glm.fit2$coefficients) #Odds ratios
+#This model is not superior given the lower AIC, we shall continue with the first
+
+exp(glm.fit$coefficients) #Odds ratios
 
 #marginal effects
-LogitScalar <- mean(dlogis(predict(glm.fit2, type = "link")))
-LogitScalar * coef(glm.fit2)
+LogitScalar <- mean(dlogis(predict(glm.fit, type = "link")))
+LogitScalar * coef(glm.fit)
 
 #predicted probabilities
-plogit <- predict(glm.fit2, type="response")
+plogit <- predict(glm.fit, type="response")
 summary(plogit)
 
-glm.fit3 <- update(glm.fit2, ~ . - indus)
+glm.fit3 <- update(glm.fit, ~ . - indus)
 summary(glm.fit3)
 
 #Let's remove all variables that are not significant
@@ -136,7 +150,7 @@ par(mfrow=c(1,2))
 plot(nox,target,xlab="Fnox, x1", ylab="Y, Above median? (0=No, 1=Yes)")
 lines(xx,predict(loessfit1,data.frame(nox=xx)))
 
-plot(nox,glm.fit2$fitted.values,ylab=expression(hat(Y)),xlab="nox, x1")
+plot(nox,glm.fit$fitted.values,ylab=expression(hat(Y)),xlab="nox, x1")
 lines(xx,predict(loessfit2,data.frame(nox=xx)))
 ```
 
@@ -192,6 +206,13 @@ glmulti.logistic.bic.out@formulas
 
 ## Show result for the best model
 summary(glmulti.logistic.bic.out@objects[[1]])
+#Note that residual deviance is worse for BIC method vs. AIC
+
+gmu.bic <- glmulti.logistic.bic.out@objects[[1]]
+table(true = target, pred = round(fitted(gmu.bic)))
+
+McFadden <- 1-as.vector(logLik(gmu)/logLik(logit0))
+McFadden
 ```
 
 #Further analysis of the glmulti function
@@ -212,22 +233,7 @@ lines(xx,predict(loessfit2,data.frame(nox=xx)))
 ```{r}
 
 #Prediction model
-pm <- predict(glmulti.logistic.out@objects[[1]],crime_eval_data, type="response")
-summary(pm)
-```
-
-#Using the bestglm package
-```{r}
-library(bestglm)
-bm <- bestglm(crime_data, family = binomial, IC = "AIC")
-```
-
-
-#Predicting the results (bestglm)
-```{r}
-
-#Prediction model
-pm2 <- predict(bm[[1]],crime_eval_data, type="response")
+pm <- predict(gmu,crime_eval_data, type="response")
 summary(pm)
 ```
 
@@ -243,12 +249,29 @@ points(5,reg.summary$cp[5],pch=20,col="red")
 plot(regfit.full,scale="Cp")
 coef(regfit.full,5)
 
+#we must rename the target column in order for the bestglm function to work
 crime_data <- rename(crime_data,y=target)
 summary(crime_data)
 bm <- bestglm(crime_data, family = binomial(link = "logit"), IC = "AIC", qLevel = 0.99, TopModels = 5,
 method = "exhaustive", intercept = TRUE, weights = NULL,
 nvmax = "default", RequireFullEnumerationQ = FALSE)
+
+bm.bic <- bestglm(crime_data, family = binomial(link = "logit"), IC = "BIC", qLevel = 0.99, TopModels = 5,
+method = "exhaustive", intercept = TRUE, weights = NULL,
+nvmax = "default", RequireFullEnumerationQ = FALSE)
+
 bm$BestModel
+bm.bic$BestModel
 table(true = target, pred = round(fitted(glm.fit)))
 table(true = target, pred = round(fitted(bm$BestModel)))
+table(true = target, pred = round(fitted(bm.bic$BestModel)))
+```
+
+#ROC Curve analysis
+
+```{r}
+library(pROC)
+auc(crime_data$y, glm.fit$fitted.values)
+auc(crime_data$y, gmu$fitted.values)
+auc(crime_data$y, gmu.bic$fitted.values)
 ```
