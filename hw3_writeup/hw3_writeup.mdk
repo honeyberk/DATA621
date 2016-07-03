@@ -13,9 +13,9 @@ Title Note  : &date;
 The dataset under analysis this week contains information on crime for various neighborhoods of a major city. The Training dataset contains 466 observations of 14 variables. The response variable, target, is a categorical variable that denotes whether the crime rate is above the median crime rate (1) or not (0) for that neighborhood. There is one categorical predictor variable, chas, and 12 continuous predictor variables. Following is a short description of each of the 14 variables.
 
 ~ Center
-+--------+-----------+
+
 |Name    | Definition                                                                         |
-+:-------+:-----------------------------------------------------------------------------------+
+|:-------+:-----------------------------------------------------------------------------------|
 |zn      |proportion of residential land zoned for large lots (predictor)                     |
 |indus   |proportion of non-retail business acres per suburb (predictor)                      |
 |chas    |a dummy variable for whether the suburb borders the Charles River (predictor)       |
@@ -30,30 +30,47 @@ The dataset under analysis this week contains information on crime for various n
 |lstat   |lower status of the population (percent) (predictor)                                |
 |medv    |median value of owner-occupied homes in \$1000s (predictor)                         |
 |target  |whether the crime rate is above the median crime rate (1) or not (0) (response)     |
-+--------+------------------------------------------------------------------------------------+
+|----|----|
 ~
+An initial look at the data confirmed that the response variable, target, and the predictor chas were categorical. It also pointed to some large differences in the scale of some of the variables, particularly tax, black and age.
 
-An initial review of the dataset revealed that there were no missing values (NAs) and pointed to the response and one other variable as being categorical. The two categorical variables were recoded as factors and renamed appropriately (target: below and above; chas: no and yes). 
+~ Center
+![0-summary]
+
+[0-summary]: images/0-summary.PNG "0-summary" { width:auto; max-width:90% }
+~
+An initial review of the dataset revealed that there were no missing values (NAs).
+
+
+
+Boxplots were then generated to examine the distributions of each of the variables.
+
+![boxplots-1]
+
+[boxplots-1]: images/boxplots-1.PNG "boxplots-1" { width:auto; max-width:100% }
+
 
 **Summary Statistics**
 { font-size: 120%; }
 
 Summary statistics were generated for the dataset:
 
- 
 
-Boxplots of the raw data revealed issues with skewed data in a number of the predictors, but especially zn, black and chas. 
-![boxplots-1]
 
-[boxplots-1]: images/boxplots-1.PNG "boxplots-1" { width:auto; max-width:90% }
 
-A correlation matrix generated for the dataset showed high correlations between the response variable and a number of the predictor variables: nox (0.857), dis (-0.771), rad (0.738) and age (0.720), tax (0.699), zn (-0.681), indus (-0.666) and black (-0.610). 
 
-There was also a high degree of correlation indicated between some of the predictor variables, such as rad-tax, nox-indus, nox-dis and lstat-medv. This points to the potential for multicollinearity in any models that include these and other highly-correlated predictors. We will see if this is, indeed, the case when the models are generated. 
+A correlation matrix generated for the dataset:
 
+~Center
 ![corr-2]
 
 [corr-2]: images/corr-2.PNG "corr-2" { width:auto; max-width:100% }
+~
+
+High correlations were found between the response variable and a number of the predictor variables: nox (0.857), dis (-0.771), rad (0.738), age (0.720), tax (0.699), zn (-0.681), indus (-0.666) and black (-0.610). 
+
+There was also a high degree of correlation indicated between some of the predictor variables, such as rad-tax, nox-indus, nox-dis and lstat-medv. This points to the potential for multicollinearity in any models that include these and other highly-correlated predictors. We will see if this is, indeed, the case when the models are generated. 
+
 
 
 
