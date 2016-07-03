@@ -10,9 +10,10 @@ Title Note  : &date;
 **Dataset**
 { font-size: 120%; }
 
-The dataset under analysis this week contains information on crime for various neighborhoods of a major city. The Training dataset contains 466 observations of 14 variables. The response variable, "target", is a categorical variable that denotes whether the crime rate is above the median crime rate (1) or not (0) for that neighborhood. There is one categorical predictor variable, "chas", and 12 continuous predictor variables. Following is a short description of each of the 14 variables.
+The dataset under analysis this week contains information on crime for various neighborhoods of a major city. The Training dataset contains 466 observations of 14 variables. The response variable, target, is a categorical variable that denotes whether the crime rate is above the median crime rate (1) or not (0) for that neighborhood. There is one categorical predictor variable, chas, and 12 continuous predictor variables. Following is a short description of each of the 14 variables.
 
 ~ Center
++--------+-----------+
 |Name    | Definition                                                                         |
 +:-------+:-----------------------------------------------------------------------------------+
 |zn      |proportion of residential land zoned for large lots (predictor)                     |
@@ -29,14 +30,28 @@ The dataset under analysis this week contains information on crime for various n
 |lstat   |lower status of the population (percent) (predictor)                                |
 |medv    |median value of owner-occupied homes in \$1000s (predictor)                         |
 |target  |whether the crime rate is above the median crime rate (1) or not (0) (response)     |
-+--------+------------------------------------------------------------------------------------+sa
-{ font-size:90%; max-width:95%;} 
++--------+------------------------------------------------------------------------------------+
 ~
 
-An initial review of the dataset revealed that there were no missing values (NAs). Boxplots of the raw data revealed issues with skewed data in a number of the predictors, but especially zn, black and chas. 
+An initial review of the dataset revealed that there were no missing values (NAs) and pointed to the response and one other variable as being categorical. The two categorical variables were recoded as factors and renamed appropriately (target: below and above; chas: no and yes). 
+
+**Summary Statistics**
+{ font-size: 120%; }
+
+Summary statistics were generated for the dataset:
+
+ 
+
+Boxplots of the raw data revealed issues with skewed data in a number of the predictors, but especially zn, black and chas. 
 ![boxplots-1]
 
 [boxplots-1]: images/boxplots-1.PNG "boxplots-1" { width:auto; max-width:90% }
+
+A correlation matrix generated for the dataset showed highest correlation between the response variable and a number of the predictor variables: nox (0.857), dis (-0.771), rad (0.738) and age (0.720), tax (0.699), zn (-0.681), indus (-0.666) and black (-0.610). 
+
+![corr-2]
+
+[corr-2]: images/corr-2.PNG "corr-2" { width:auto; max-width:100% }
 
 
 
