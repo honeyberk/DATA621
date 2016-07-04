@@ -79,7 +79,6 @@ There was also a high degree of correlation indicated between some of the predic
 
 # Models
 
-
 ## Backwards, Using Highly-Correlated Predictors
 
 The first model was generated with the eight predictors that were found to be highly-correlated with the response variable (see above): _nox_, _dis_, _age_, _rad_, _tax_, _zn_, _indus_ and _black_. The first iteration found all but one of these predictors, _indus_, to be significant. The model was then re-run with the seven significant predictors:
@@ -93,7 +92,7 @@ The first model was generated with the eight predictors that were found to be hi
 The resulting equation is as follows:
 
 ~ Math
-target = -19.324142 + 36.432373*nox + 0.412916*dis + 0.715959*rad + 0.019555*age - 0.009145*tax - 0.064598*zn -0.009862*black
+target = -19.324142 + 36.432373nox + 0.412916dis + 0.715959rad + 0.019555age - 0.009145tax - 0.064598zn -0.009862black
 ~
 
 The following table summarizes selected analytics:
@@ -101,7 +100,7 @@ The following table summarizes selected analytics:
 |Residual|AIC   |BIC       |AUC|McFadden's|
 |Deviance|      |          |   |Pseudo $R^{2}$|
 +-------:+-------:+-----:+---------:+--:+---:+
-| 207.71 |223.7056| 256.8591 |   |0.6784125|
+| 207.71 |223.7056| 256.8591 |0.9676|0.6784125|
 
 ##All Subsets
 
@@ -118,7 +117,7 @@ The leaps package was used to generate the second model, using the all subsets m
 The predictors chosen for this model were: _nox_, _age_, _rad_, _ptratio_ and _medv_. The _glm_ function was then used to generate this model, resulting in the following equation:
 
 ~ Math
-target = -24.936540 + 25.334778*nox + 0.019403*age + 0.512600*rad + 0.274193*ptratio + 0.085445*medv
+target = -24.936540 + 25.334778nox + 0.019403age + 0.512600rad + 0.274193ptratio + 0.085445medv
 ~
 
 Summary statistics showed all of the predictors to be significant:
@@ -131,10 +130,10 @@ Summary statistics showed all of the predictors to be significant:
 
 The following table summarizes selected analytics:
 
-| |Residual|AIC   |BIC       |AUC|McFadden's|
-|       |Deviance|      |          |   |Pseudo $R^{2}$|
-+-------:+-------:+-----:+---------:+--:+---+
-| | 224.71 |236.7103| 261.5754 |   | 0.6520844 |
+|Residual|AIC   |BIC       |AUC|McFadden's|
+|Deviance|      |          |   |Pseudo $R^{2}$|
++-------:+-----:+---------:+--:+---+
+|224.71 on 460 DF|236.7103| 261.5754 |0.9605| 0.6520844 |
 
 
 ## glmulti Package
@@ -160,5 +159,5 @@ The following table summarizes selected analytics:
 |    |Residual|AIC     |BIC       |AUC|McFadden's    |
 |    |Deviance|        |          |   |Pseudo $R^{2}$|
 +---:+-------:+-------:+---------:+--:+--------------+
-|    | 224.71 |212.5141| 261.5754 |   | 0.7050298    |
+|    | 224.71 |212.5141| 261.5754 |0.9734| 0.7050298    |
 
