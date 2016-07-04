@@ -82,7 +82,15 @@ There was also a high degree of correlation indicated between some of the predic
 
 ## Backwards, Using Highly-Correlated Predictors
 
-The first model was generated with predictors that were found to be highly-correlated with the response variable (see above): _nox_, _dis_, _age_, _rad_, _tax_, _zn_, _indus_ and _black_. The first iteration found only four of these predictors to be significant: _nox_, _rad_, _age_ and _tax_. When the model was re-run with these predictors, all were deemed to be significant, and the following equation resulted:
+The first model was generated with the eight predictors that were found to be highly-correlated with the response variable (see above): _nox_, _dis_, _age_, _rad_, _tax_, _zn_, _indus_ and _black_. The first iteration found all but one of these predictors, _indus_, to be significant. The model was then re-run with the seven significant predictors:
+
+~ Center
+![7-fit.2a]
+
+[7-fit.2a]: images/7-fit.2a.PNG "7-fit.2a" { width:auto; max-width:100% }
+~
+
+The resulting equation is as follows:
 
 ~ Math
 target = -0.8179203 + 1.8387189*nox + 0.0035256*age + 0.0237801*rad - 0.0004336*tax
