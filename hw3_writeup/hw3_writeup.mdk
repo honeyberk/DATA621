@@ -98,10 +98,10 @@ target = -19.324142 + 36.432373*nox + 0.412916*dis + 0.715959*rad + 0.019555*age
 
 The following table summarizes selected analytics:
 
-| |Residual|AIC   |BIC       |AUC|
-| |Deviance|      |          |   |
-+-------:+-------:+-----:+---------:+--:+
-| | 207.71 |223.7056| 256.8591 |   |
+|Residual|AIC   |BIC       |AUC|McFadden's|
+|Deviance|      |          |   |Pseudo $R^{2}$|
++-------:+-------:+-----:+---------:+--:+---:+
+| 207.71 |223.7056| 256.8591 |   |0.6784125|
 
 ##All Subsets
 
@@ -122,18 +122,22 @@ target = -24.936540 + 25.334778*nox + 0.019403*age + 0.512600*rad + 0.274193*ptr
 ~
 
 Summary statistics showed all of the predictors to be significant:
+
 ~Center
 ![6-fit.1]
 
 [6-fit.1]: images/6-fit.1.PNG "6-fit.1" { width:auto; max-width:100% }
+~
 
 The following table summarizes selected analytics:
 
-| |Residual|AIC   |BIC       |AUC|
-|       |Deviance|      |          |   |
-+-------:+-------:+-----:+---------:+--:+
-| | 224.71 |236.7103| 261.5751 |   |
+| |Residual|AIC   |BIC       |AUC|McFadden's|
+|       |Deviance|      |          |   |Pseudo $R^{2}$|
++-------:+-------:+-----:+---------:+--:+---+
+| | 224.71 |236.7103| 261.5754 |   | 0.6520844 |
 
 
+## glmulti Package
 
-
+The third model was derived using the glmulti package, which finds the best models (the confidence set of models) among all possible models
+(the candidate set, as specified by the user). For this exercise, models were fitted with the glm function and ranked with the AIC criterion; the best models in this case were found through exhaustive screening of the candidates.
