@@ -144,3 +144,21 @@ The third model was derived using the glmulti package, which finds the best mode
 
 The predictors chosen for this model were: zn, nox, age, dis, rad, tax, ptratio, black, lstat and medv. The equation for this model was as follows:
 
+~ Math
+target = -34.831121 - 0.070361zn + 43.1917nox + 0.027461age + 0.671699dis + 0.743199rad - 0.008639tax + 0.353646ptratio - 0.011777black + 0.068969lstat + 0.147677medv
+~
+
+One of the predictors, _lstat_, was noted as not significant; however, removing it worsened the equation's statistical metrics. Summary statistics were as follows:
+
+~ Center
+![8-fit.glmulti]
+
+[8-fit.glmulti]: images/8-fit.glmulti.PNG "8-fit.glmulti" { width:auto; max-width:90% }
+~
+
+The following table summarizes selected analytics:
+
+|    |Residual|AIC     |BIC       |AUC|McFadden's    |
+|    |Deviance|        |          |   |Pseudo $R^{2}$|
++---:+-------:+-------:+---------:+--:+--------------+
+|    | 224.71 |212.5141| 261.5754 |   | 0.7050298    |
