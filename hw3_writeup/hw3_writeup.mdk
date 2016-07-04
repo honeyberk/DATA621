@@ -193,7 +193,13 @@ Here is a summary for the Predicted model:
 [10-coefficients]: images/10-coefficients.PNG "10-coefficients" { width:auto; max-width:100% }
 ~
 
-When we review the results of the model (above), we must recall that the sign of the coefficient represents whether or not the variable increases or decreases the probability. In order to see the impact of the actual variable, we leverage the marginal effects analysis and thus at least reduce the effect of different scales for each of the variables.
+When we review the results of the model (above), we must recall that the sign of the coefficient represents whether or not the variable increases or decreases the probability. In order to see the impact of the actual variable, we leverage the marginal effects analysis (below) and thus at least reduce the effect of different scales for each of the variables.
+
+~ Center
+![11-coeffs2]
+
+[11-coeffs2]: images/11-coeffs2.PNG "11-coeffs2" { width:auto; max-width:100% }
+~
 
 We can see that _nox_ has the largest marginal effect on the model, by at least two orders of magnitude. This may be surprising, however we can conjecture that more polluted areas indicate urban decay, and thus an increase in likelihood for higher crime.
 
