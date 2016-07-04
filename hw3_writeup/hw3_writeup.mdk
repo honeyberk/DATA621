@@ -93,7 +93,7 @@ The first model was generated with the eight predictors that were found to be hi
 The resulting equation is as follows:
 
 ~ Math
-target = -0.8179203 + 1.8387189*nox + 0.0035256*age + 0.0237801*rad - 0.0004336*tax
+target = -19.324142 + 36.432373*nox + 0.412916*dis + 0.715959*rad + 0.019555*age - 0.009145*tax - 0.064598*zn -0.009862*black
 ~
 
 
@@ -123,10 +123,10 @@ Summary statistics showed all of the predictors to be significant:
 
 The following table summarizes selected analytics:
 
-|Deviance|Residual|AIC   |BIC       |AUC|
-|        |Deviance|      |          |   |
+| |Residual|AIC   |BIC       |AUC|
+|       |Deviance|      |          |   |
 +-------:+-------:+-----:+---------:+--:+
-|10.28   | 224.71 |236.71| 261.5751 |   |
+| | 224.71 |236.7103| 261.5751 |   |
 
 
 
