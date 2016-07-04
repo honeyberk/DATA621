@@ -158,3 +158,19 @@ The following table summarizes selected analytics:
 +---:+-------:+-------:+---------:+--:+--------------+
 | 190.51 on 455 DF |212.5141| 258.1002 |0.9734| 0.7050298    |
 ~
+
+
+
+# Model Selection & Prediction
+
+Here are the analytics for the three models:
+
+|Model |Residual|AIC     |BIC       |AUC|McFadden's    |
+| |Deviance|        |          |   |Pseudo $R^{2}$|
++-+---:+-------:+-------:+---------:+--:+--------------+
+| |
+|2.1  |207.71 on 458 DF |223.7056| 256.8591 |0.9676| 0.6784125    |
+|2.2  |224.71 on 460 DF |236.7103| 261.5754 |0.9605| 0.6520844    |
+|2.3  |190.51 on 455 DF |212.5141| 258.1002 |0.9734| 0.7050298    |
+
+Model 2.3, the one generated using the glmulti package, has the lowest residual deviance, lowest AIC, the second lowest BIC, highest AUC (area under the curve) and the highest McFadden's Pseudo $R^{2}$. Based on these rankings, we will choose this as the best model.
