@@ -177,7 +177,7 @@ Model 2.3, the one generated using the glmulti package, has the lowest residual 
 
 This models was then used to predict the values for _target_, based upon the evaluation data supplied.
 
-Here is a summary for the Predicted model:
+Here is a summary for the _target_ response in the predicted model:
 
 ~ Center
 |Min.       |1st Qu.   |Median     |Mean       |3rd Qu.    |Max.       |
