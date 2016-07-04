@@ -82,10 +82,14 @@ There was also a high degree of correlation indicated between some of the predic
 
 ## Backwards, Using Highly-Correlated Predictors
 
+The first model was generated with predictors that were found to be highly-correlated with the response variable (see above): _nox_, _dis_, _age_, _rad_, _tax_, _zn_, _indus_ and _black_. The first iteration found only four of these predictors to be significant: _nox_, _rad_, _age_ and _tax_. When the model was re-run with these predictors, all were deemed to be significant, and the following equation resulted:
+
+~ Math
+target = -0.8179203 + 1.8387189*nox + 0.0035256*age + 0.0237801*rad - 0.0004336*tax
+~
 
 
 ##All Subsets
-{ font-size: 120%; }
 
 The leaps package was used to generate the second model, using the all subsets method. All 13 variables were considered with the _regsubsets_ command. Using Mallow's Cp, the optimal number of variables for the model was determined to be five. The following two plots were generated to illustrate this process.
 
