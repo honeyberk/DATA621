@@ -155,10 +155,10 @@ One of the predictors, _lstat_, was noted as not significant; however, removing 
 
 [8-fit.glmulti]: images/8-fit.glmulti.PNG "8-fit.glmulti" { width:auto; max-width:90% }
 ~
-
 The following table summarizes selected analytics:
 
 |    |Residual|AIC     |BIC       |AUC|McFadden's    |
 |    |Deviance|        |          |   |Pseudo $R^{2}$|
 +---:+-------:+-------:+---------:+--:+--------------+
 |    | 224.71 |212.5141| 261.5754 |   | 0.7050298    |
+
