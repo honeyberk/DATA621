@@ -179,11 +179,16 @@ This models was then used to predict the values for _target_, based upon the eva
 
 Here is a summary for the _target_ response in the predicted model:
 
-~ Center
 |Min.       |1st Qu.   |Median     |Mean       |3rd Qu.    |Max.       |
 |-|-|-|-|-|-|
 | 0.0000008 | 0.0925100| 0.6359000 | 0.5361000 | 1.0000000 | 1.0000000 |
-~
+
+Here is the training data:
+
+|Min.       |1st Qu.   |Median     |Mean       |3rd Qu.    |Max.       |
+|-|-|-|-|-|-|
+| 0.0000 | 0.0000| 0.0000 | 0.4914 | 1.0000000 | 1.0000000 |
+
 
 # Discussion
 
