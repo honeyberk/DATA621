@@ -115,7 +115,7 @@ The leaps package was used to generate the second model, using the all subsets m
 
 [5-mallowscp2]: images/5-mallowscp2.PNG "5-mallowscp2" { width:auto; max-width:90% }
 
-The predictors chosen for this model were: nox, age, rad, ptratio and medv. The _glm_ function was then used to generate this model, resulting in the following equation:
+The predictors chosen for this model were: _nox_, _age_, _rad_, _ptratio_ and _medv_. The _glm_ function was then used to generate this model, resulting in the following equation:
 
 ~ Math
 target = -24.936540 + 25.334778*nox + 0.019403*age + 0.512600*rad + 0.274193*ptratio + 0.085445*medv
@@ -140,4 +140,7 @@ The following table summarizes selected analytics:
 ## glmulti Package
 
 The third model was derived using the glmulti package, which finds the best models (the confidence set of models) among all possible models
-(the candidate set, as specified by the user). For this exercise, models were fitted with the glm function and ranked with the AIC criterion; the best models in this case were found through exhaustive screening of the candidates.
+(the candidate set, as specified by the user). For this exercise, models were fitted with the glm function and ranked with the AIC criterion. The best models in this case were found through exhaustive screening of the candidates, and there were no interactions considered between predictors.
+
+The predictors chosen for this model were: zn, nox, age, dis, rad, tax, ptratio, black, lstat and medv. The equation for this model was as follows:
+
