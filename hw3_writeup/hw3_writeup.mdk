@@ -38,30 +38,25 @@ An initial look at the data confirmed that the response variable, target, and th
 ![0-summary]
 
 [0-summary]: images/0-summary.PNG "0-summary" { width:auto; max-width:90% }
-
 ~
-An initial review of the dataset revealed that there were no missing values (NAs).
 
+An initial review of the dataset revealed that there were no missing values (NAs). Summary statistics were generated for the dataset:
 
+~ Center
+![9-summary]
 
-Boxplots were then generated to examine the distributions of each of the variables.
+[9-summary]: images/9-summary.PNG "9-summary" { width:auto; max-width:100% }
+~
 
+Boxplots were then generated to examine the distributions of each of the variables. Although data for logistic regression is not required to be normalized, the boxplots did show that there were a number of variables with highly skewed data, most notably, _zn_ and _black_. 
+
+~ Center
 ![1-boxplots]
 
 [1-boxplots]: images/1-boxplots.PNG "1-boxplots" { width:auto; max-width:90% }
+~
 
-
-
-**Summary Statistics**
-{ font-size: 120%; }
-
-Summary statistics were generated for the dataset:
-
-
-
-
-
-A correlation matrix generated for the dataset:
+A correlation matrix was generated for the dataset:
 
 ~Center
 ![2-corr]
@@ -100,7 +95,7 @@ The following table summarizes selected analytics:
 |Residual|AIC   |BIC       |AUC|McFadden's|
 |Deviance|      |          |   |Pseudo $R^{2}$|
 +-------:+-------:+-----:+---------:+--:+---:+
-| 207.71 |223.7056| 256.8591 |0.9676|0.6784125|
+| 207.71 on 458 DF |223.7056| 256.8591 |0.9676|0.6784125|
 
 ##All Subsets
 
@@ -156,8 +151,8 @@ One of the predictors, _lstat_, was noted as not significant; however, removing 
 ~
 The following table summarizes selected analytics:
 
-|    |Residual|AIC     |BIC       |AUC|McFadden's    |
-|    |Deviance|        |          |   |Pseudo $R^{2}$|
+|Residual|AIC     |BIC       |AUC|McFadden's    |
+|Deviance|        |          |   |Pseudo $R^{2}$|
 +---:+-------:+-------:+---------:+--:+--------------+
-|    | 224.71 |212.5141| 261.5754 |0.9734| 0.7050298    |
+| 190.51 on 455 DF |212.5141| 258.1002 |0.9734| 0.7050298    |
 
