@@ -174,3 +174,8 @@ Here are the analytics for the three models:
 |2.3  |190.51 on 455 DF |212.5141| 258.1002 |0.9734| 0.7050298    |
 
 Model 2.3, the one generated using the glmulti package, has the lowest residual deviance, lowest AIC, the second lowest BIC, highest AUC (area under the curve) and the highest McFadden's Pseudo $R^{2}$. Based on these rankings, we will choose this as the best model.
+
+This models was then used to predict the values for _target_, based upon the evaluation data supplied.
+
+Here is a summary for the Predicted model:
+|Min.|1st Qu.|Median|Mean|3rd Qu.|Max.|
