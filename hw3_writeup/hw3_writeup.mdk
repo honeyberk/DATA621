@@ -96,6 +96,12 @@ The resulting equation is as follows:
 target = -19.324142 + 36.432373*nox + 0.412916*dis + 0.715959*rad + 0.019555*age - 0.009145*tax - 0.064598*zn -0.009862*black
 ~
 
+The following table summarizes selected analytics:
+
+| |Residual|AIC   |BIC       |AUC|
+| |Deviance|      |          |   |
++-------:+-------:+-----:+---------:+--:+
+| | 207.71 |223.7056| 256.8591 |   |
 
 ##All Subsets
 
