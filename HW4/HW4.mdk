@@ -1,0 +1,221 @@
+Title         : DATA 621 - Homework 4
+Author        : Honey Berk, Ken Markus
+Logo          : False
+Title Note  : &date;
+
+[TITLE]
+   
+# Data Exploration
+
+**Dataset**
+{ font-size: 120%; }
+
+The dataset under analysis this week contains information on customers for an auto insurance corporation. The dataset contains more than 8000 records, there are actually two response variables we will be exploring: (1) TARGET_FLAG, which denotes whether or not the customer was in a crash; and, (2) TARGET_AMT, which denotes the dollar-value of the cost of the crash. There are 24 predictor variables included in the training dataset:
+~ Center
+
+|Name     | Definition            | Theoretical Effect|
+|:--------+:-----------+:-----------------------------|
+|AGE      |age of driver          |Very young people tend to be risky. Maybe very old people also.|
+|BLUEBOOK |Value of Vehicle       |Unknown effect on probability of collision, but probably effect the payout if there is a crash|
+|CAR_AGE| Vehicle Age             | Unknown effect on probability of collision, but probably effect the payout if there is a crash
+|**CAR_TYPE**| Type of Car            | Unknown effect on probability of collision, but probably effect the payout if there is a crash
+|**CAR_USE**| Vehicle Use             |Commercial vehicles are driven more, so might increase probability of collision
+|CLM_FREQ| # Claims (Past 5 Years)| The more claims you filed in the past, the more you are likely to file in the future
+|**EDUCATION**| Max Education Level   | Unknown effect, but in theory more educated people tend to drive more safely
+|HOMEKIDS| # Children at Home     | Unknown effect
+|HOME_VAL| Home Value             | In theory, home owners tend to drive more responsibly
+|INCOME| Income                   |In theory, rich people tend to get into fewer crashes
+|**JOB**| Job Category                | In theory, white collar jobs tend to be safer
+|KIDSDRIV| # Driving Children     |When teenagers drive your car, you are more likely to get into crashes
+|**MSTATUS**| Marital Status          |In theory, married people drive more safely
+|MVR_PTS| Motor Vehicle Record Points| If you get lots of traffic tickets, you tend to get into more crashes
+|OLDCLAIM| Total Claims (Past 5 Years)| If your total payout over the past five years was high, this suggests future payouts will be high
+|**PARENT1**| Single Parent           |Unknown effect
+|**RED_CAR**| A Red Car               |Urban legend says that red cars (especially red sports cars) are more risky. Is that true?
+|**REVOKED**| License Revoked (Past 7 Years)| If your license was revoked in the past 7 years, you probably are a more risky driver.
+|**SEX**| Gender                      |Urban legend says that women have less crashes then men. Is that true?
+|TIF| Time in Force               |People who have been customers for a long time are usually more safe.
+|TRAVTIME| Distance to Work       |Long drives to work usually suggest greater risk
+|**URBANICITY**| Home/Work Area       |Unknown
+|YOJ| Years on Job                |People who stay at a job for a long time are usually more safe         |                 |
+|---------|-----------------|
+~
+An initial look at the data confirmed that there were a lot of categorical variables, including one of the response variables, TARGET_FLAG. The categorical variables are denoted in **bold** above.
+The data for each customer record was not complete, and we can see that there were significant number of NAs for the following predictor variables: CAR_AGE, YOJ, and AGE.
+
+Summary statistics were generated for the dataset:
+~ Center
+![Screen Shot 2016-07-09 at 3.09.08 PM]
+
+[Screen Shot 2016-07-09 at 3.09.08 PM]: images/Screen-Shot-2016-07-09-at-3.09.08-PM.png "Screen Shot 2016-07-09 at 3.09.08 PM" { width:auto; max-width:90% }
+~
+
+Boxplots and histograms were  generated to examine the distributions of each of the variables. Note that this was subsequent to some of the data cleanup described in the following section. 
+While we planned to apply logistic regression to the first model (the probability of a crash) and data for logistic regression is not required to be normalized, the boxplots and histograms did show that there were a number of variables with highly skewed data, and a large amount of outliers, most notably, _OLDCLAIM_ and _INCOME_. The response variable, __TARGET_AMT__, also had a large number of outliers.
+
+~ Center
+![Boxplot_hw4]
+
+[Boxplot_hw4]: images/Boxplot_hw4.png "Boxplot_hw4" { width:auto; max-width:90% }
+
+![Histograms_HW4]
+
+[Histograms_HW4]: images/Histograms_HW4.png "Histograms_HW4" { width:auto; max-width:90% }
+
+~
+
+A correlation matrix was generated for the dataset:
+
+~Center
+![2-corr]
+
+[2-corr]: images/2-corr.PNG "2-corr" { width:auto; max-width:90% }
+
+~
+
+High correlations were found between the response variable and a number of the predictor variables: _nox_ (0.857), _dis_ (-0.771), _rad_ (0.738), _age_ (0.720), _tax_ (0.699), _zn_ (-0.681), _indus_ (-0.666) and _black_ (-0.610). 
+
+There was also a high degree of correlation indicated between some of the predictor variables, such as _rad-tax_, _nox-indus_, _nox-dis_ and _lstat-medv_. This points to the potential for multicollinearity in any models that include these and other highly-correlated predictors. We will see if this is, indeed, the case when the models are generated. 
+
+# Models
+
+## Backwards, Using Highly-Correlated Predictors
+
+The first model was generated with the eight predictors that were found to be highly-correlated with the response variable (see above): _nox_, _dis_, _age_, _rad_, _tax_, _zn_, _indus_ and _black_. The first iteration found all but one of these predictors, _indus_, to be significant. The model was then re-run with the seven significant predictors:
+
+~ Center
+![7-fit.2a]
+
+[7-fit.2a]: images/7-fit.2a.PNG "7-fit.2a" { width:auto; max-width:100% }
+~
+
+The resulting equation is as follows:
+
+~ Math
+target = -19.324142 + 36.432373nox + 0.412916dis + 0.715959rad + 0.019555age - 0.009145tax - 0.064598zn -0.009862black
+~
+
+The following table summarizes selected analytics:
+
+~ Center
+|Residual|AIC   |BIC       |AUC|McFadden's|
+|Deviance|      |          |   |Pseudo $R^{2}$|
++-------:+-------:+-----:+---------:+--:+---:+
+| 207.71 on 458 DF |223.7056| 256.8591 |0.9676|0.6784125|
+~
+
+##All Subsets
+
+The leaps package was used to generate the second model, using the all subsets method. All 13 variables were considered with the _regsubsets_ command. Using Mallow's Cp, the optimal number of variables for the model was determined to be five. The following two plots were generated to illustrate this process.
+
+![4-mallowscp]
+
+[4-mallowscp]: images/4-mallowscp.PNG "4-mallowscp" { width:auto; max-width:100% }
+
+![5-mallowscp2]
+
+[5-mallowscp2]: images/5-mallowscp2.PNG "5-mallowscp2" { width:auto; max-width:90% }
+
+The predictors chosen for this model were: _nox_, _age_, _rad_, _ptratio_ and _medv_. The _glm_ function was then used to generate this model, resulting in the following equation:
+
+~ Math
+target = -24.936540 + 25.334778nox + 0.019403age + 0.512600rad + 0.274193ptratio + 0.085445medv
+~
+
+Summary statistics showed all of the predictors to be significant:
+
+~ Center
+![6-fit.1]
+
+[6-fit.1]: images/6-fit.1.PNG "6-fit.1" { width:auto; max-width:100% }
+~
+
+The following table summarizes selected analytics:
+
+~ Center
+|Residual|AIC   |BIC       |AUC|McFadden's|
+|Deviance|      |          |   |Pseudo $R^{2}$|
++-------:+-----:+---------:+--:+---+
+|224.71 on 460 DF|236.7103| 261.5754 |0.9605| 0.6520844 |
+~
+
+## glmulti Package
+
+The third model was derived using the glmulti package, which finds the best models (the confidence set of models) among all possible models
+(the candidate set, as specified by the user). For this exercise, models were fitted with the glm function and ranked with the AIC criterion. The best models in this case were found through exhaustive screening of the candidates, and there were no interactions considered between predictors.
+
+The predictors chosen for this model were: zn, nox, age, dis, rad, tax, ptratio, black, lstat and medv. The equation for this model was as follows:
+
+~ Math
+target = -34.831121 - 0.070361zn + 43.1917nox + 0.027461age + 0.671699dis + 0.743199rad - 0.008639tax + 0.353646ptratio - 0.011777black + 0.068969lstat + 0.147677medv
+~
+
+One of the predictors, _lstat_, was noted as not significant; however, removing it worsened the equation's statistical metrics. Summary statistics were as follows:
+
+~ Center
+![8-fit.glmulti]
+
+[8-fit.glmulti]: images/8-fit.glmulti.PNG "8-fit.glmulti" { width:auto; max-width:90% }
+~
+
+The following table summarizes selected analytics:
+
+~ Center
+|Residual|AIC     |BIC       |AUC|McFadden's    |
+|Deviance|        |          |   |Pseudo $R^{2}$|
++---:+-------:+-------:+---------:+--:+--------------+
+| 190.51 on 455 DF |212.5141| 258.1002 |0.9734| 0.7050298    |
+~
+
+
+
+# Model Selection & Prediction
+
+Here are the analytics for the three models:
+
+|Model |Residual|AIC     |BIC       |AUC|McFadden's    |
+| |Deviance|        |          |   |Pseudo $R^{2}$|
++-+---:+-------:+-------:+---------:+--:+--------------+
+| |
+|2.1  |207.71 on 458 DF |223.7056| 256.8591 |0.9676| 0.6784125    |
+|2.2  |224.71 on 460 DF |236.7103| 261.5754 |0.9605| 0.6520844    |
+|2.3  |190.51 on 455 DF |212.5141| 258.1002 |0.9734| 0.7050298    |
+
+Model 2.3, the one generated using the glmulti package, has the lowest residual deviance, lowest AIC, the second lowest BIC, highest AUC (area under the curve) and the highest McFadden's Pseudo $R^{2}$. Based on these rankings, we will choose this as the best model.
+
+This models was then used to predict the values for _target_, based upon the evaluation data supplied.
+
+Here is a summary for the _target_ response in the predicted model:
+
+|Min.       |1st Qu.   |Median     |Mean       |3rd Qu.    |Max.       |
+|-|-|-|-|-|-|
+| 0.0000008 | 0.0925100| 0.6359000 | 0.5361000 | 1.0000000 | 1.0000000 |
+
+Here is the training data:
+
+|Min.       |1st Qu.   |Median     |Mean       |3rd Qu.    |Max.       |
+|-|-|-|-|-|-|
+| 0.0000 | 0.0000| 0.0000 | 0.4914 | 1.0000000 | 1.0000000 |
+
+
+# Discussion
+
+~ Center
+![10-coefficients]
+
+[10-coefficients]: images/10-coefficients.PNG "10-coefficients" { width:auto; max-width:100% }
+~
+
+When we review the results of the model (above), we must recall that the sign of the coefficient represents whether or not the variable increases or decreases the probability. In order to see the impact of the actual variable, we leverage the marginal effects analysis (below) and thus at least reduce the effect of different scales for each of the variables.
+
+~ Center
+![11-coeffs2]
+
+[11-coeffs2]: images/11-coeffs2.PNG "11-coeffs2" { width:auto; max-width:100% }
+~
+
+We can see that _nox_ has the largest marginal effect on the model, by at least two orders of magnitude. This may be surprising, however we can conjecture that more polluted areas indicate urban decay, and thus an increase in likelihood for higher crime.
+
+The predictors _dis_, _rad_, and _ptratio_ had weaker effects than _nox_, however stronger than the remainder. In the case of _dis_, this is indeed logical, as the further away one is from employment centers, one would think the higher the unemployment rate in the area, and thus the greater the likelihood for crime. The same logic follows with _rad_, as the further one is from highways the more challenging it is to get to work. 
+
+The predictor _ptratio_ requires more sophistry to explain the effect: we can assume that higher student-teacher ratios serve as an indicator of community engagement (e.g., school budgets getting approved), or overall wealth, and thus schools that have many more students relative to teachers reduce the chance of students having mentors or adult supervision.
