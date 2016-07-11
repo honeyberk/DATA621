@@ -168,9 +168,7 @@ Suprisingly, this was not the best model out of the three. The best was the step
 
 An analysis was then done to identify influential observations in this model, and three records were removed (3508, 3240, 2808). The model was then re-run, and the resulting AIC was 5447.1 with residual deviance of 5381.1. The final coefficient values can be viewed in the following summary:
 ~ Center
-![11-finallr]
 
-[11-finallr]: images/11-finallr.PNG "11-finallr" { width:auto; max-width:90% }
 ~
 
 The following table summarizes selected analytics:
