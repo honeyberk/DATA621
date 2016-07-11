@@ -139,13 +139,12 @@ We will detail in our model section exactly how we handled the NAs. The cleaned 
 ~
 We created some new variables, but they seemed to complicate or decrease the effectiveness of the models. One was HOME_OWN, which signified whether the driver was a homeowner or now. This was done by using the HOME_VAL variable and turning into a binary for "don't own" if HOME_VAL was zero, and "own" if HOME_VAL was any other value. We also created an average claim variable, but this was not used in modeling either.
 
-We see a lot of heavily skewed data which we shall address in the data preparation section.
+Lastly, for at least the first portion (predicting whether or not a claim is filed), we opted to simply remove all the NAs. The summary output prior to logistic regression was as follows:
+~ Center
+![9-summary-premodel]
 
-Lastly, for at least the first portion (predicting whether or not a claim is filed), we opted to simply remove all the NAs. The summary output is as follows:
-
-![Screen Shot 2016-07-10 at 9.49.34 AM]
-
-[Screen Shot 2016-07-10 at 9.49.34 AM]: images/Screen-Shot-2016-07-10-at-9.49.34-AM.png "Screen Shot 2016-07-10 at 9.49.34 AM" { width:auto; max-width:90% }
+[9-summary-premodel]: images/9-summary-premodel.PNG "9-summary-premodel" { width:auto; max-width:90% }
+~
 
 # Models
 
