@@ -264,6 +264,8 @@ Here is the training data:
 
 # Discussion
 
+For the logistic regression model, the sub-categories of the categorical variables were affecting the model very differently, To really get a quality model, each sub-category would have to be split into its own variable, and then the models run with these sub-category variables. So in a category like education, the effect of Ph.D. could stay in the model, which the other categories, like Bachelor's, could be removed so that the model could be improved. Although probabilities were generated here, the model is not as good as we would have liked, so we are not confident in its ability to predict.
+
 ~ Center
 ![10-coefficients]
 
