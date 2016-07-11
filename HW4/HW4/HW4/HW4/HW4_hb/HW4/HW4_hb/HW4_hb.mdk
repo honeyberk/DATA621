@@ -143,14 +143,21 @@ Lastly, for at least the first portion (predicting whether or not a claim is fil
 ~ Center
 ![9-summary-premodel]
 
+<!-- begin merge (remove this line to resolve the conflict) -->
+~ Begin Remote
 [9-summary-premodel]: images/9-summary-premodel.PNG "9-summary-premodel" { width:auto; max-width:90% }
 ~
+~ End Remote
+
+Lastly, for at least the first portion (predicting whether or not a claim is filed), we opted to simply remove all the NAs. The summary output is as follows:
+
+<!-- end merge -->
 
 # Models
 
-## Section on TARGET_FLAG
+## Logistic Models
 
-Yadda yadda
+
 
 ~ Center
 ![7-fit.2a]
