@@ -235,19 +235,20 @@ This happens to be the lowest residual error we could find. With more time we wo
 
 # Model Selection & Prediction
 
-Here are the analytics for the three models:
+Here are the analytics for the three logistic regression models:
 
-|Model |Residual|AIC     |BIC       |AUC|McFadden's    |
-| |Deviance|        |          |   |Pseudo $R^{2}$|
-+-+---:+-------:+-------:+---------:+--:+--------------+
-| |
-|2.1  |207.71 on 458 DF |223.7056| 256.8591 |0.9676| 0.6784125    |
-|2.2  |224.71 on 460 DF |236.7103| 261.5754 |0.9605| 0.6520844    |
-|2.3  |190.51 on 455 DF |212.5141| 258.1002 |0.9734| 0.7050298    |
+~ Center
+|Residual          |AIC      |BIC       |AUC    |McFadden's    |
+|Deviance          |         |          |       |Pseudo $R^{2}$|
++-----------------:+--------:+---------:+------:+-------------:+
+| 5777.8 on 6031 DF |5797.828 | 5864.891 |0.7786 |0.1729838  |
+| 5397.5 on 6008 DF|5463.470 |5684.779  |0.8158 |0.2274268     |
+|5381.1 on 6005 DF|5447.139 |5668.431  |0.8167 |0.2288845     |
+~
 
-Model 2.3, the one generated using the glmulti package, has the lowest residual deviance, lowest AIC, the second lowest BIC, highest AUC (area under the curve) and the highest McFadden's Pseudo $R^{2}$. Based on these rankings, we will choose this as the best model.
+Model 3 is the chosen model, for lowest AIC, BIC and residual deviance, and highest AUC and McFadden's Pseudo $R^{2}$.
 
-This models was then used to predict the values for _target_, based upon the evaluation data supplied.
+This models was then used to predict the values for TARGET_FLAG based upon the evaluation data supplied.
 
 Here is a summary for the _target_ response in the predicted model:
 
@@ -282,6 +283,5 @@ When we review the results of the model (above), we must recall that the sign of
 
 We can see that _nox_ has the largest marginal effect on the model, by at least two orders of magnitude. This may be surprising, however we can conjecture that more polluted areas indicate urban decay, and thus an increase in likelihood for higher crime.
 
-The predictors _dis_, _rad_, and _ptratio_ had weaker effects than _nox_, however stronger than the remainder. In the case of _dis_, this is indeed logical, as the further away one is from employment centers, one would think the higher the unemployment rate in the area, and thus the greater the likelihood for crime. The same logic follows with _rad_, as the further one is from highways the more challenging it is to get to work. 
 
-The predictor _ptratio_ requires more sophistry to explain the effect: we can assume that higher student-teacher ratios serve as an indicator of community engagement (e.g., school budgets getting approved), or overall wealth, and thus schools that have many more students relative to teachers reduce the chance of students having mentors or adult supervision.
+YADDA YADDA
