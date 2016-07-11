@@ -71,7 +71,7 @@ Boxplots and histograms were  generated to examine the distributions of each of 
 
 [5-histograms]: images/5-histograms.PNG "5-histograms" { width:auto; max-width:90% }
 ~
-
+Some additional data prep was during at this point, and a correlation matrix was generated to help identify correlated pairs and also the predictor variables that were most highly correlated to the response variable, _**TARGET_FLAG**_. (See Data Preparation section for details.)
 The exact output of high correlations (>0.5) also follows below:
 
 |Var1        |Var2       | Freq      |
