@@ -72,14 +72,6 @@ Boxplots and histograms were  generated to examine the distributions of each of 
 [5-histograms]: images/5-histograms.PNG "5-histograms" { width:auto; max-width:90% }
 ~
 
-A correlation matrix was generated for the dataset:
-
-~Center
-![correlation_plot]
-
-[correlation_plot]: images/correlation_plot.png "correlation_plot" { width:auto; max-width:90% }
-
-~
 The exact output of high correlations (>0.5) also follows below:
 
 |Var1        |Var2       | Freq      |
