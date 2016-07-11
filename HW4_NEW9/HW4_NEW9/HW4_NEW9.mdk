@@ -149,7 +149,7 @@ Lastly, for at least the first portion (predicting whether or not a claim is fil
 
 # Models
 
-## Logistic Regression Models (TARGET_FLAG)
+## Logistic Regression Models
 For the first logistic regression, we built a model that included the predictors that were the most highly-correlated with the response, TARGET_FLAG, when we generated the correlation matrix during the data exploration process. 
 
 The AIC for this model was 5797.8, and the residual deviance was 5777.8. The predictors included were:
@@ -184,7 +184,7 @@ The following table summarizes selected analytics:
 
 Model 3 is the chosen model.
 
-##Linear Regression Models (TARGET_AMT)
+##TARGET_AMT models
 ###Simple linear model
 We limited our dataset further to only include observations wherein a claim was accepted and paid (`df_crash <- df_train[df_train$TARGET_AMT > 0,]`. This brought down the number of observations to 1703.
 We removed the `TARGET_FLAG` variable as well.
@@ -253,8 +253,15 @@ We ran many iterations an ultimately found that the best results came via the bi
 
 [Screen Shot 2016-07-10 at 7.35.27 PM]: images/Screen-Shot-2016-07-10-at-7.35.27-PM.png "Screen Shot 2016-07-10 at 7.35.27 PM" { width:auto; max-width:90% }
 
-This happens to be the lowest residual error we could find. With more time we would seek
+We made a few more data manipulations for one final attempt. Specifically, we created a new column `avg_claim` which divided old claims amount from the claims frequency (with the conditional that this was greater than zero). This proved to improved our model, based on minimizing residual errors.
 
+![Screen Shot 2016-07-10 at 11.36.09 PM]
+
+[Screen Shot 2016-07-10 at 11.36.09 PM]: images/Screen-Shot-2016-07-10-at-11.36.09-PM.png "Screen Shot 2016-07-10 at 11.36.09 PM" { width:auto; max-width:90% }
+
+![Model7]
+
+[Model7]: images/Model7.png "Model7" { width:auto; max-width:90% }
 
 # Model Selection & Prediction
 
@@ -297,6 +304,28 @@ And here is the relative importance of each of the coefficients:
 
 We can see that the location predictor, URBANICITY(Highly Rural / Rural), was the most important in this model by far; followed by CAR_USE (Private), REVOKED (Yes) and CAR_TYPE (Sports), just to name the first few. From these, we could get a profile of a driver most likely to have an accident living in a rural area, driving for personal purposes, who has had his license revoked in the past and drives a sports car.
 
+For the TARGET_AMT we discussed the various models, we opted to leverage minimizing the Residual Errors when determining the best model.
+
+~ Center
+|Residual          |Model      |
+|Standard Error          |         |
++-----------------:+--------:+
+| 2118 on 1629 DF |Weighted Least Squares |
+| 7645 on 1618 DF|Linear Model |
+|2237 on 1693 DF|bisquare regression|
+~
+
+The summary for the TARGET_AMT is as follows:
+![Screen Shot 2016-07-10 at 11.44.38 PM]
+
+[Screen Shot 2016-07-10 at 11.44.38 PM]: images/Screen-Shot-2016-07-10-at-11.44.38-PM.png "Screen Shot 2016-07-10 at 11.44.38 PM" { width:auto; max-width:90% }
+
+And below is the box plot, it should not be a surprise that the variation is lower for this piece relative to the training data.
+
+![PredictedAmts]
+
+[PredictedAmts]: images/PredictedAmts.png "PredictedAmts" { width:auto; max-width:90% }
+
 # Discussion
 
 For the logistic regression model, the sub-categories of the categorical variables were affecting the model very differently, To really get a quality model, each sub-category would have to be split into its own variable, and then the models run with these sub-category variables. So in a category like education, the effect of Ph.D. could stay in the model, which the other categories, like Bachelor's, could be removed so that the model could be improved. More granular data would provide for more exact models, and then driver profiles could be generated, like the one above.
@@ -304,4 +333,4 @@ For the logistic regression model, the sub-categories of the categorical variabl
 Although prediction probabilities were generated here, the model is not as good as we would have liked, so we are not as confident as we would like to be in its ability to predict.
 
 
-For the linear regression, the model was not of a caliber that would allow us to predict with confidence. There may be issues with using categorical data, as mentioned above regarding the logistic regression. Further analysis is necessary to determine why the model does not have high statistic metrics.
+For the linear regression the model clearly requires further investigation. The most telling aspect is the lack of normality that remains with the Q-Q plot. It seems likely that extreme dollar amounts as far as outlay payments require either a separate model or additional data that we are missing. One hypothesis to investigate would be liabilities around personal damange beyond that of the car.
