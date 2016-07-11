@@ -149,7 +149,7 @@ Lastly, for at least the first portion (predicting whether or not a claim is fil
 
 # Models
 
-## Logistic Regression Models
+## Logistic Regression Models (TARGET_FLAG)
 For the first logistic regression, we built a model that included the predictors that were the most highly-correlated with the response, TARGET_FLAG, when we generated the correlation matrix during the data exploration process. 
 
 The AIC for this model was 5797.8, and the residual deviance was 5777.8. The predictors included were:
@@ -184,7 +184,7 @@ The following table summarizes selected analytics:
 
 Model 3 is the chosen model.
 
-##TARGET_AMT models
+##Linear Regression Models (TARGET_AMT)
 ###Simple linear model
 We limited our dataset further to only include observations wherein a claim was accepted and paid (`df_crash <- df_train[df_train$TARGET_AMT > 0,]`. This brought down the number of observations to 1703.
 We removed the `TARGET_FLAG` variable as well.
