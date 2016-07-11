@@ -1,0 +1,281 @@
+Title         : DATA 621 - Homework 4
+Author        : Honey Berk, Ken Markus
+Logo          : False
+Title Note  : &date;
+
+[TITLE]
+   
+# Data Exploration
+
+**Dataset**
+{ font-size: 120%; }
+
+The dataset under analysis this week contains information on customers for an auto insurance corporation. The dataset contains more than 8000 records, there are actually two response variables we will be exploring: (1) TARGET_FLAG, which denotes whether or not the customer was in a crash; and, (2) TARGET_AMT, which denotes the dollar-value of the cost of the crash. There are 24 predictor variables included in the training dataset:
+~ Center
+
+|Name     | Definition            | Theoretical Effect|
+|:--------+:-----------+:-----------------------------|
+|AGE      |age of driver          |Very young people tend to be risky. Maybe very old people also.|
+|BLUEBOOK |Value of Vehicle       |Unknown effect on probability of collision, but probably effect the payout if there is a crash|
+|CAR_AGE| Vehicle Age             | Unknown effect on probability of collision, but probably effect the payout if there is a crash
+|**CAR_TYPE**| Type of Car            | Unknown effect on probability of collision, but probably effect the payout if there is a crash
+|**CAR_USE**| Vehicle Use             |Commercial vehicles are driven more, so might increase probability of collision
+|CLM_FREQ| # Claims (Past 5 Years)| The more claims you filed in the past, the more you are likely to file in the future
+|**EDUCATION**| Max Education Level   | Unknown effect, but in theory more educated people tend to drive more safely
+|HOMEKIDS| # Children at Home     | Unknown effect
+|HOME_VAL| Home Value             | In theory, home owners tend to drive more responsibly
+|INCOME| Income                   |In theory, rich people tend to get into fewer crashes
+|**JOB**| Job Category                | In theory, white collar jobs tend to be safer
+|KIDSDRIV| # Driving Children     |When teenagers drive your car, you are more likely to get into crashes
+|**MSTATUS**| Marital Status          |In theory, married people drive more safely
+|MVR_PTS| Motor Vehicle Record Points| If you get lots of traffic tickets, you tend to get into more crashes
+|OLDCLAIM| Total Claims (Past 5 Years)| If your total payout over the past five years was high, this suggests future payouts will be high
+|**PARENT1**| Single Parent           |Unknown effect
+|**RED_CAR**| A Red Car               |Urban legend says that red cars (especially red sports cars) are more risky. Is that true?
+|**REVOKED**| License Revoked (Past 7 Years)| If your license was revoked in the past 7 years, you probably are a more risky driver.
+|**SEX**| Gender                      |Urban legend says that women have less crashes then men. Is that true?
+|TIF| Time in Force               |People who have been customers for a long time are usually more safe.
+|TRAVTIME| Distance to Work       |Long drives to work usually suggest greater risk
+|**URBANICITY**| Home/Work Area       |Unknown
+|YOJ| Years on Job                |People who stay at a job for a long time are usually more safe         |                 |
+|---------|-----------------|
+~
+An initial look at the data confirmed that there were a lot of categorical variables, including one of the response variables, TARGET_FLAG. The categorical variables are denoted in **bold** above.
+
+Summary statistics were generated for the dataset:
+~ Center
+![Screen Shot 2016-07-09 at 3.09.08 PM]
+
+[Screen Shot 2016-07-09 at 3.09.08 PM]: images/Screen-Shot-2016-07-09-at-3.09.08-PM.png "Screen Shot 2016-07-09 at 3.09.08 PM" { width:auto; max-width:90% }
+~
+
+Some initial data cleaning was performed to set categorical data to factors and thereby enable a better look at th data.
+
+Summary statistics were generated again:
+~ Center
+![3-summary]
+
+[3-summary]: images/3-summary.PNG "3-summary" { width:auto; max-width:90% }
+~
+We can see that the data for each customer record was not complete, and that there were a significant number of NAs for the following predictor variables: YOJ, INCOME, HOME_VAL, JOB and CAR_AGE.
+
+Boxplots and histograms were  generated to examine the distributions of each of the variables. Note that this was subsequent to some of the data cleanup described in the following section. While we planned to apply logistic regression to the first model (the probability of a crash) and data for logistic regression is not required to be normalized, the boxplots and histograms did show that there were a number of variables with highly skewed data, and a large amount of outliers, most notably, _OLDCLAIM_ and _INCOME_. The response variable, __TARGET_AMT__, also had a large number of outliers.
+
+~ Center
+![4-boxplots]
+
+[4-boxplots]: images/4-boxplots.PNG "4-boxplots" { width:auto; max-width:90% }
+
+
+![5-histograms]
+
+[5-histograms]: images/5-histograms.PNG "5-histograms" { width:auto; max-width:90% }
+~
+Some additional data prep was during at this point (see Data Preparation section, below, for details.), and a correlation matrix was generated to help identify pairwise correlations amongst the predictors, and also to identify the predictors that were most highly correlated to the response variable, _**TARGET_FLAG**_. 
+
+The exact output of high correlations (>0.5) also follows below:
+
+|Var1     |Var2     | Freq      |
+|:--------|:--------|----------:|
+|SEX      |RED_CAR  | -0.9469796|
+|PARENT1  |MSTATUS  | 0.8264202 |
+|SEX      |CAR_TYPE | 0.6383660 |
+|JOB      |CAR_USE  |-0.6354292 |
+|INCOME   |HOME_VAL | 0.5779975 |
+|KIDSDRIVE   | HOMEKIDS| 0.5662063 |
+|HOME_VAL |MSTATUS  | -0.5274086|
+|CAR_TYPE|RED_CAR|-0.5065342 |
+
+Since the variable inflation factor (VIF) is not applicable to logistic regression, we can use these pairwise correlations later, to try and ensure that we avoid multicollinearity. There are a number of interesting findings here, a few of which follow: 
+
+First, we see that red cars are nearly exclusively purchased by men. Further, by definition, we would think a single parent is unmarried, so we should not be surprised with this correlation (if anything it ought to be higher). Interestingly, the type of car purchased also depends a great deal on gender of the person making the purchase. Finally, the relationship between home values and income should not be a surprise, nor marital status as a married couple increases the likelihood of a double-income household, and thus the ability to afford a more expensive home.
+
+Following is a look at the correlations between the response and predictor variables:
+~ Center
+![6-responsecorrs]
+
+[6-responsecorrs]: images/6-responsecorrs.PNG "6-responsecorrs" { width:auto; max-width:90% }
+~
+The lack of strong correlation with any of the predictor variables and the response indicates that we may not have the strongest model as we dig in.
+
+# Data Preparation
+
+The original dataset had quite a few problems:
+![Screen Shot 2016-07-09 at 4.19.49 PM]
+
+[Screen Shot 2016-07-09 at 4.19.49 PM]: images/Screen-Shot-2016-07-09-at-4.19.49-PM.png "Screen Shot 2016-07-09 at 4.19.49 PM" { width:auto; max-width:90% }
+
+Dollar-amount values were stored as character strings and included the '\$'-sign and commas. We converted all of those to appropriate numerical types. As mentioned, there were a lot of categorical variables as well (see the **bold** notated variables in the table in the previous section). All of these were converted to the `factor` data-type and the levels were renamed where appropriate. 
+
+We will detail in our model section exactly how we handled the NAs. The cleaned up data are as follows:
+~ Center
+![7-str]
+
+[7-str]: images/7-str.PNG "7-str" { width:auto; max-width:90% }
+~
+- We converted a small number of negative values in CAR_AGE_
+
+- We opted to assume that whether or not kids were driving the car was more significant than the number of kids driving. Thus, we converted from an integer to a binary dataset.
+
+~ Center
+![kids_drive_hist]
+![kids_drive_boxplot]
+
+[kids_drive_hist]: images/kids_drive_hist.png "kids_drive_hist" { width:auto; max-width:90% }
+
+[kids_drive_boxplot]: images/kids_drive_boxplot.png "kids_drive_boxplot" { width:auto; max-width:90% }
+~
+
+- We applied the same technique to motor vehicle points.
+
+~ Center
+![mvr_pts_plot]
+
+[mvr_pts_plot]: images/mvr_pts_plot.png "mvr_pts_plot" { width:auto; max-width:90% }
+
+![8-points]
+
+[8-points]: images/8-points.PNG "8-points" { width:auto; max-width:90% }
+~
+We created some new variables, but they seemed to complicate or decrease the effectiveness of the models. One was HOME_OWN, which signified whether the driver was a homeowner or now. This was done by using the HOME_VAL variable and turning into a binary for "don't own" if HOME_VAL was zero, and "own" if HOME_VAL was any other value. We also created an average claim variable, but this was not used in modeling either.
+
+Lastly, for at least the first portion (predicting whether or not a claim is filed), we opted to simply remove all the NAs. The summary output prior to logistic regression was as follows:
+
+~ Center
+![9-summary-premodel]
+
+[9-summary-premodel]: images/9-summary-premodel.PNG "9-summary-premodel" { width:auto; max-width:90% }
+~
+
+# Models
+
+## Logistic Regression Models
+For the first logistic regression, we built a model that included the predictors that were the most highly-correlated with the response, TARGET_FLAG, when we generated the correlation matrix during the data exploration process. 
+
+The AIC for this model was 5797.8, and the residual deviance was 5777.8. The formula was:
+
+glm(formula = TARGET_FLAG ~ KIDSDRIV + INCOME + PARENT1 + HOME_VAL + 
+    MSTATUS + SEX + EDUCATION + JOB + TRAVTIME + CAR_USE + BLUEBOOK + 
+    TIF + CAR_TYPE + RED_CAR + OLDCLAIM + CLM_FREQ + REVOKED + 
+    MVR_PTS + URBANICITY, family = binomial(link = "logit"), 
+    data = mtrain)
+
+For the second logistic regression, we used a stepwise:backwards procedure, removing non-significant predictors after each round until we achieved the best AIC. The resulting best model has an AIC of 5463.5 and the residual deviance was 5397.5. See the following summary:
+
+
+
+
+The resulting equation was as follows:
+
+~ Math
+TARGET_FLAT = -19.324142 + 36.432373nox + 0.412916dis + 0.715959rad + 0.019555age - 0.009145tax - 0.064598zn -0.009862black
+~
+
+The following table summarizes selected analytics:
+
+~ Center
+|Residual|AIC   |BIC       |AUC|McFadden's|
+|Deviance|      |          |   |Pseudo $R^{2}$|
++-------:+-------:+-----:+---------:+--:+---:+
+| 207.71 on 458 DF |223.7056| 256.8591 |0.9676|0.6784125|
+~
+
+##TARGET_AMT models
+###Simple linear model
+We limited our dataset further to only include observations wherein a claim was accepted and paid (`df_crash <- df_train[df_train$TARGET_AMT > 0,]`. This brought down the number of observations to 1703.
+We removed the `TARGET_FLAG` variable as well.
+
+We opted to apply a simple linear model for our first attempt and this yielded the following results:
+
+![Screen Shot 2016-07-10 at 7.14.45 PM]
+
+[Screen Shot 2016-07-10 at 7.14.45 PM]: images/Screen-Shot-2016-07-10-at-7.14.45-PM.png "Screen Shot 2016-07-10 at 7.14.45 PM" { width:auto; max-width:90% }
+
+This is not a convincing model at all, and upon review of the residuals we recognized that the residual variance was not constant.
+
+![Residuals_lm1]
+
+[Residuals_lm1]: images/Residuals_lm1.png "Residuals_lm1" { width:auto; max-width:90% }
+
+Our first assumption was that this is due to skew of the response variable, and thus the next section attempted to reduce that problem.
+
+###Box-Cox Model
+We built two models leveraging the Box-cox methodology and unfortunately they achieved little in terms of yielding a superior model (based on Adjusted R-squared or F-statistic). However we did improve the challenges with residual variance.
+![Screen Shot 2016-07-10 at 7.21.38 PM]
+
+[Screen Shot 2016-07-10 at 7.21.38 PM]: images/Screen-Shot-2016-07-10-at-7.21.38-PM.png "Screen Shot 2016-07-10 at 7.21.38 PM" { width:auto; max-width:90% }
+![BC_residuals]
+
+[BC_residuals]: images/BC_residuals.png "BC_residuals" { width:auto; max-width:90% }
+
+Given the problems with this model, our last attempt was to leverage weighted least squares.
+
+###Weighted Least Squares Model
+Let us recall where we were with our original linear model.
+
+![lm_model_graphs]
+
+[lm_model_graphs]: images/lm_model_graphs.png "lm_model_graphs" { width:auto; max-width:90% }
+Our residuals as the model extends moves further and further away for being normally desributed. This is clearly due to the ourliers highlighted in the leverage graph above.
+
+We utilize the `MASS` package and the `rlm` function to mitigate against this.
+
+We ran many iterations an ultimately found that the best results came via the bi-squared methodology with the following variables:
+
+![Screen Shot 2016-07-10 at 7.35.27 PM]
+
+[Screen Shot 2016-07-10 at 7.35.27 PM]: images/Screen-Shot-2016-07-10-at-7.35.27-PM.png "Screen Shot 2016-07-10 at 7.35.27 PM" { width:auto; max-width:90% }
+
+This happens to be the lowest residual error we could find. With more time we would seek
+
+
+# Model Selection & Prediction
+
+Here are the analytics for the three models:
+
+|Model |Residual|AIC     |BIC       |AUC|McFadden's    |
+| |Deviance|        |          |   |Pseudo $R^{2}$|
++-+---:+-------:+-------:+---------:+--:+--------------+
+| |
+|2.1  |207.71 on 458 DF |223.7056| 256.8591 |0.9676| 0.6784125    |
+|2.2  |224.71 on 460 DF |236.7103| 261.5754 |0.9605| 0.6520844    |
+|2.3  |190.51 on 455 DF |212.5141| 258.1002 |0.9734| 0.7050298    |
+
+Model 2.3, the one generated using the glmulti package, has the lowest residual deviance, lowest AIC, the second lowest BIC, highest AUC (area under the curve) and the highest McFadden's Pseudo $R^{2}$. Based on these rankings, we will choose this as the best model.
+
+This models was then used to predict the values for _target_, based upon the evaluation data supplied.
+
+Here is a summary for the _target_ response in the predicted model:
+
+|Min.       |1st Qu.   |Median     |Mean       |3rd Qu.    |Max.       |
+|-|-|-|-|-|-|
+| 0.0000008 | 0.0925100| 0.6359000 | 0.5361000 | 1.0000000 | 1.0000000 |
+
+Here is the training data:
+
+|Min.       |1st Qu.   |Median     |Mean       |3rd Qu.    |Max.       |
+|-|-|-|-|-|-|
+| 0.0000 | 0.0000| 0.0000 | 0.4914 | 1.0000000 | 1.0000000 |
+
+
+# Discussion
+
+~ Center
+![10-coefficients]
+
+[10-coefficients]: images/10-coefficients.PNG "10-coefficients" { width:auto; max-width:100% }
+~
+
+When we review the results of the model (above), we must recall that the sign of the coefficient represents whether or not the variable increases or decreases the probability. In order to see the impact of the actual variable, we leverage the marginal effects analysis (below) and thus at least reduce the effect of different scales for each of the variables.
+
+~ Center
+![11-coeffs2]
+
+[11-coeffs2]: images/11-coeffs2.PNG "11-coeffs2" { width:auto; max-width:100% }
+~
+
+We can see that _nox_ has the largest marginal effect on the model, by at least two orders of magnitude. This may be surprising, however we can conjecture that more polluted areas indicate urban decay, and thus an increase in likelihood for higher crime.
+
+The predictors _dis_, _rad_, and _ptratio_ had weaker effects than _nox_, however stronger than the remainder. In the case of _dis_, this is indeed logical, as the further away one is from employment centers, one would think the higher the unemployment rate in the area, and thus the greater the likelihood for crime. The same logic follows with _rad_, as the further one is from highways the more challenging it is to get to work. 
+
+The predictor _ptratio_ requires more sophistry to explain the effect: we can assume that higher student-teacher ratios serve as an indicator of community engagement (e.g., school budgets getting approved), or overall wealth, and thus schools that have many more students relative to teachers reduce the chance of students having mentors or adult supervision.
