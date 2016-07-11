@@ -75,15 +75,16 @@ Some additional data prep was during at this point (see Data Preparation section
 
 The exact output of high correlations (>0.5) also follows below:
 
-|Var1        |Var2       | Freq      |
-|:-----------|:----------|----------:|
-|SEX         |RED_CAR    | -0.9437106|
-|TARGET_FLAG |TARGET_AMT | 0.8620760 |
-|PARENT1     |MSTATUS    | 0.8469836 |
-|SEX         |CAR_TYPE   | 0.6229009 |
-|INCOME      |HOME_VAL   | 0.5755108 |
-|HOME_VAL    |MSTATUS    | -0.5299891|
-|            |           |           |
+|Var1     |Var2     | Freq      |
+|:--------|:--------|----------:|
+|SEX      |RED_CAR  | -0.9469796|
+|PARENT1  |MSTATUS  | 0.8264202 |
+|SEX      |CAR_TYPE | 0.6383660 |
+|JOB      |CAR_USE  |-0.6354292 |
+|INCOME   |HOME_VAL | 0.5779975 |
+|KIDSDRIVE   | HOMEKIDS| 0.5662063 |
+|HOME_VAL |MSTATUS  | -0.5274086|
+|CAR_TYPE|RED_CAR|-0.5065342 |
 
 Upon review we learn that red cars are nearly exclusively purchased by men, and thus can likely remove the red car variable from our model.
 It is not at all a surprise that the two response variables are also highly correlated, given that we would only expect a TARGET_AMT > 0 for cases in which the TARGET_FLAG is true.
