@@ -57,7 +57,7 @@ Summary statistics were generated again:
 
 [3-summary]: images/3-summary.PNG "3-summary" { width:auto; max-width:90% }
 ~
-The data for each customer record was not complete, and we can see that there were a significant number of NAs for the following predictor variables: CAR_AGE, YOJ, and AGE.
+We can see that the data for each customer record was not complete, and that there were a significant number of NAs for the following predictor variables: YOJ, INCOME, HOME_VAL, JOB and CAR_AGE.
 
 Boxplots and histograms were  generated to examine the distributions of each of the variables. Note that this was subsequent to some of the data cleanup described in the following section. 
 While we planned to apply logistic regression to the first model (the probability of a crash) and data for logistic regression is not required to be normalized, the boxplots and histograms did show that there were a number of variables with highly skewed data, and a large amount of outliers, most notably, _OLDCLAIM_ and _INCOME_. The response variable, __TARGET_AMT__, also had a large number of outliers.
