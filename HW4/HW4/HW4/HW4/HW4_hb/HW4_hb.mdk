@@ -41,7 +41,6 @@ The dataset under analysis this week contains information on customers for an au
 |---------|-----------------|
 ~
 An initial look at the data confirmed that there were a lot of categorical variables, including one of the response variables, TARGET_FLAG. The categorical variables are denoted in **bold** above.
-The data for each customer record was not complete, and we can see that there were a significant number of NAs for the following predictor variables: CAR_AGE, YOJ, and AGE.
 
 Summary statistics were generated for the dataset:
 ~ Center
@@ -49,6 +48,11 @@ Summary statistics were generated for the dataset:
 
 [Screen Shot 2016-07-09 at 3.09.08 PM]: images/Screen-Shot-2016-07-09-at-3.09.08-PM.png "Screen Shot 2016-07-09 at 3.09.08 PM" { width:auto; max-width:90% }
 ~
+
+Some initial data cleaning was performed to set categorical data to factors and thereby enable a better look at th data.
+
+
+The data for each customer record was not complete, and we can see that there were a significant number of NAs for the following predictor variables: CAR_AGE, YOJ, and AGE.
 
 Boxplots and histograms were  generated to examine the distributions of each of the variables. Note that this was subsequent to some of the data cleanup described in the following section. 
 While we planned to apply logistic regression to the first model (the probability of a crash) and data for logistic regression is not required to be normalized, the boxplots and histograms did show that there were a number of variables with highly skewed data, and a large amount of outliers, most notably, _OLDCLAIM_ and _INCOME_. The response variable, __TARGET_AMT__, also had a large number of outliers.
