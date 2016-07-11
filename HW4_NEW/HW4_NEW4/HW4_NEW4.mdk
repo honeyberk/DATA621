@@ -167,21 +167,22 @@ KIDSDRIV + PARENT1 + MSTATUS + EDUCATION + INCOME + HOME_VAL + TRAVTIME + BLUEBO
 Suprisingly, this was not the best model out of the three. The best was the stepwise:backwards model generated manually.
 
 An analysis was then done to identify influential observations in this model, and three records were removed (3508, 3240, 2808). The model was then re-run, and the resulting AIC was 5447.1 with residual deviance of 5381.1. The final coefficient values can be viewed in the following summary:
-
+~ Center
 ![11-finallr]
 
 [11-finallr]: images/11-finallr.PNG "11-finallr" { width:auto; max-width:90% }
-
-
-
+~
 
 The following table summarizes selected analytics:
 
 ~ Center
-|Residual|AIC   |BIC       |AUC|McFadden's|
-|Deviance|      |          |   |Pseudo $R^{2}$|
-+-------:+-------:+-----:+---------:+--:+---:+
-| 207.71 on 458 DF |223.7056| 256.8591 |0.9676|0.6784125|
+|Residual          |AIC      |BIC       |AUC    |McFadden's    |    |
+|Deviance          |         |          |       |Pseudo $R^{2}$|    |
++-----------------:+--------:+---------:+------:+-------------:+---:+
+| 207.71 on 458 DF |5797.828 | 5864.891 |0.7786 |0.1729838     |    |
+| safdfs           |5463.470 |5684.779  |0.8158 |0.2274268     |    |
+|sfsdf             |5447.139 |5668.431  |0.8167 |0.2288845     |    |
+|                  |         |          |       |              |    |
 ~
 
 ##TARGET_AMT models
