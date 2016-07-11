@@ -67,10 +67,9 @@ Boxplots and histograms were  generated to examine the distributions of each of 
 [4-boxplots]: images/4-boxplots.PNG "4-boxplots" { width:auto; max-width:90% }
 
 
-![Histograms_HW4]
+![5-histograms]
 
-[Histograms_HW4]: images/Histograms_HW4.png "Histograms_HW4" { width:auto; max-width:90% }
-
+[5-histograms]: images/5-histograms.PNG "5-histograms" { width:auto; max-width:90% }
 ~
 
 A correlation matrix was generated for the dataset:
