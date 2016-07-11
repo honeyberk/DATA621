@@ -176,14 +176,15 @@ An analysis was then done to identify influential observations in this model, an
 The following table summarizes selected analytics:
 
 ~ Center
-|Residual          |AIC      |BIC       |AUC    |McFadden's    |    |
-|Deviance          |         |          |       |Pseudo $R^{2}$|    |
-+-----------------:+--------:+---------:+------:+-------------:+---:+
-| 207.71 on 458 DF |5797.828 | 5864.891 |0.7786 |0.1729838     |    |
-| safdfs           |5463.470 |5684.779  |0.8158 |0.2274268     |    |
-|sfsdf             |5447.139 |5668.431  |0.8167 |0.2288845     |    |
-|                  |         |          |       |              |    |
+|Residual          |AIC      |BIC       |AUC    |McFadden's    |
+|Deviance          |         |          |       |Pseudo $R^{2}$|
++-----------------:+--------:+---------:+------:+-------------:+
+| 5777.8 on 6031 DF |5797.828 | 5864.891 |0.7786 |0.1729838  |
+| 5397.5 on 6008 DF|5463.470 |5684.779  |0.8158 |0.2274268     |
+|5381.1 on 6005 DF|5447.139 |5668.431  |0.8167 |0.2288845     |
 ~
+
+Model 3 is the chosen 
 
 ##TARGET_AMT models
 ###Simple linear model
