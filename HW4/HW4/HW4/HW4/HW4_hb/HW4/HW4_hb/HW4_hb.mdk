@@ -116,6 +116,7 @@ We will detail in our model section exactly how we handled the NAs. The cleaned 
 - We converted a small number of negative values in CAR_AGE_
 
 - We opted to assume that whether or not kids were driving the car was more significant than the number of kids driving. Thus, we converted from an integer to a binary dataset.
+
 ~ Center
 ![kids_drive_hist]
 ![kids_drive_boxplot]
@@ -125,24 +126,18 @@ We will detail in our model section exactly how we handled the NAs. The cleaned 
 [kids_drive_boxplot]: images/kids_drive_boxplot.png "kids_drive_boxplot" { width:auto; max-width:90% }
 ~
 
-We applied a similar technique for motor vehicle points.
+- We applied the same technique to motor vehicle points.
+
+~ Center
 ![mvr_pts_plot]
-![mvr_pts_hist]
 
 [mvr_pts_plot]: images/mvr_pts_plot.png "mvr_pts_plot" { width:auto; max-width:90% }
 
-[mvr_pts_hist]: images/mvr_pts_hist.png "mvr_pts_hist" { width:auto; max-width:90% }
+![8-points]
 
-Also, we reviewed the relationship between claim frequency and dollar ammounts. One hypothesis we have as that the average dollar amount of previous claims shall be predictive in future dollar amounts. So we created a new predictor variable `avg_claim_amt` by combining the two columns. A simple correlation revealed that it had a value of 0.069.
-![claim_plots]
-![claim_hist]
-![hist_claim_amt]
-
-[claim_plots]: images/claim_plots.png "claim_plots" { width:auto; max-width:90% }
-
-[claim_hist]: images/claim_hist.png "claim_hist" { width:auto; max-width:90% }
-
-[hist_claim_amt]: images/hist_claim_amt.png "hist_claim_amt" { width:auto; max-width:90% }
+[8-points]: images/8-points.PNG "8-points" { width:auto; max-width:90% }
+~
+We created some new variables, but they seemed to complicate or decrease the effectiveness of the models. One was HOME_OWN, which signified whether the driver was a homeowner or now. This was done by using the HOME_VAL variable and turning into a binary for "don't own" if HOME_VAL was zero, and "own" if HOME_VAL was any other value. We also created an average claim variable, but this was not used in modeling either.
 
 Finally, after some amount of cleanup (described below) we also ran the `describe` function from the `psych` package.
 
