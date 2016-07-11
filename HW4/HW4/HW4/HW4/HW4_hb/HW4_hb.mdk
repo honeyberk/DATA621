@@ -84,13 +84,11 @@ The exact output of high correlations (>0.5) also follows below:
 |INCOME   |HOME_VAL | 0.5779975 |
 |KIDSDRIVE   | HOMEKIDS| 0.5662063 |
 |HOME_VAL |MSTATUS  | -0.5274086|
-|CAR_TYPE|RED_CAR|-0.5065342 |
+|CAR_TYPE|RED_CAR|           |
 
-Upon review we learn that red cars are nearly exclusively purchased by men, and thus can likely remove the red car variable from our model.
-It is not at all a surprise that the two response variables are also highly correlated, given that we would only expect a TARGET_AMT > 0 for cases in which the TARGET_FLAG is true.
-By definition, we would think a single parent is unmarried, so we should not be surprised with this correlation (if anything it ought to be higher).
-Interestingly the type of car purchased depends a great deal on gender of the person making the purchase.
-Finally, the relationship between home values and income should not be a surprise, nor marital status as a married couple increases the likelihood of a double-income household, and thus the ability to afford a more expensive home.
+Since the variable inflation factor is not application to logistic regression, we can use these pairwise correlations later, to try and ensure that we avoid multicollinearity.
+
+There are a number of interesting findings here, some of which follow: First, we see that red cars are nearly exclusively purchased by men. Further, by definition, we would think a single parent is unmarried, so we should not be surprised with this correlation (if anything it ought to be higher). Interestingly, the type of car purchased also depends a great deal on gender of the person making the purchase. Finally, the relationship between home values and income should not be a surprise, nor marital status as a married couple increases the likelihood of a double-income household, and thus the ability to afford a more expensive home.
 
 The lack for strong correlation with any of the predictor variables and the response indicates that we may not have the strongest model as we dig in.
 
