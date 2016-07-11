@@ -148,10 +148,14 @@ Lastly, for at least the first portion (predicting whether or not a claim is fil
 
 # Models
 
-## Logistic Models
+## Logistic Regression Models
+For the first logistic regression, we built a model that included the predictors that were the most highly-correlated with the response, TARGET_FLAG, when we generated the correlation matrix during the data exploration process. 
 
-Yadda yadda
+The AIC for this model was 5797.8, and the residual deviance was 5777.8. See the following summary:
 
+![10-lmodel1]
+
+[10-lmodel1]: images/10-lmodel1.PNG "10-lmodel1" { width:auto; max-width:90% }
 
 
 The resulting equation is as follows:
