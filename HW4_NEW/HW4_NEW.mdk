@@ -153,7 +153,12 @@ For the first logistic regression, we built a model that included the predictors
 
 The AIC for this model was 5797.8, and the residual deviance was 5777.8. See the following summary:
 
+<!-- begin merge (remove this line to resolve the conflict) -->
+~ Begin Remote
 ![10-lmodel1]
+~ End Remote
+For the first logistic regression, we used the predictors that were deemed most highly-correlated to the response in our correlation matrix generated during the data preparation process.
+<!-- end merge -->
 
 [10-lmodel1]: images/10-lmodel1.PNG "10-lmodel1" { width:auto; max-width:90% }
 
